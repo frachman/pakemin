@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This repository is in a documentation milestone. Do not create a CLI, package, schema, adapter generator, plugin, website, or implementation code unless the milestone scope changes through an accepted ADR or explicit maintainer instruction.
+This repository contains Pakemin documentation and a minimal CLI authorized by [ADR-0004](docs/adr/0004-minimal-cli.md). Do not create schemas, plugin systems, websites, hosted services, or networked integrations unless the milestone scope changes through an accepted ADR or explicit maintainer instruction.
 
 Before making architectural changes, read [docs/README.md](docs/README.md) and identify the relevant documentation category.
 
@@ -13,4 +13,3 @@ Use ADRs in [docs/adr](docs/adr/README.md) for significant architectural decisio
 Report assumptions when requirements are unclear. Avoid inventing product, schema, package, or adapter behavior beyond the documented scope.
 
 After documentation changes, validate relative Markdown links.
-

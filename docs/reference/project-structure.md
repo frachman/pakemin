@@ -11,6 +11,13 @@ This document describes the initial repository structure for the documentation f
 ├── README.md
 ├── AGENTS.md
 ├── LICENSE
+├── package.json
+├── bin
+│   └── pakemin.js
+├── src
+│   └── cli.js
+├── test
+│   └── cli.test.js
 ├── docs
 │   ├── README.md
 │   ├── getting-started
@@ -27,6 +34,8 @@ This document describes the initial repository structure for the documentation f
 The root `README.md` introduces the project and links to documentation.
 
 The root `AGENTS.md` gives concise guidance to AI coding agents working in this repository.
+
+The `bin`, `src`, and `test` directories contain the minimal CLI authorized by ADR-0004.
 
 The `docs` directory contains all documentation categories.
 

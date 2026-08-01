@@ -30,12 +30,13 @@ Those areas may be explored later, but they are outside the current documentatio
 - [Getting started](docs/getting-started/README.md)
 - [Architecture](docs/architecture/README.md)
 - [Reference](docs/reference/README.md)
+- [CLI reference](docs/reference/cli.md)
 - [Development](docs/development/README.md)
 - [Architecture decision records](docs/adr/README.md)
 - [Examples](examples/README.md)
 
 ## Current Status
 
-This repository has completed the documentation foundation, specification draft, and reference repository milestones.
+This repository has completed the documentation foundation, specification draft, reference repository, and minimal CLI milestones.
 
-Implementation work such as a CLI, schemas, adapter generation, plugins, automated extraction, and CI is intentionally deferred until the relevant milestone begins.
+Implementation work such as schemas, plugins, automated extraction, hosted services, and CI is intentionally deferred until the relevant milestone begins.

@@ -33,7 +33,7 @@ This document records the provisional Pakemin roadmap. Milestones may change as 
 
 ## Milestone 3: Minimal CLI
 
-Potential commands:
+Implemented commands:
 
 ```text
 pakemin init
@@ -42,7 +42,7 @@ pakemin adapters generate
 pakemin doctor
 ```
 
-Command names are provisional.
+The minimal CLI is documented in [../reference/cli.md](../reference/cli.md) and authorized by [../adr/0004-minimal-cli.md](../adr/0004-minimal-cli.md).
 
 ## Milestone 4: Adapter Support
 

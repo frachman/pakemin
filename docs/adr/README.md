@@ -9,6 +9,7 @@ Parent: [Documentation](../README.md)
 - [ADR-0001: Markdown First](0001-markdown-first.md): establishes Markdown as the default portable representation.
 - [ADR-0002: Precedence Model](0002-precedence-model.md): defines conflict resolution order for Pakemin instructions.
 - [ADR-0003: Product Name and Command Namespace](0003-product-name-and-command-namespace.md): names the project Pakemin and reserves the `pakemin` command namespace.
+- [ADR-0004: Minimal CLI](0004-minimal-cli.md): allows a dependency-free local CLI for the minimal tooling milestone.
 
 ## Format
 
