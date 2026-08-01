@@ -70,10 +70,21 @@ Do not add language presets, plugin architecture, hosted services, or publishing
 - Reusable framework distribution.
 - Adapter plugins.
 - Language and framework presets: first language presets documented in [../reference/presets.md](../reference/presets.md).
-- Language-aware project detection for stacks such as Go, Java, Node.js, Python, and Rust: implemented for common project marker files.
+- Language-aware project detection for stacks such as Go, Java, Node.js, Python, Rust, .NET, and Ruby: implemented for common project marker files.
 - Explicit preset application, such as `pakemin init --preset=go`: implemented.
 - Safe auto-detection that reports findings and suggestions without silently applying language-specific rules: implemented for default `init` and `doctor`.
 - MCP capability descriptions.
+
+## Milestone 5.25: CLI Code Organization
+
+Scope this milestone narrowly. It should improve maintainability before npm publication without changing user-facing behavior.
+
+- Split the current CLI implementation into smaller modules.
+- Keep command behavior unchanged.
+- Keep the CLI dependency-free unless an ADR accepts a dependency.
+- Preserve existing tests and add focused tests only when behavior is touched.
+
+Do not add new CLI commands, presets, adapter support, plugin architecture, or release automation in this milestone.
 
 ## Milestone 5.5: npm Publish Readiness
 

@@ -116,6 +116,22 @@ const LANGUAGE_PRESETS = [
     technology: "Rust project detected from `Cargo.toml`.",
     testing: "Use `cargo test` as the default test command.",
     formatting: "Use `cargo fmt` for Rust source formatting before review."
+  },
+  {
+    id: "dotnet",
+    name: ".NET",
+    markers: ["*.sln", "*.csproj", "global.json"],
+    technology: ".NET project detected from solution, project, or SDK configuration files.",
+    testing: "Use `dotnet test` as the default test command when a test project is available.",
+    formatting: "Use `dotnet format` or the project's configured formatter before review."
+  },
+  {
+    id: "ruby",
+    name: "Ruby",
+    markers: ["Gemfile", "*.gemspec", ".ruby-version"],
+    technology: "Ruby project detected from common Ruby project files.",
+    testing: "Use the project's configured test command, such as `bundle exec rspec` or `bundle exec rake test`.",
+    formatting: "Follow the project's configured formatter, such as RuboCop."
   }
 ];
 
@@ -460,8 +476,27 @@ function selectPresets(preset, detected) {
 function detectLanguages(root) {
   return LANGUAGE_PRESETS.map((language) => ({
     ...language,
-    foundMarkers: language.markers.filter((marker) => exists(path.join(root, marker)))
+    foundMarkers: language.markers.filter((marker) => markerExists(root, marker))
   })).filter((language) => language.foundMarkers.length > 0);
+}
+
+function markerExists(root, marker) {
+  if (!marker.includes("*")) {
+    return exists(path.join(root, marker));
+  }
+
+  const entries = fs.readdirSync(root, { withFileTypes: true });
+  const pattern = wildcardPattern(marker);
+  return entries.some((entry) => entry.isFile() && pattern.test(entry.name));
+}
+
+function wildcardPattern(marker) {
+  const escaped = marker
+    .split("*")
+    .map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+    .join(".*");
+
+  return new RegExp(`^${escaped}$`);
 }
 
 function presetFiles(presets) {
@@ -598,7 +633,7 @@ function helpText() {
 An AI Engineering Specification for vendor-agnostic project knowledge.
 
 Usage:
-  pakemin init [path] [--force] [--dry-run] [--preset=go]
+  pakemin init [path] [--force] [--dry-run] [--preset=<id>]
   pakemin validate [path] [--links-only] [--adapters]
   pakemin adapters list [path]
   pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]

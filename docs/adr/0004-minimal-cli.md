@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-01
-- Decision owners: Repository owner
+- Decision owners: Farandy Rachman
 
 ## Context
 
@@ -38,4 +38,3 @@ Future milestones may replace or expand internals, but the command namespace sho
 Keeping Milestone 3 as documentation only was rejected because the roadmap now needs executable validation and initialization behavior.
 
 Using a dependency-heavy framework was rejected for the first CLI because Pakemin should remain easy to inspect and run locally.
-

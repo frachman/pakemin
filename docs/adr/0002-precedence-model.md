@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-01
-- Decision owners: Repository owner
+- Decision owners: Farandy Rachman
 
 ## Context
 

@@ -17,7 +17,7 @@ The package is private until the repository owner chooses a final license and re
 ## Commands
 
 ```text
-pakemin init [path] [--force] [--dry-run] [--preset=go]
+pakemin init [path] [--force] [--dry-run] [--preset=<id>]
 ```
 
 Creates a minimal `.ai` portable core with category `README.md` files. Existing files are not overwritten unless `--force` is provided.

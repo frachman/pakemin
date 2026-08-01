@@ -84,6 +84,27 @@ test("init applies auto presets for detected stacks", async () => {
   );
 });
 
+test("init detects wildcard language markers", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "Demo.csproj"), "<Project></Project>\n");
+  fs.writeFileSync(path.join(root, "pakemin.gemspec"), "Gem::Specification.new\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=auto"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /detected: dotnet \(\*.csproj\)/);
+  assert.match(io.stdout.text, /detected: ruby \(\*.gemspec\)/);
+  assert.match(io.stdout.text, /Applied presets: dotnet, ruby/);
+
+  const technologyStack = fs.readFileSync(
+    path.join(root, ".ai/context/technology-stack.md"),
+    "utf8"
+  );
+  assert.match(technologyStack, /\.NET project detected/);
+  assert.match(technologyStack, /Ruby project detected/);
+});
+
 test("init rejects unknown presets", async () => {
   const root = tempProject();
   const io = memoryIo(root);

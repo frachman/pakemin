@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-01
-- Decision owners: Repository owner
+- Decision owners: Farandy Rachman
 
 ## Context
 
@@ -35,4 +35,3 @@ Adding or changing supported adapters should update documentation, tests, and CL
 Keeping adapters as examples only was rejected because Milestone 4 is specifically about adapter support.
 
 Generating vendor-specific copies of the full portable core was rejected because it would create duplicate sources of truth.
-

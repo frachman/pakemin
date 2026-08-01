@@ -93,6 +93,8 @@ pakemin init --preset=java
 pakemin init --preset=node
 pakemin init --preset=python
 pakemin init --preset=rust
+pakemin init --preset=dotnet
+pakemin init --preset=ruby
 pakemin init --preset=auto
 ```
 

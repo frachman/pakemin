@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-08-01
-- Decision owners: Repository owner
+- Decision owners: Farandy Rachman
 
 ## Context
 
@@ -39,4 +39,3 @@ Future presets must remain small, reviewable, and written into `.ai` instead of 
 Automatically applying detected presets during default `init` was rejected because it could add rules that the user did not ask for.
 
 Keeping all language behavior out of the CLI was rejected because language-aware onboarding is part of the extensibility roadmap.
-
