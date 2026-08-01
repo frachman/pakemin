@@ -58,10 +58,10 @@ The minimal CLI is documented in [../reference/cli.md](../reference/cli.md) and 
 Scope this milestone narrowly. It should make the existing project easier to trust before extensibility work begins.
 
 - Testing documentation: drafted in [testing.md](testing.md).
-- CI for `npm test`, `npm run validate`, and reference repository validation.
-- License decision between MIT and Apache-2.0.
-- Minimal release checklist.
-- Package metadata review.
+- CI for `npm test`, `npm run validate`, and reference repository validation: implemented in [../../.github/workflows/ci.yml](../../.github/workflows/ci.yml).
+- License decision between MIT and Apache-2.0: pending owner decision.
+- Minimal release checklist: drafted in [release-checklist.md](release-checklist.md).
+- Package metadata review: documented in [package-metadata.md](package-metadata.md).
 
 Do not add language presets, plugin architecture, hosted services, or publishing automation in this milestone.
 

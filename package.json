@@ -3,6 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "description": "An AI Engineering Specification for vendor-neutral project knowledge.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/frachman/pakemin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frachman/pakemin/issues"
+  },
+  "homepage": "https://github.com/frachman/pakemin#readme",
+  "keywords": [
+    "ai",
+    "agents",
+    "coding-agents",
+    "documentation",
+    "specification",
+    "vendor-neutral"
+  ],
   "type": "module",
   "bin": {
     "pakemin": "./bin/pakemin.js"
