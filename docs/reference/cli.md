@@ -44,4 +44,6 @@ Prints local environment and project checks.
 
 ## Boundaries
 
-The CLI does not define a schema, publish a package, install plugins, fetch shared frameworks, or contact vendor APIs.
+The CLI does not define a schema, publish a package, install plugins, fetch shared frameworks, contact vendor APIs, or apply language-specific presets.
+
+Language-aware detection and presets are deferred until the extensibility milestone. The default `init` command should remain vendor-neutral and language-neutral until that milestone is accepted.

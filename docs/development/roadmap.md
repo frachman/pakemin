@@ -59,4 +59,7 @@ Initial adapters may include:
 - Reusable framework distribution.
 - Adapter plugins.
 - Language and framework presets.
+- Language-aware project detection for stacks such as Go, Java, Node.js, Python, and Rust.
+- Explicit preset application, such as `pakemin init --preset go`, after the core CLI behavior is stable.
+- Safe auto-detection that reports findings and suggestions without silently applying language-specific rules.
 - MCP capability descriptions.
