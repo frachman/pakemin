@@ -12,7 +12,7 @@ The repository owner chose the name Pakemin. The name aligns with the Javanese i
 
 ## Decision
 
-The product and specification name is Pakemin.
+The product name is Pakemin. The descriptive category is AI Engineering Specification.
 
 Future CLI examples should use the `pakemin` command namespace, such as:
 
@@ -31,7 +31,7 @@ Documentation can use a stable project name before the CLI milestone begins.
 
 The earlier `aes` command examples are retired before implementation, avoiding a later command rename.
 
-The phrase AI engineering specification may still be used descriptively, but it is no longer the product name.
+The phrase AI Engineering Specification remains useful as a category and concept. It should not replace Pakemin as the product name.
 
 ## Alternatives Considered
 

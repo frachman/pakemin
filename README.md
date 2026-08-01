@@ -1,6 +1,6 @@
 # Pakemin
 
-Pakemin is a vendor-neutral documentation and tooling specification for software projects that work with multiple AI coding agents.
+An AI Engineering Specification for vendor-neutral project knowledge.
 
 The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin helps a project make its AI-facing knowledge explicit and dependable without tying that knowledge to one vendor.
 
@@ -36,6 +36,6 @@ Those areas may be explored later, but they are outside the current documentatio
 
 ## Current Status
 
-This repository is in Milestone 0: Documentation Foundation. The current work defines the problem, core concepts, repository structure, documentation conventions, and first architecture decision.
+This repository has completed the documentation foundation, specification draft, and reference repository milestones.
 
-Implementation work such as a CLI, schemas, adapter generation, plugins, automated extraction, and CI is intentionally deferred until the specification draft is clearer.
+Implementation work such as a CLI, schemas, adapter generation, plugins, automated extraction, and CI is intentionally deferred until the relevant milestone begins.

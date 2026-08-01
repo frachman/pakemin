@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Pakemin exists to help software projects work with multiple AI coding agents without duplicating project knowledge across vendor-specific instruction files.
+Pakemin is an AI Engineering Specification for helping software projects work with multiple AI coding agents without duplicating project knowledge across vendor-specific instruction files.
 
 The central principle is that project knowledge belongs to the project, not to the AI vendor.
 

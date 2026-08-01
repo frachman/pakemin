@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains the vendor-neutral documentation for Pakemin.
+This directory contains the vendor-neutral documentation for Pakemin, an AI Engineering Specification for project-owned AI knowledge.
 
 ## Categories
 
