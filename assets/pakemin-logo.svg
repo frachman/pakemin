@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 960" role="img" aria-labelledby="title desc">
+  <title id="title">Pakemin logo</title>
+  <desc id="desc">A gold wayang-inspired outline with navy circuit paths and a fountain pen nib.</desc>
+  <rect width="960" height="960" fill="#ffffff"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M480 96 316 396c-42 78 8 174 96 174h136c88 0 138-96 96-174L480 96Z" stroke="#c59a2f" stroke-width="34"/>
+    <path d="M294 462c-36 62-14 127 48 163-53-4-94-34-120-82 0 74 44 133 113 161-46 3-85-13-116-45 13 70 65 118 138 133" stroke="#c59a2f" stroke-width="28"/>
+    <path d="M666 462c36 62 14 127-48 163 53-4 94-34 120-82 0 74-44 133-113 161 46 3 85-13 116-45-13 70-65 118-138 133" stroke="#c59a2f" stroke-width="28"/>
+    <path d="M480 452 398 656l82 128 82-128-82-204Z" fill="#071d31" stroke="#071d31" stroke-width="18"/>
+    <path d="M480 452v332" stroke="#ffffff" stroke-width="12"/>
+    <circle cx="480" cy="654" r="22" fill="#ffffff"/>
+    <path d="M480 212v262" stroke="#071d31" stroke-width="12"/>
+    <circle cx="480" cy="212" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M438 286v150l-24 40" stroke="#071d31" stroke-width="12"/>
+    <circle cx="438" cy="286" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M522 286v150l24 40" stroke="#071d31" stroke-width="12"/>
+    <circle cx="522" cy="286" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M394 360v86l-34 48v76" stroke="#071d31" stroke-width="12"/>
+    <circle cx="394" cy="360" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M566 360v86l34 48v76" stroke="#071d31" stroke-width="12"/>
+    <circle cx="566" cy="360" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M350 424 404 486v98" stroke="#071d31" stroke-width="12"/>
+    <circle cx="350" cy="424" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M610 424 556 486v98" stroke="#071d31" stroke-width="12"/>
+    <circle cx="610" cy="424" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M318 492 374 548v82" stroke="#071d31" stroke-width="12"/>
+    <circle cx="318" cy="492" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M642 492 586 548v82" stroke="#071d31" stroke-width="12"/>
+    <circle cx="642" cy="492" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M284 548 336 600v92" stroke="#071d31" stroke-width="12"/>
+    <circle cx="284" cy="548" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M676 548 624 600v92" stroke="#071d31" stroke-width="12"/>
+    <circle cx="676" cy="548" r="18" fill="#ffffff" stroke="#071d31" stroke-width="12"/>
+    <path d="M284 792h392" stroke="#071d31" stroke-width="12"/>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="480" y="890" fill="#071d31" font-size="86" letter-spacing="14">PAKEMIN</text>
+    <circle cx="260" cy="866" r="13" fill="#c59a2f"/>
+    <circle cx="738" cy="814" r="13" fill="#c59a2f"/>
+    <text x="480" y="934" fill="#071d31" font-size="22" letter-spacing="12">AI ENGINEERING.</text>
+    <text x="675" y="934" fill="#c59a2f" font-size="22" letter-spacing="12">PROJECT WISDOM.</text>
+  </g>
+</svg>

@@ -74,3 +74,15 @@ Do not add language presets, plugin architecture, hosted services, or publishing
 - Explicit preset application, such as `pakemin init --preset=go`: implemented.
 - Safe auto-detection that reports findings and suggestions without silently applying language-specific rules: implemented for default `init` and `doctor`.
 - MCP capability descriptions.
+
+## Milestone 5.5: npm Publish Readiness
+
+Scope this milestone narrowly. It should prepare the existing CLI for npm publication without expanding the product surface.
+
+- Decide release and versioning policy.
+- Decide whether to remove `private: true`.
+- Add final install guidance.
+- Consider package lock or release workflow.
+- Run smoke tests with `npm pack` and tarball installation.
+
+Do not add new presets, plugin architecture, hosted services, or unrelated CLI commands in this milestone.

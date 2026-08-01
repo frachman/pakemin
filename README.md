@@ -1,5 +1,9 @@
 # Pakemin
 
+<p align="center">
+  <img src="assets/pakemin-logo.svg" alt="Pakemin logo" width="220">
+</p>
+
 An AI Engineering Specification for vendor-agnostic project knowledge.
 
 [![CI](https://github.com/frachman/pakemin/actions/workflows/ci.yml/badge.svg)](https://github.com/frachman/pakemin/actions/workflows/ci.yml)
