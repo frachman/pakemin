@@ -13,6 +13,16 @@
 
 The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin helps a project make its AI-facing knowledge explicit and dependable without tying that knowledge to one vendor.
 
+## Why Pakemin Exists
+
+AI coding agents are becoming part of everyday software work, but each tool tends to bring its own instruction format. A project can quickly end up maintaining `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor rules, GitHub Copilot instructions, and other vendor-specific files that all try to describe the same codebase.
+
+That duplication creates drift. One file says how tests should run, another has outdated architecture notes, and a third contains rules that nobody remembers to update. The project slowly loses a single source of truth for the knowledge agents need.
+
+Pakemin solves this by putting durable AI-facing project knowledge in `.ai/`, owned by the repository itself. Vendor adapters stay thin: they point agents to the portable core instead of becoming separate instruction systems.
+
+The goal is not to wrap LLMs or choose a winning agent. The goal is to make project knowledge portable, reviewable, and stable as teams move between AI coding tools.
+
 ## Purpose
 
 AI coding tools use different project instruction formats, including `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor rules, GitHub Copilot instructions, and other tool-specific files. When each format becomes its own source of truth, project knowledge is duplicated and eventually diverges.
@@ -111,6 +121,12 @@ pakemin doctor [path]
 Pakemin is not an LLM wrapper, chat application, prompt marketplace, hosted memory database, MCP replacement, plugin marketplace, or autonomous development platform.
 
 Those areas may be explored later, but they are outside the current documentation milestone.
+
+## Support
+
+If Pakemin helps your project, give it a star, share it, or open an issue or PR.
+
+Bug reports, adapter improvements, documentation fixes, and language preset feedback are especially welcome during the pre-release stage.
 
 ## Repository Guide
 
