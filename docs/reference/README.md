@@ -10,3 +10,4 @@ Parent: [Documentation](../README.md)
 - [Validation requirements](validation-requirements.md): records early documentation and specification validation expectations.
 - [CLI](cli.md): documents the minimal local command-line interface.
 - [Adapters](adapters.md): documents supported vendor adapter files and CLI usage.
+- [Presets](presets.md): documents language-aware detection and explicit presets.

@@ -69,8 +69,8 @@ Do not add language presets, plugin architecture, hosted services, or publishing
 
 - Reusable framework distribution.
 - Adapter plugins.
-- Language and framework presets.
-- Language-aware project detection for stacks such as Go, Java, Node.js, Python, and Rust.
-- Explicit preset application, such as `pakemin init --preset go`, after the core CLI behavior is stable.
-- Safe auto-detection that reports findings and suggestions without silently applying language-specific rules.
+- Language and framework presets: first language presets documented in [../reference/presets.md](../reference/presets.md).
+- Language-aware project detection for stacks such as Go, Java, Node.js, Python, and Rust: implemented for common project marker files.
+- Explicit preset application, such as `pakemin init --preset=go`: implemented.
+- Safe auto-detection that reports findings and suggestions without silently applying language-specific rules: implemented for default `init` and `doctor`.
 - MCP capability descriptions.

@@ -17,10 +17,14 @@ The package is private until the repository owner chooses a final license and re
 ## Commands
 
 ```text
-pakemin init [path] [--force] [--dry-run]
+pakemin init [path] [--force] [--dry-run] [--preset=go]
 ```
 
 Creates a minimal `.ai` portable core with category `README.md` files. Existing files are not overwritten unless `--force` is provided.
+
+Default `init` may report detected stacks and suggest preset commands. It does not apply language-specific presets unless `--preset` is provided.
+
+Use `--preset=auto` to explicitly apply presets for detected stacks.
 
 ```text
 pakemin validate [path] [--links-only] [--adapters]
@@ -54,6 +58,6 @@ Prints local environment and project checks.
 
 ## Boundaries
 
-The CLI does not define a schema, publish a package, install plugins, fetch shared frameworks, contact vendor APIs, or apply language-specific presets.
+The CLI does not define a schema, publish a package, install plugins, fetch shared frameworks, or contact vendor APIs.
 
-Language-aware detection and presets are deferred until the extensibility milestone. The default `init` command should remain vendor-agnostic and language-neutral until that milestone is accepted.
+Language-aware detection is advisory by default. Presets are applied only when explicitly requested.

@@ -76,6 +76,49 @@ Do not treat this adapter as a separate specification.
   }
 ];
 
+const LANGUAGE_PRESETS = [
+  {
+    id: "go",
+    name: "Go",
+    markers: ["go.mod"],
+    technology: "Go project detected from `go.mod`.",
+    testing: "Use `go test ./...` as the default test command.",
+    formatting: "Use `gofmt` for Go source formatting before review."
+  },
+  {
+    id: "java",
+    name: "Java",
+    markers: ["pom.xml", "build.gradle", "build.gradle.kts"],
+    technology: "Java project detected from Maven or Gradle project files.",
+    testing: "Use the project build tool for tests, such as `mvn test` or `./gradlew test`.",
+    formatting: "Follow the project's Java formatter or style plugin when one is configured."
+  },
+  {
+    id: "node",
+    name: "Node.js",
+    markers: ["package.json"],
+    technology: "Node.js project detected from `package.json`.",
+    testing: "Use the package test script, usually `npm test`, when it is defined.",
+    formatting: "Follow the project's configured formatter, such as Prettier or ESLint."
+  },
+  {
+    id: "python",
+    name: "Python",
+    markers: ["pyproject.toml", "requirements.txt", "setup.py"],
+    technology: "Python project detected from common Python project files.",
+    testing: "Use the project's configured test runner, such as `pytest`, when available.",
+    formatting: "Follow the project's configured formatter, such as Black or Ruff."
+  },
+  {
+    id: "rust",
+    name: "Rust",
+    markers: ["Cargo.toml"],
+    technology: "Rust project detected from `Cargo.toml`.",
+    testing: "Use `cargo test` as the default test command.",
+    formatting: "Use `cargo fmt` for Rust source formatting before review."
+  }
+];
+
 export async function runCli(args, io) {
   const command = args[0];
 
@@ -125,6 +168,8 @@ function initCommand(args, io) {
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const force = options.flags.has("force");
   const dryRun = options.flags.has("dry-run");
+  const detected = detectLanguages(root);
+  const presets = selectPresets(options.values.preset, detected);
 
   const files = [
     {
@@ -137,8 +182,13 @@ function initCommand(args, io) {
     }))
   ];
 
+  if (presets.length > 0) {
+    files.push(...presetFiles(presets));
+  }
+
   const result = writeFiles(root, files, { force, dryRun });
   reportWriteResult(io.stdout, "Initialized Pakemin portable core", result);
+  reportDetection(io.stdout, detected, presets);
   return result.blocked.length > 0 ? 1 : 0;
 }
 
@@ -199,6 +249,7 @@ function adaptersListCommand(args, io) {
 function doctorCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
+  const detected = detectLanguages(root);
   const checks = [
     ["Node.js", process.version],
     ["Working directory", root],
@@ -210,6 +261,7 @@ function doctorCommand(args, io) {
     write(io.stdout, `${label}: ${value}\n`);
   }
 
+  reportDetection(io.stdout, detected, []);
   return 0;
 }
 
@@ -387,6 +439,98 @@ function selectAdapters(only) {
   return ADAPTERS.filter((adapter) => requested.includes(adapter.id));
 }
 
+function selectPresets(preset, detected) {
+  if (!preset) {
+    return [];
+  }
+
+  const requested = preset.split(",").map((value) => value.trim()).filter(Boolean);
+  const ids = requested.includes("auto")
+    ? detected.map((language) => language.id)
+    : requested;
+
+  const unknown = ids.filter((id) => !LANGUAGE_PRESETS.some((language) => language.id === id));
+  if (unknown.length > 0) {
+    throw new Error(`unknown preset id(s): ${unknown.join(", ")}`);
+  }
+
+  return LANGUAGE_PRESETS.filter((language) => ids.includes(language.id));
+}
+
+function detectLanguages(root) {
+  return LANGUAGE_PRESETS.map((language) => ({
+    ...language,
+    foundMarkers: language.markers.filter((marker) => exists(path.join(root, marker)))
+  })).filter((language) => language.foundMarkers.length > 0);
+}
+
+function presetFiles(presets) {
+  return [
+    {
+      file: ".ai/context/technology-stack.md",
+      content: technologyStackContent(presets)
+    },
+    {
+      file: ".ai/rules/testing.md",
+      content: testingRulesContent(presets)
+    },
+    {
+      file: ".ai/rules/formatting.md",
+      content: formattingRulesContent(presets)
+    }
+  ];
+}
+
+function technologyStackContent(presets) {
+  return `# Technology Stack
+
+This file was created by explicit Pakemin preset selection.
+
+${presets.map((preset) => `## ${preset.name}
+
+${preset.technology}`).join("\n\n")}
+`;
+}
+
+function testingRulesContent(presets) {
+  return `# Testing Rules
+
+This file was created by explicit Pakemin preset selection.
+
+${presets.map((preset) => `## ${preset.name}
+
+${preset.testing}`).join("\n\n")}
+`;
+}
+
+function formattingRulesContent(presets) {
+  return `# Formatting Rules
+
+This file was created by explicit Pakemin preset selection.
+
+${presets.map((preset) => `## ${preset.name}
+
+${preset.formatting}`).join("\n\n")}
+`;
+}
+
+function reportDetection(stream, detected, applied) {
+  if (detected.length === 0) {
+    return;
+  }
+
+  write(stream, "Detected stacks:\n");
+  for (const language of detected) {
+    write(stream, `detected: ${language.id} (${language.foundMarkers.join(", ")})\n`);
+  }
+
+  if (applied.length > 0) {
+    write(stream, `Applied presets: ${applied.map((language) => language.id).join(", ")}\n`);
+  } else {
+    write(stream, "Suggested next step: pakemin init --preset=<id>\n");
+  }
+}
+
 function listMarkdownFiles(root) {
   const results = [];
   walk(root, results);
@@ -454,7 +598,7 @@ function helpText() {
 An AI Engineering Specification for vendor-agnostic project knowledge.
 
 Usage:
-  pakemin init [path] [--force] [--dry-run]
+  pakemin init [path] [--force] [--dry-run] [--preset=go]
   pakemin validate [path] [--links-only] [--adapters]
   pakemin adapters list [path]
   pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]

@@ -32,6 +32,79 @@ test("init does not overwrite by default", async () => {
   assert.match(io.stdout.text, /exists: .ai\/README.md/);
 });
 
+test("init reports detected stacks without applying presets by default", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "go.mod"), "module example.com/app\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /detected: go \(go.mod\)/);
+  assert.match(io.stdout.text, /Suggested next step: pakemin init --preset=<id>/);
+  assert.equal(fs.existsSync(path.join(root, ".ai/context/technology-stack.md")), false);
+});
+
+test("init applies an explicit language preset", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "go.mod"), "module example.com/app\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=go"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Applied presets: go/);
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Go project detected/
+  );
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/rules/testing.md"), "utf8"),
+    /go test \.\/\.\.\./
+  );
+});
+
+test("init applies auto presets for detected stacks", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "package.json"), "{}\n");
+  fs.writeFileSync(path.join(root, "Cargo.toml"), "[package]\nname = \"demo\"\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=auto"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Applied presets: node, rust/);
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Node.js project detected/
+  );
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Rust project detected/
+  );
+});
+
+test("init rejects unknown presets", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--preset=elixir"], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /unknown preset id/);
+});
+
+test("doctor reports detected stacks", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "pom.xml"), "<project></project>\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["doctor", root], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /detected: java \(pom.xml\)/);
+});
+
 test("adapters generate creates thin adapter files", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
