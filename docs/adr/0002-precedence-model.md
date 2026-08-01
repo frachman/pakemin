@@ -6,13 +6,13 @@
 
 ## Context
 
-AES needs a clear rule for resolving conflicts between current user requests, platform restrictions, project-specific content, shared framework defaults, and vendor adapter behavior.
+Pakemin needs a clear rule for resolving conflicts between current user requests, platform restrictions, project-specific content, shared framework defaults, and vendor adapter behavior.
 
 Without an explicit precedence model, adapters and project documentation may interpret the same instruction differently.
 
 ## Decision
 
-AES uses this precedence order:
+Pakemin uses this precedence order:
 
 1. Safety and platform restrictions.
 2. Explicit current user instruction.
@@ -33,7 +33,6 @@ Documentation and future tooling have a single conflict-resolution model to refe
 
 ## Alternatives Considered
 
-Putting user instruction above safety and platform restrictions was rejected because AES cannot require agents to violate their operating constraints.
+Putting user instruction above safety and platform restrictions was rejected because Pakemin cannot require agents to violate their operating constraints.
 
 Leaving the order provisional was rejected because adapter and override behavior needs a documented baseline before Milestone 1 can proceed.
-

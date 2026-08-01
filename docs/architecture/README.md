@@ -1,6 +1,6 @@
 # Architecture
 
-This category describes the conceptual architecture of AES.
+This category describes the conceptual architecture of Pakemin.
 
 Parent: [Documentation](../README.md)
 

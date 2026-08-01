@@ -1,6 +1,6 @@
 # Reference
 
-This category contains stable reference material for AES.
+This category contains stable reference material for Pakemin.
 
 Parent: [Documentation](../README.md)
 

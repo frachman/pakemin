@@ -1,6 +1,6 @@
 # Manual Validation Checklist
 
-Use this checklist to review the sample SaaS reference repository without AES tooling.
+Use this checklist to review the sample SaaS reference repository without Pakemin tooling.
 
 ## Portable Core
 
@@ -14,7 +14,7 @@ Use this checklist to review the sample SaaS reference repository without AES to
 - Root `AGENTS.md` points to `.ai/README.md`.
 - `CLAUDE.md` points to `.ai/README.md`.
 - `GEMINI.md` points to `.ai/README.md`.
-- `.cursor/rules/aes.md` points to `.ai/README.md`.
+- `.cursor/rules/pakemin.md` points to `.ai/README.md`.
 - `.github/copilot-instructions.md` points to `.ai/README.md`.
 - Adapter files do not duplicate substantial portable-core content.
 
@@ -39,4 +39,3 @@ Use this checklist to review the sample SaaS reference repository without AES to
 - Relative Markdown links resolve.
 - Parent category links resolve.
 - Adapter links resolve from their own directory locations.
-

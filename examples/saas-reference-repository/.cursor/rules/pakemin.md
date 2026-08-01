@@ -1,6 +1,6 @@
-# AES Cursor Rule
+# Pakemin Cursor Rule
 
-This repository uses AES. The portable core is in [.ai/README.md](../../.ai/README.md).
+This repository uses Pakemin. The portable core is in [.ai/README.md](../../.ai/README.md).
 
 Before editing, identify the relevant `.ai` context, rules, and workflow documents.
 

@@ -30,6 +30,5 @@ Context is not the place for transient task notes, unresolved incidents, or pers
 
 ## Open Questions
 
-- Which context documents are required for the smallest valid AES-compatible project?
+- Which context documents are required for the smallest valid Pakemin-compatible project?
 - How should context reference private or sensitive information without leaking it to generated adapters?
-

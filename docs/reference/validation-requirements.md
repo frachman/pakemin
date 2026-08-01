@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document records early validation requirements for AES documentation and future tooling.
+This document records early validation requirements for Pakemin documentation and future tooling.
 
 ## Documentation Validation
 
@@ -31,7 +31,6 @@ This document does not define a validation engine, command syntax, schema, or pa
 
 ## Open Questions
 
-- Which validation checks are required for AES compatibility?
+- Which validation checks are required for Pakemin compatibility?
 - Which checks should be warnings rather than failures?
 - Should validation be possible without installing a CLI?
-

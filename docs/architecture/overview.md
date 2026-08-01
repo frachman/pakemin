@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This document summarizes the architecture of AES at the documentation-foundation stage.
+This document summarizes the architecture of Pakemin.
 
 ## Design
 
-AES separates project-owned knowledge from vendor-specific agent entry points.
+Pakemin separates project-owned knowledge from vendor-specific agent entry points.
 
 ```mermaid
 flowchart TD
@@ -34,7 +34,7 @@ Architecture decision records are responsible for recording significant decision
 
 ## Boundaries
 
-AES is not currently defining a schema, CLI, package format, installation method, adapter generator, or validation engine.
+Pakemin is not currently defining a schema, CLI, package format, installation method, adapter generator, or validation engine.
 
 ## Precedence
 

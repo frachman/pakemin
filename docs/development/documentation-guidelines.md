@@ -2,7 +2,7 @@
 
 ## Purpose
 
-These guidelines keep AES documentation concise, consistent, and easy for humans and AI agents to navigate.
+These guidelines keep Pakemin documentation concise, consistent, and easy for humans and AI agents to navigate.
 
 ## Style
 
@@ -57,4 +57,3 @@ Use ADRs for significant architectural decisions. ADR files should be numbered a
 ## Validation
 
 After documentation changes, validate relative Markdown links.
-

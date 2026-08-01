@@ -1,8 +1,8 @@
 # SaaS Reference Repository
 
-This example shows how a small SaaS project could adopt AES without implementing a CLI or schema.
+This example shows how a small SaaS project could adopt Pakemin without implementing a CLI or schema.
 
-The files are illustrative. They are not normative and should not be treated as the final AES project layout.
+The files are illustrative. They are not normative and should not be treated as the final Pakemin project layout.
 
 ## Structure
 
@@ -14,7 +14,7 @@ The files are illustrative. They are not normative and should not be treated as 
 ├── GEMINI.md
 ├── .cursor
 │   └── rules
-│       └── aes.md
+│       └── pakemin.md
 ├── .github
 │   └── copilot-instructions.md
 └── .ai
@@ -35,6 +35,5 @@ The files are illustrative. They are not normative and should not be treated as 
 - [AGENTS.md](AGENTS.md): shows a thin fallback adapter.
 - [CLAUDE.md](CLAUDE.md): shows a thin Claude adapter.
 - [GEMINI.md](GEMINI.md): shows a thin Gemini adapter.
-- [Cursor rules](.cursor/rules/aes.md): shows a thin Cursor adapter.
+- [Cursor rules](.cursor/rules/pakemin.md): shows a thin Cursor adapter.
 - [GitHub Copilot instructions](.github/copilot-instructions.md): shows a thin Copilot adapter.
-

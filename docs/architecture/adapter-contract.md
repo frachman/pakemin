@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The adapter contract defines the responsibilities of vendor-specific files that connect AI coding agents to AES project knowledge.
+The adapter contract defines the responsibilities of vendor-specific files that connect AI coding agents to Pakemin project knowledge.
 
 ## Design
 
@@ -33,4 +33,3 @@ Adapters should not introduce vendor preference into the core architecture.
 - How should agents that cannot recursively load linked files be supported?
 - Should `AGENTS.md` be the universal fallback adapter?
 - How should adapter output be validated?
-

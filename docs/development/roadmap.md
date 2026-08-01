@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document records the provisional AES roadmap. Milestones may change as the specification matures.
+This document records the provisional Pakemin roadmap. Milestones may change as the specification matures.
 
 ## Milestone 0: Documentation Foundation
 
@@ -36,10 +36,10 @@ This document records the provisional AES roadmap. Milestones may change as the 
 Potential commands:
 
 ```text
-aes init
-aes validate
-aes adapters generate
-aes doctor
+pakemin init
+pakemin validate
+pakemin adapters generate
+pakemin doctor
 ```
 
 Command names are provisional.

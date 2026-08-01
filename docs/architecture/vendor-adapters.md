@@ -8,7 +8,7 @@ Vendor adapters connect specific AI coding agents to the portable core without m
 
 AI coding tools load project instructions differently. Some tools read a root instruction file. Others use editor settings, rule directories, or platform-specific configuration.
 
-AES should support these differences while keeping project knowledge portable.
+Pakemin should support these differences while keeping project knowledge portable.
 
 ## Design
 

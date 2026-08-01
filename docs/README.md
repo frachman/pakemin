@@ -1,6 +1,6 @@
 # Documentation
 
-This directory contains the vendor-neutral documentation for AES.
+This directory contains the vendor-neutral documentation for Pakemin.
 
 ## Categories
 
@@ -11,4 +11,3 @@ This directory contains the vendor-neutral documentation for AES.
 - [Architecture decision records](adr/README.md): accepted architectural decisions and their consequences.
 
 Start with [getting-started/overview.md](getting-started/overview.md) if you are new to the project.
-

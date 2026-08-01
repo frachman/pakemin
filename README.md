@@ -1,14 +1,14 @@
-# AI Engineering Specification
+# Pakemin
 
-AI Engineering Specification (AES) is a vendor-neutral documentation and tooling specification for software projects that work with multiple AI coding agents.
+Pakemin is a vendor-neutral documentation and tooling specification for software projects that work with multiple AI coding agents.
 
-The project name is provisional. This repository currently focuses on the documentation foundation, not branding, packaging, or implementation.
+The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin helps a project make its AI-facing knowledge explicit and dependable without tying that knowledge to one vendor.
 
 ## Purpose
 
 AI coding tools use different project instruction formats, including `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, Cursor rules, GitHub Copilot instructions, and other tool-specific files. When each format becomes its own source of truth, project knowledge is duplicated and eventually diverges.
 
-AES treats project knowledge as project-owned. The portable core describes context, memory, rules, workflows, skills, templates, and overrides in a vendor-independent form. Thin vendor adapters can then point agents toward that shared source or translate it for tools with narrower loading behavior.
+Pakemin treats project knowledge as project-owned. The portable core describes context, memory, rules, workflows, skills, templates, and overrides in a vendor-independent form. Thin vendor adapters can then point agents toward that shared source or translate it for tools with narrower loading behavior.
 
 ## Goals
 
@@ -20,7 +20,7 @@ AES treats project knowledge as project-owned. The portable core describes conte
 
 ## Non-Goals
 
-AES is not an LLM wrapper, chat application, prompt marketplace, hosted memory database, MCP replacement, plugin marketplace, or autonomous development platform.
+Pakemin is not an LLM wrapper, chat application, prompt marketplace, hosted memory database, MCP replacement, plugin marketplace, or autonomous development platform.
 
 Those areas may be explored later, but they are outside the current documentation milestone.
 
@@ -39,4 +39,3 @@ Those areas may be explored later, but they are outside the current documentatio
 This repository is in Milestone 0: Documentation Foundation. The current work defines the problem, core concepts, repository structure, documentation conventions, and first architecture decision.
 
 Implementation work such as a CLI, schemas, adapter generation, plugins, automated extraction, and CI is intentionally deferred until the specification draft is clearer.
-

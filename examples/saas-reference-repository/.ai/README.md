@@ -14,7 +14,7 @@ This directory is the project-owned source of truth for AI-assisted work in the 
 
 ## Precedence
 
-Follow the AES precedence model:
+Follow the Pakemin precedence model:
 
 1. Safety and platform restrictions.
 2. Explicit current user instruction.
@@ -22,4 +22,3 @@ Follow the AES precedence model:
 4. Project decisions and context.
 5. Shared framework defaults.
 6. Vendor adapter defaults.
-
