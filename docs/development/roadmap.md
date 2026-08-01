@@ -59,7 +59,7 @@ Scope this milestone narrowly. It should make the existing project easier to tru
 
 - Testing documentation: drafted in [testing.md](testing.md).
 - CI for `npm test`, `npm run validate`, and reference repository validation: implemented in [../../.github/workflows/ci.yml](../../.github/workflows/ci.yml).
-- License decision between MIT and Apache-2.0: pending owner decision.
+- License decision: MIT selected.
 - Minimal release checklist: drafted in [release-checklist.md](release-checklist.md).
 - Package metadata review: documented in [package-metadata.md](package-metadata.md).
 

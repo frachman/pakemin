@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "An AI Engineering Specification for vendor-neutral project knowledge.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/frachman/pakemin.git"

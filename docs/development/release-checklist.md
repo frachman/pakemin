@@ -6,8 +6,8 @@ This checklist defines the minimum readiness review before Pakemin is published 
 
 ## Required Before First Public Release
 
-- Choose a final license and replace the placeholder `LICENSE`.
-- Update `package.json` license metadata.
+- Confirm the MIT license remains appropriate for the release.
+- Confirm `package.json` license metadata matches `LICENSE`.
 - Confirm package name, command namespace, and repository URLs.
 - Run `npm test`.
 - Run `npm run validate`.
@@ -19,4 +19,3 @@ This checklist defines the minimum readiness review before Pakemin is published 
 ## Out of Scope
 
 This checklist does not define release automation, package publishing, signing, changelog generation, or semantic-version guarantees.
-
