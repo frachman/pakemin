@@ -451,7 +451,7 @@ function write(stream, text) {
 function helpText() {
   return `Pakemin
 
-An AI Engineering Specification for vendor-neutral project knowledge.
+An AI Engineering Specification for vendor-agnostic project knowledge.
 
 Usage:
   pakemin init [path] [--force] [--dry-run]

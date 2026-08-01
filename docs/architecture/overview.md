@@ -24,7 +24,7 @@ The portable core is the canonical source for project context, decisions, rules,
 
 ## Responsibilities
 
-The portable core is responsible for vendor-neutral project knowledge.
+The portable core is responsible for vendor-agnostic project knowledge.
 
 Vendor adapters are responsible for compatibility with specific tools.
 

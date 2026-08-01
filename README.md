@@ -1,6 +1,6 @@
 # Pakemin
 
-An AI Engineering Specification for vendor-neutral project knowledge.
+An AI Engineering Specification for vendor-agnostic project knowledge.
 
 [![CI](https://github.com/frachman/pakemin/actions/workflows/ci.yml/badge.svg)](https://github.com/frachman/pakemin/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

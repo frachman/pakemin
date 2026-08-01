@@ -56,4 +56,4 @@ Prints local environment and project checks.
 
 The CLI does not define a schema, publish a package, install plugins, fetch shared frameworks, contact vendor APIs, or apply language-specific presets.
 
-Language-aware detection and presets are deferred until the extensibility milestone. The default `init` command should remain vendor-neutral and language-neutral until that milestone is accepted.
+Language-aware detection and presets are deferred until the extensibility milestone. The default `init` command should remain vendor-agnostic and language-neutral until that milestone is accepted.

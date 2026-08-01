@@ -4,7 +4,7 @@ This repository contains Pakemin documentation and a minimal CLI authorized by [
 
 Before making architectural changes, read [docs/README.md](docs/README.md) and identify the relevant documentation category.
 
-Keep documentation compact, vendor-neutral, and written in English. Prefer clear Markdown over structured data unless YAML or JSON is necessary.
+Keep documentation compact, vendor-agnostic, and written in English. Prefer clear Markdown over structured data unless YAML or JSON is necessary.
 
 When adding, renaming, or removing documents, update the relevant category `README.md` and any affected links.
 
