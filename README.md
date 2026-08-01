@@ -13,6 +13,85 @@ AI coding tools use different project instruction formats, including `AGENTS.md`
 
 Pakemin treats project knowledge as project-owned. The portable core describes context, memory, rules, workflows, skills, templates, and overrides in a vendor-independent form. Thin vendor adapters can then point agents toward that shared source or translate it for tools with narrower loading behavior.
 
+## Quick Start
+
+Run Pakemin from a checkout:
+
+```text
+git clone git@github.com:frachman/pakemin.git
+cd pakemin
+node ./bin/pakemin.js --help
+```
+
+Use it in another project:
+
+```text
+cd /path/to/your-project
+node /path/to/pakemin/bin/pakemin.js init
+node /path/to/pakemin/bin/pakemin.js adapters generate
+node /path/to/pakemin/bin/pakemin.js validate --adapters
+```
+
+For local development, you can link the command:
+
+```text
+cd /path/to/pakemin
+npm link
+cd /path/to/your-project
+pakemin init
+pakemin adapters generate
+pakemin validate --adapters
+```
+
+## What It Creates
+
+`pakemin init` creates a project-owned portable core:
+
+```text
+.ai
+├── README.md
+├── context
+├── memory
+├── rules
+├── workflows
+├── skills
+├── templates
+└── overrides
+```
+
+`pakemin adapters generate` creates thin adapter files for supported AI coding tools:
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `GEMINI.md`
+- `.cursor/rules/pakemin.md`
+- `.github/copilot-instructions.md`
+
+## Language Presets
+
+Default `init` is language-neutral. If Pakemin detects common project files, it reports the detected stack and suggests an explicit preset.
+
+```text
+pakemin init --preset=go
+pakemin init --preset=java
+pakemin init --preset=node
+pakemin init --preset=python
+pakemin init --preset=rust
+pakemin init --preset=auto
+```
+
+Presets write small starter documents into `.ai/context` and `.ai/rules`. They do not install dependencies, modify source code, or run build tools.
+
+## CLI Commands
+
+```text
+pakemin init [path] [--force] [--dry-run] [--preset=go]
+pakemin validate [path] [--links-only] [--adapters]
+pakemin adapters list [path]
+pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
+pakemin doctor [path]
+```
+
 ## Goals
 
 - Keep project knowledge independent from any one AI vendor.
@@ -40,9 +119,11 @@ Those areas may be explored later, but they are outside the current documentatio
 
 ## Current Status
 
-This repository has completed the documentation foundation, specification draft, reference repository, and minimal CLI milestones.
+Pakemin is pre-release but usable from a local checkout.
 
-Implementation work such as schemas, plugins, automated extraction, hosted services, and CI is intentionally deferred until the relevant milestone begins.
+Completed foundations include documentation, specification drafts, a reference repository, a minimal CLI, adapter support, CI, MIT licensing, and explicit language presets.
+
+The package is not published yet. Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
 
 ## Verification
 
