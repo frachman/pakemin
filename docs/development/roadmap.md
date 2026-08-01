@@ -53,6 +53,18 @@ The minimal CLI is documented in [../reference/cli.md](../reference/cli.md) and 
 - Adapter generation: supports all adapters or selected IDs.
 - Adapter validation: available with `pakemin validate --adapters`.
 
+## Milestone 4.5: Project Quality and Release Readiness
+
+Scope this milestone narrowly. It should make the existing project easier to trust before extensibility work begins.
+
+- Testing documentation: drafted in [testing.md](testing.md).
+- CI for `npm test`, `npm run validate`, and reference repository validation.
+- License decision between MIT and Apache-2.0.
+- Minimal release checklist.
+- Package metadata review.
+
+Do not add language presets, plugin architecture, hosted services, or publishing automation in this milestone.
+
 ## Milestone 5: Extensibility
 
 - Reusable framework distribution.

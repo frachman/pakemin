@@ -8,4 +8,4 @@ Parent: [Documentation](../README.md)
 
 - [Roadmap](roadmap.md): outlines provisional milestones.
 - [Documentation guidelines](documentation-guidelines.md): defines style and maintenance expectations for docs.
-
+- [Testing](testing.md): explains automated checks and smoke tests.

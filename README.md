@@ -40,3 +40,13 @@ Those areas may be explored later, but they are outside the current documentatio
 This repository has completed the documentation foundation, specification draft, reference repository, and minimal CLI milestones.
 
 Implementation work such as schemas, plugins, automated extraction, hosted services, and CI is intentionally deferred until the relevant milestone begins.
+
+## Verification
+
+Run the core checks from a checkout:
+
+```text
+npm test
+npm run validate
+node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
+```
