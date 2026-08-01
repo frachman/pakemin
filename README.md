@@ -2,6 +2,9 @@
 
 An AI Engineering Specification for vendor-neutral project knowledge.
 
+[![CI](https://github.com/frachman/pakemin/actions/workflows/ci.yml/badge.svg)](https://github.com/frachman/pakemin/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin helps a project make its AI-facing knowledge explicit and dependable without tying that knowledge to one vendor.
 
 ## Purpose
