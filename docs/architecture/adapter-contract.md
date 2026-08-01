@@ -17,6 +17,8 @@ An adapter should:
 
 Adapters may be handwritten during early milestones. Future tooling may generate them from the portable core.
 
+See [Adapters](../reference/adapters.md) for the current supported adapter set.
+
 ## Responsibilities
 
 Adapters are compatibility layers. They should help a specific agent find the right instructions without changing the meaning of the portable core.

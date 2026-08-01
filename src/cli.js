@@ -14,6 +14,7 @@ const CORE_CATEGORIES = [
 
 const ADAPTERS = [
   {
+    id: "agents",
     name: "AGENTS.md",
     file: "AGENTS.md",
     content: `# Agent Instructions
@@ -26,6 +27,7 @@ Keep this adapter thin. Move durable project knowledge into \`.ai\` instead of e
 `
   },
   {
+    id: "claude",
     name: "CLAUDE.md",
     file: "CLAUDE.md",
     content: `# Claude Instructions
@@ -36,6 +38,7 @@ Use this file only as a Claude entry point. Do not duplicate the portable core h
 `
   },
   {
+    id: "gemini",
     name: "GEMINI.md",
     file: "GEMINI.md",
     content: `# Gemini Instructions
@@ -46,6 +49,7 @@ Use this file only as a Gemini entry point. Do not duplicate the portable core h
 `
   },
   {
+    id: "cursor",
     name: "Cursor rule",
     file: ".cursor/rules/pakemin.md",
     content: `# Pakemin Cursor Rule
@@ -58,6 +62,7 @@ Keep Cursor-specific instructions thin. Durable knowledge belongs in \`.ai\`.
 `
   },
   {
+    id: "copilot",
     name: "GitHub Copilot instructions",
     file: ".github/copilot-instructions.md",
     content: `# GitHub Copilot Instructions
@@ -93,8 +98,14 @@ export async function runCli(args, io) {
       return validateCommand(args.slice(1), io);
     }
 
-    if (command === "adapters" && args[1] === "generate") {
-      return adaptersGenerateCommand(args.slice(2), io);
+    if (command === "adapters") {
+      if (args[1] === "generate") {
+        return adaptersGenerateCommand(args.slice(2), io);
+      }
+
+      if (args[1] === "list") {
+        return adaptersListCommand(args.slice(2), io);
+      }
     }
 
     if (command === "doctor") {
@@ -135,7 +146,8 @@ function validateCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const result = validateProject(root, {
-    requireCore: !options.flags.has("links-only")
+    requireCore: !options.flags.has("links-only"),
+    requireAdapters: options.flags.has("adapters")
   });
 
   for (const warning of result.warnings) {
@@ -160,15 +172,28 @@ function adaptersGenerateCommand(args, io) {
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const force = options.flags.has("force");
   const dryRun = options.flags.has("dry-run");
+  const adapters = selectAdapters(options.values.only);
 
   if (!exists(path.join(root, ".ai/README.md"))) {
     write(io.stderr, "Error: .ai/README.md was not found. Run `pakemin init` first.\n");
     return 1;
   }
 
-  const result = writeFiles(root, ADAPTERS, { force, dryRun });
+  const result = writeFiles(root, adapters, { force, dryRun });
   reportWriteResult(io.stdout, "Generated Pakemin adapters", result);
   return result.blocked.length > 0 ? 1 : 0;
+}
+
+function adaptersListCommand(args, io) {
+  const options = parseOptions(args);
+  const root = resolveTarget(io.cwd, options.positionals[0] || ".");
+
+  for (const adapter of ADAPTERS) {
+    const status = exists(path.join(root, adapter.file)) ? "found" : "missing";
+    write(io.stdout, `${adapter.id}\t${status}\t${adapter.file}\n`);
+  }
+
+  return 0;
 }
 
 function doctorCommand(args, io) {
@@ -190,6 +215,7 @@ function doctorCommand(args, io) {
 
 export function validateProject(root, options = {}) {
   const requireCore = options.requireCore !== false;
+  const requireAdapters = options.requireAdapters === true;
   const errors = [];
   const warnings = [];
   const coreReadme = path.join(root, ".ai/README.md");
@@ -203,6 +229,21 @@ export function validateProject(root, options = {}) {
       const readme = path.join(root, ".ai", category, "README.md");
       if (!exists(readme)) {
         errors.push(`.ai/${category}/README.md is missing`);
+      }
+    }
+  }
+
+  if (requireAdapters) {
+    for (const adapter of ADAPTERS) {
+      const adapterFile = path.join(root, adapter.file);
+      if (!exists(adapterFile)) {
+        errors.push(`${adapter.file} is missing`);
+        continue;
+      }
+
+      const text = fs.readFileSync(adapterFile, "utf8");
+      if (!text.includes(".ai/README.md")) {
+        errors.push(`${adapter.file} does not point to .ai/README.md`);
       }
     }
   }
@@ -313,17 +354,37 @@ Add project-specific documents here as the specification matures.
 
 function parseOptions(args) {
   const flags = new Set();
+  const values = {};
   const positionals = [];
 
   for (const arg of args) {
     if (arg.startsWith("--")) {
-      flags.add(arg.slice(2));
+      const option = arg.slice(2);
+      const [key, value] = option.split("=", 2);
+      flags.add(key);
+      if (value !== undefined) {
+        values[key] = value;
+      }
     } else {
       positionals.push(arg);
     }
   }
 
-  return { flags, positionals };
+  return { flags, values, positionals };
+}
+
+function selectAdapters(only) {
+  if (!only) {
+    return ADAPTERS;
+  }
+
+  const requested = only.split(",").map((value) => value.trim()).filter(Boolean);
+  const unknown = requested.filter((id) => !ADAPTERS.some((adapter) => adapter.id === id));
+  if (unknown.length > 0) {
+    throw new Error(`unknown adapter id(s): ${unknown.join(", ")}`);
+  }
+
+  return ADAPTERS.filter((adapter) => requested.includes(adapter.id));
 }
 
 function listMarkdownFiles(root) {
@@ -394,14 +455,16 @@ An AI Engineering Specification for vendor-neutral project knowledge.
 
 Usage:
   pakemin init [path] [--force] [--dry-run]
-  pakemin validate [path] [--links-only]
-  pakemin adapters generate [path] [--force] [--dry-run]
+  pakemin validate [path] [--links-only] [--adapters]
+  pakemin adapters list [path]
+  pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
   pakemin doctor [path]
   pakemin --version
 
 Commands:
   init                 Create a minimal .ai portable core.
   validate             Validate local Pakemin structure and Markdown links.
+  adapters list        List supported vendor adapters.
   adapters generate    Generate thin vendor adapter files.
   doctor               Print local environment and project checks.
 `;

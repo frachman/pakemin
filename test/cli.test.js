@@ -46,6 +46,51 @@ test("adapters generate creates thin adapter files", async () => {
   assert.match(io.stdout.text, /Generated Pakemin adapters/);
 });
 
+test("adapters list reports supported adapter status", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+  await runCli(["adapters", "generate", root, "--only=agents"], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "list", root], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /agents\tfound\tAGENTS.md/);
+  assert.match(io.stdout.text, /claude\tmissing\tCLAUDE.md/);
+});
+
+test("adapters generate can select adapters by id", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--only=claude,gemini"], io);
+
+  assert.equal(exitCode, 0);
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
+});
+
+test("validate can require supported adapters", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const missingIo = memoryIo(root);
+  const missingExitCode = await runCli(["validate", root, "--adapters"], missingIo);
+
+  assert.equal(missingExitCode, 1);
+  assert.match(missingIo.stdout.text, /AGENTS.md is missing/);
+
+  await runCli(["adapters", "generate", root], memoryIo(root));
+
+  const validIo = memoryIo(root);
+  const validExitCode = await runCli(["validate", root, "--adapters"], validIo);
+
+  assert.equal(validExitCode, 0);
+  assert.match(validIo.stdout.text, /Pakemin validation passed/);
+});
+
 test("validate fails when portable core is missing", () => {
   const root = tempProject();
   const result = validateProject(root);

@@ -23,18 +23,28 @@ pakemin init [path] [--force] [--dry-run]
 Creates a minimal `.ai` portable core with category `README.md` files. Existing files are not overwritten unless `--force` is provided.
 
 ```text
-pakemin validate [path] [--links-only]
+pakemin validate [path] [--links-only] [--adapters]
 ```
 
 Checks for `.ai/README.md`, required category navigation files, and broken relative Markdown links.
 
 Use `--links-only` when validating documentation that is not itself a Pakemin-compatible project.
 
+Use `--adapters` to require all supported adapter files and verify that they point to `.ai/README.md`.
+
 ```text
-pakemin adapters generate [path] [--force] [--dry-run]
+pakemin adapters list [path]
+```
+
+Lists supported adapters and whether each adapter file exists in the target project.
+
+```text
+pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
 ```
 
 Generates thin adapter files for `AGENTS.md`, Claude, Gemini, Cursor, and GitHub Copilot. Existing adapter files are not overwritten unless `--force` is provided.
+
+Use `--only` with comma-separated adapter IDs to generate a subset.
 
 ```text
 pakemin doctor [path]

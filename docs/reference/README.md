@@ -9,3 +9,4 @@ Parent: [Documentation](../README.md)
 - [Project structure](project-structure.md): describes the initial repository layout and documentation categories.
 - [Validation requirements](validation-requirements.md): records early documentation and specification validation expectations.
 - [CLI](cli.md): documents the minimal local command-line interface.
+- [Adapters](adapters.md): documents supported vendor adapter files and CLI usage.

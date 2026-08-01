@@ -10,6 +10,7 @@ Parent: [Documentation](../README.md)
 - [ADR-0002: Precedence Model](0002-precedence-model.md): defines conflict resolution order for Pakemin instructions.
 - [ADR-0003: Product Name and Command Namespace](0003-product-name-and-command-namespace.md): names the project Pakemin and reserves the `pakemin` command namespace.
 - [ADR-0004: Minimal CLI](0004-minimal-cli.md): allows a dependency-free local CLI for the minimal tooling milestone.
+- [ADR-0005: Initial Adapter Support](0005-initial-adapter-support.md): defines the first supported adapter set.
 
 ## Format
 

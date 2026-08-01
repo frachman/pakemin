@@ -14,7 +14,7 @@ Pakemin should support these differences while keeping project knowledge portabl
 
 Adapters should be thin. They may point to canonical documentation, summarize loading instructions, or translate a subset of the portable core when a tool cannot follow links reliably.
 
-Initial adapter candidates include:
+The initial supported adapters are defined by [ADR-0005: Initial Adapter Support](../adr/0005-initial-adapter-support.md):
 
 - `AGENTS.md`
 - `CLAUDE.md`
@@ -30,7 +30,6 @@ See [Adapter contract](adapter-contract.md) for the draft contract.
 
 ## Open Questions
 
-- Which adapters should be supported first?
 - How should unsupported vendor capabilities be detected?
 - How should shared framework versions be pinned?
 - What compatibility guarantees should semantic versions represent?

@@ -38,6 +38,7 @@ Implemented commands:
 ```text
 pakemin init
 pakemin validate
+pakemin adapters list
 pakemin adapters generate
 pakemin doctor
 ```
@@ -46,13 +47,11 @@ The minimal CLI is documented in [../reference/cli.md](../reference/cli.md) and 
 
 ## Milestone 4: Adapter Support
 
-Initial adapters may include:
-
-- `AGENTS.md`
-- Claude
-- Gemini
-- Cursor
-- GitHub Copilot
+- Supported adapter set: accepted in [../adr/0005-initial-adapter-support.md](../adr/0005-initial-adapter-support.md).
+- Adapter reference: documented in [../reference/adapters.md](../reference/adapters.md).
+- Adapter listing: implemented as `pakemin adapters list`.
+- Adapter generation: supports all adapters or selected IDs.
+- Adapter validation: available with `pakemin validate --adapters`.
 
 ## Milestone 5: Extensibility
 
