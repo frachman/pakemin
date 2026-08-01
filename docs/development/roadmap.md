@@ -26,10 +26,10 @@ This document records the provisional AES roadmap. Milestones may change as the 
 
 ## Milestone 2: Reference Repository
 
-- Example `.ai` structure.
-- Sample SaaS repository.
-- Sample adapters.
-- Manual validation checklist.
+- Example `.ai` structure: drafted in [../../examples/saas-reference-repository/.ai/README.md](../../examples/saas-reference-repository/.ai/README.md).
+- Sample SaaS repository: drafted in [../../examples/saas-reference-repository/README.md](../../examples/saas-reference-repository/README.md).
+- Sample adapters: drafted in [../../examples/saas-reference-repository/AGENTS.md](../../examples/saas-reference-repository/AGENTS.md), `CLAUDE.md`, `GEMINI.md`, Cursor rules, and GitHub Copilot instructions.
+- Manual validation checklist: drafted in [../../examples/saas-reference-repository/validation-checklist.md](../../examples/saas-reference-repository/validation-checklist.md).
 
 ## Milestone 3: Minimal CLI
 

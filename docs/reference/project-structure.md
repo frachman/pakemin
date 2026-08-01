@@ -30,7 +30,7 @@ The root `AGENTS.md` gives concise guidance to AI coding agents working in this 
 
 The `docs` directory contains all documentation categories.
 
-The `examples` directory is reserved for future examples. It currently has a navigation file only.
+The `examples` directory contains illustrative project layouts that are not normative.
 
 ## Naming
 
@@ -40,5 +40,4 @@ ADR filenames should use a stable sequence number such as `0001-markdown-first.m
 
 ## Future Work
 
-Future milestones may define an example AES project structure, shared framework layout, adapter templates, and validation checklist.
-
+Future milestones may define shared framework layout, adapter templates, and generated validation behavior.
