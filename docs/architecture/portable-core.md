@@ -26,10 +26,17 @@ It should distinguish durable project facts from temporary working state. It sho
 
 The current milestone does not define exact filenames, schemas, validation rules, or serialization formats beyond the Markdown-first default.
 
+See also:
+
+- [Context model](context-model.md)
+- [Memory model](memory-model.md)
+- [Rule model](rule-model.md)
+- [Workflow model](workflow-model.md)
+- [Adapter contract](adapter-contract.md)
+
 ## Open Questions
 
 - Should project memory be Markdown, YAML, or mixed?
 - How should stale memory be identified?
 - What belongs in a skill versus a workflow?
 - How should sensitive project context be excluded from generated adapters?
-

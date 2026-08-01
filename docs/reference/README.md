@@ -7,4 +7,4 @@ Parent: [Documentation](../README.md)
 ## Documents
 
 - [Project structure](project-structure.md): describes the initial repository layout and documentation categories.
-
+- [Validation requirements](validation-requirements.md): records early documentation and specification validation expectations.

@@ -36,12 +36,12 @@ Architecture decision records are responsible for recording significant decision
 
 AES is not currently defining a schema, CLI, package format, installation method, adapter generator, or validation engine.
 
-## Preliminary Precedence
+## Precedence
 
-The following order is provisional and must be finalized through an ADR before becoming normative:
+The precedence model is defined by [ADR-0002: Precedence Model](../adr/0002-precedence-model.md):
 
-1. Explicit current user instruction.
-2. Safety and platform restrictions.
+1. Safety and platform restrictions.
+2. Explicit current user instruction.
 3. Project-specific overrides.
 4. Project decisions and context.
 5. Shared framework defaults.
@@ -49,8 +49,6 @@ The following order is provisional and must be finalized through an ADR before b
 
 ## Open Questions
 
-- How are conflicts between shared rules and project overrides resolved?
 - Should adapters copy content or only reference it?
 - How should agents that cannot recursively load linked files be supported?
 - Should `AGENTS.md` be the universal fallback adapter?
-

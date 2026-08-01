@@ -15,14 +15,14 @@ This document records the provisional AES roadmap. Milestones may change as the 
 
 ## Milestone 1: Specification Draft
 
-- Portable-core definition.
-- Context model.
-- Memory model.
-- Rule model.
-- Workflow model.
-- Adapter contract.
-- Precedence rules.
-- Validation requirements.
+- Portable-core definition: drafted in [../architecture/portable-core.md](../architecture/portable-core.md).
+- Context model: drafted in [../architecture/context-model.md](../architecture/context-model.md).
+- Memory model: drafted in [../architecture/memory-model.md](../architecture/memory-model.md).
+- Rule model: drafted in [../architecture/rule-model.md](../architecture/rule-model.md).
+- Workflow model: drafted in [../architecture/workflow-model.md](../architecture/workflow-model.md).
+- Adapter contract: drafted in [../architecture/adapter-contract.md](../architecture/adapter-contract.md).
+- Precedence rules: accepted in [../adr/0002-precedence-model.md](../adr/0002-precedence-model.md).
+- Validation requirements: drafted in [../reference/validation-requirements.md](../reference/validation-requirements.md).
 
 ## Milestone 2: Reference Repository
 
@@ -60,4 +60,3 @@ Initial adapters may include:
 - Adapter plugins.
 - Language and framework presets.
 - MCP capability descriptions.
-
