@@ -31,6 +31,13 @@ Pakemin treats project knowledge as project-owned. The portable core describes c
 
 ## Quick Start
 
+Install from npm:
+
+```text
+npm install -g pakemin
+pakemin --help
+```
+
 Run Pakemin from a checkout:
 
 ```text
@@ -44,9 +51,9 @@ Use it in another project:
 
 ```text
 cd /path/to/your-project
-node /path/to/pakemin init
-node /path/to/pakemin adapters generate
-node /path/to/pakemin validate --adapters
+pakemin init
+pakemin adapters generate
+pakemin validate --adapters
 ```
 
 For local development, you can link the command:
@@ -159,11 +166,11 @@ Bug reports, adapter improvements, documentation fixes, and language preset feed
 
 ## Current Status
 
-Pakemin is pre-release but usable from a local checkout.
+Pakemin is pre-release and prepared for its first npm release.
 
 Completed foundations include documentation, specification drafts, a reference repository, a minimal CLI, adapter support, CI, MIT licensing, and explicit language presets.
 
-The package is not published yet. Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
+Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
 
 ## Verification
 

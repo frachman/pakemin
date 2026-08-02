@@ -9,6 +9,8 @@ import { write } from "./output.js";
 
 export { validateProject } from "./validation.js";
 
+const VERSION = "0.1.0";
+
 export async function runCli(args, io) {
   const command = args[0];
 
@@ -18,7 +20,7 @@ export async function runCli(args, io) {
   }
 
   if (command === "--version" || command === "-v") {
-    write(io.stdout, "0.0.0\n");
+    write(io.stdout, `${VERSION}\n`);
     return 0;
   }
 

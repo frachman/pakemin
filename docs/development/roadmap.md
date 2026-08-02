@@ -149,5 +149,6 @@ Scope this milestone narrowly. It should prepare the existing CLI for npm public
 - Add final install guidance.
 - Consider package lock or release workflow.
 - Run smoke tests with `npm pack` and tarball installation.
+- Publish readiness: prepared for manual npm publish as version `0.1.0`.
 
 Do not add new presets, plugin architecture, hosted services, or unrelated CLI commands in this milestone.

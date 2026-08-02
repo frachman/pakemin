@@ -6,6 +6,13 @@ The Pakemin CLI provides minimal local tooling for initializing portable-core fi
 
 ## Installation
 
+Install from npm after the package is published:
+
+```text
+npm install -g pakemin
+pakemin --help
+```
+
 During the pre-release milestone, run the CLI from a checkout:
 
 ```text
@@ -20,7 +27,7 @@ cd /path/to/your-project
 node /path/to/pakemin init
 ```
 
-The package is private until the repository owner chooses a final license and release strategy.
+Pakemin uses `0.x` versions before v1.0. Minor releases may add or adjust pre-1.0 behavior; patch releases should be compatible fixes.
 
 ## Commands
 

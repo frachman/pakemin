@@ -6,6 +6,16 @@ import test from "node:test";
 
 import { runCli, validateProject } from "../src/cli.js";
 
+test("version reports package version", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["--version"], io);
+
+  assert.equal(exitCode, 0);
+  assert.equal(io.stdout.text, "0.1.0\n");
+});
+
 test("init creates the portable core", async () => {
   const root = tempProject();
   const io = memoryIo(root);

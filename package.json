@@ -1,7 +1,6 @@
 {
   "name": "pakemin",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "description": "An AI Engineering Specification for vendor-agnostic project knowledge.",
   "license": "MIT",
   "repository": {
@@ -22,6 +21,12 @@
   ],
   "type": "module",
   "main": "./bin/pakemin.js",
+  "files": [
+    "bin",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
   "bin": {
     "pakemin": "./bin/pakemin.js"
   },

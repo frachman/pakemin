@@ -14,8 +14,13 @@ This checklist defines the minimum readiness review before Pakemin is published 
 - Run `node ./bin/pakemin.js validate examples/saas-reference-repository --adapters`.
 - Review generated adapter content for thin-adapter behavior.
 - Confirm README usage examples match the CLI.
-- Decide whether the package should remain private or become publishable.
+- Confirm `private` is omitted from `package.json`.
+- Confirm release policy and version are documented.
+- Run `npm pack`.
+- Install the generated tarball into a temporary project.
+- Run `pakemin --help` from the tarball install.
+- Run `pakemin init`, `pakemin adapters generate`, and `pakemin validate --adapters` from the tarball install.
 
 ## Out of Scope
 
-This checklist does not define release automation, package publishing, signing, changelog generation, or semantic-version guarantees.
+This checklist does not define release automation, signing, changelog generation, or v1.0 semantic-version guarantees.
