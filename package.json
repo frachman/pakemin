@@ -28,7 +28,7 @@
     "LICENSE"
   ],
   "bin": {
-    "pakemin": "./bin/pakemin.js"
+    "pakemin": "bin/pakemin.js"
   },
   "scripts": {
     "test": "node --test",
