@@ -86,7 +86,58 @@ Scope this milestone narrowly. It should improve maintainability before npm publ
 
 Do not add new CLI commands, presets, adapter support, plugin architecture, or release automation in this milestone.
 
-## Milestone 5.5: npm Publish Readiness
+## Milestone 5.5: v1.0 Framework Direction
+
+Scope this milestone narrowly. It should define the direction before v1.0 framework behavior is implemented.
+
+- Accept Pakemin v1.0 as a lightweight AI Development Framework.
+- Define philosophy, principles, and boundaries.
+- Capture the framework direction in an ADR.
+
+Do not add CLI behavior, starter files, validation rules, schemas, or dependencies in this milestone.
+
+## Milestone 5.6: Core Document Conventions
+
+Scope this milestone narrowly. It should define how project knowledge is written before tooling enforces it.
+
+- Define folder responsibilities.
+- Define naming conventions.
+- Define stable context versus evolving memory.
+- Define conventions for requirements, ADRs, milestones, tasks, workflows, role context, and memory.
+
+Keep conventions Markdown-first and lightweight.
+
+## Milestone 5.7: Init Scaffold Upgrade
+
+Scope this milestone narrowly. It should make `pakemin init` more useful without expanding the product surface.
+
+- Create practical starter files for the v1.0 conventions.
+- Keep generated content compact and editable.
+- Preserve safe behavior for existing projects.
+
+Do not introduce strict schemas, external dependencies, or new command families in this milestone.
+
+## Milestone 5.8: Validation and Review Upgrade
+
+Scope this milestone narrowly. It should validate conventions that reduce agent guesswork.
+
+- Validate required starter files.
+- Validate Markdown links, adapter pointers, ADR naming, and core headings.
+- Add tests for fresh init plus validation.
+
+Keep validation convention-based, not schema-heavy.
+
+## Milestone 5.9: Reference Repository v1 Refresh
+
+Scope this milestone narrowly. It should demonstrate the v1.0 conventions in a reusable example.
+
+- Update the reference repository to show v1.0 conventions.
+- Include small examples for requirements, ADRs, milestones, tasks, workflows, role context, and memory.
+- Keep examples short enough to copy and adapt.
+
+Do not add unrelated product features in this milestone.
+
+## Milestone 6.0: npm Publish Readiness
 
 Scope this milestone narrowly. It should prepare the existing CLI for npm publication without expanding the product surface.
 
