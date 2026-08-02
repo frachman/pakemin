@@ -1,4 +1,5 @@
 import { CORE_CATEGORIES } from "./catalog.js";
+import { STARTER_DOCUMENTS } from "./starter-documents.js";
 
 export function coreFiles() {
   return [
@@ -9,7 +10,8 @@ export function coreFiles() {
     ...CORE_CATEGORIES.map((category) => ({
       file: `.ai/${category}/README.md`,
       content: categoryReadme(category)
-    }))
+    })),
+    ...STARTER_DOCUMENTS
   ];
 }
 
@@ -44,6 +46,10 @@ This directory is the project-owned source of truth for AI-assisted work.
 - [Skills](skills/README.md): specialized work instructions.
 - [Templates](templates/README.md): standard output formats.
 - [Overrides](overrides/README.md): project-specific refinements.
+
+## Loading Strategy
+
+Read this file first. Then load the relevant context, rules, memory, and workflow documents for the task.
 `;
 }
 
@@ -58,6 +64,13 @@ function categoryReadme(category) {
     overrides: "Overrides refine shared defaults for this project."
   };
 
+  const documents = STARTER_DOCUMENTS
+    .filter((entry) => entry.file.startsWith(`.ai/${category}/`))
+    .map((entry) => basename(entry.file));
+  const documentList = documents.length > 0
+    ? documents.map((file) => `- [${file}](${file})`).join("\n")
+    : "Add project-specific documents here as the specification matures.";
+
   return `# ${titleCase(category)}
 
 ${descriptions[category]}
@@ -66,7 +79,7 @@ Parent: [Portable core](../README.md)
 
 ## Documents
 
-Add project-specific documents here as the specification matures.
+${documentList}
 `;
 }
 
@@ -105,4 +118,8 @@ ${preset.formatting}`).join("\n\n")}
 
 function titleCase(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function basename(file) {
+  return file.split("/").at(-1);
 }

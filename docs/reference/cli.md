@@ -28,7 +28,7 @@ The package is private until the repository owner chooses a final license and re
 pakemin init [path] [--force] [--dry-run] [--preset=<id>]
 ```
 
-Creates a minimal `.ai` portable core with category `README.md` files. Existing files are not overwritten unless `--force` is provided.
+Creates a `.ai` portable core with category `README.md` files and compact starter documents for context, memory, rules, workflows, and templates. Existing files are not overwritten unless `--force` is provided.
 
 Default `init` may report detected stacks and suggest preset commands. It does not apply language-specific presets unless `--preset` is provided.
 

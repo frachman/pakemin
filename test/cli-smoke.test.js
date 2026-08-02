@@ -16,6 +16,9 @@ test("package directory entrypoint can initialize a project from another cwd", (
   assert.match(result.stdout, /Initialized Pakemin portable core/);
   assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), true);
   assert.equal(fs.existsSync(path.join(root, ".ai/templates/README.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/context/project.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/workflows/feature.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/templates/task.md")), true);
 });
 
 test("CLI smoke lifecycle covers init, adapters, validate, and doctor", () => {

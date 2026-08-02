@@ -67,13 +67,28 @@ pakemin validate --adapters
 ```text
 .ai
 ├── README.md
-├── context
-├── memory
-├── rules
-├── workflows
-├── skills
-├── templates
-└── overrides
+├── context/
+│   ├── project.md
+│   ├── architecture.md
+│   ├── stack.md
+│   └── roles.md
+├── memory/
+│   ├── active.md
+│   └── known-issues.md
+├── rules/
+│   ├── engineering.md
+│   └── ai-agents.md
+├── workflows/
+│   ├── feature.md
+│   ├── bugfix.md
+│   └── review.md
+├── skills/
+├── templates/
+│   ├── requirement.md
+│   ├── adr.md
+│   ├── milestone.md
+│   └── task.md
+└── overrides/
 ```
 
 `pakemin adapters generate` creates thin adapter files for supported AI coding tools:

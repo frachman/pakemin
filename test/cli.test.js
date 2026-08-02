@@ -15,6 +15,9 @@ test("init creates the portable core", async () => {
   assert.equal(exitCode, 0);
   assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), true);
   assert.equal(fs.existsSync(path.join(root, ".ai/context/README.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/context/project.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/rules/ai-agents.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/templates/requirement.md")), true);
   assert.match(io.stdout.text, /Initialized Pakemin portable core/);
 });
 

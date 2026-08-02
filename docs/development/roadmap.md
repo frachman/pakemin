@@ -114,6 +114,7 @@ Scope this milestone narrowly. It should make `pakemin init` more useful without
 - Create practical starter files for the v1.0 conventions.
 - Keep generated content compact and editable.
 - Preserve safe behavior for existing projects.
+- Init scaffold upgrade: implemented for context, memory, rules, workflows, and templates.
 
 Do not introduce strict schemas, external dependencies, or new command families in this milestone.
 
