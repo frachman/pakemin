@@ -12,7 +12,7 @@ Documentation changes should validate that:
 - category navigation files list added or renamed documents;
 - ADR links resolve;
 - normal documentation filenames are not numbered;
-- ADR filenames use a stable numeric prefix;
+- ADR filenames use the public Pakemin convention `0001-kebab-case.md`;
 - Pakemin starter documents exist when validating a portable core;
 - required core headings are present in starter documents;
 - documents remain inside the current milestone scope.
@@ -25,6 +25,16 @@ Specification validation should check that:
 - vendor adapters do not become independent sources of truth;
 - context, memory, rules, workflows, skills, templates, and overrides are distinguishable;
 - sensitive context is not included in generated adapters unless explicitly allowed.
+
+## ADR Filename Convention
+
+When a target project contains `docs/adr`, Pakemin validation treats ADR filenames as part of the public convention.
+
+ADR filenames must use four digits, a hyphen, lowercase kebab-case text, and the `.md` extension:
+
+```text
+0001-kebab-case.md
+```
 
 ## Boundaries
 

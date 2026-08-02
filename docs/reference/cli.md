@@ -45,7 +45,13 @@ Use `--preset=auto` to explicitly apply presets for detected stacks.
 pakemin validate [path] [--links-only] [--adapters]
 ```
 
-Checks for `.ai/README.md`, required category navigation files, and broken relative Markdown links.
+Checks for `.ai/README.md`, required category navigation files, required starter documents, core headings, broken relative Markdown links, and Pakemin ADR filename conventions.
+
+When a target project contains `docs/adr`, ADR files must use the public Pakemin filename convention:
+
+```text
+0001-kebab-case.md
+```
 
 Use `--links-only` when validating documentation that is not itself a Pakemin-compatible project.
 

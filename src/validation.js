@@ -104,7 +104,9 @@ function validateAdrFilenames(root, errors) {
     }
 
     if (!/^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(entry.name)) {
-      errors.push(`docs/adr/${entry.name} should use a numeric kebab-case ADR filename`);
+      errors.push(
+        `docs/adr/${entry.name} should follow the Pakemin ADR filename convention: 0001-kebab-case.md`
+      );
     }
   }
 }

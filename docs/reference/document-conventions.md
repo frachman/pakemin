@@ -28,6 +28,8 @@ Use numbered filenames only where order is part of the convention:
 
 Keep names stable after review. Prefer adding a replacement document over renaming widely linked documents.
 
+Pakemin validation treats `0001-decision-title.md` as the public ADR filename convention when a project contains `docs/adr`.
+
 ## Stable and Evolving Context
 
 Stable context belongs in `context`. It should change slowly and describe facts that future contributors can rely on.

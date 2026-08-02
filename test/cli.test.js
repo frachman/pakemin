@@ -250,7 +250,9 @@ test("validate checks ADR filename convention", () => {
   const result = validateProject(root, { requireCore: false });
 
   assert.ok(
-    result.errors.includes("docs/adr/bad-name.md should use a numeric kebab-case ADR filename")
+    result.errors.includes(
+      "docs/adr/bad-name.md should follow the Pakemin ADR filename convention: 0001-kebab-case.md"
+    )
   );
 });
 
