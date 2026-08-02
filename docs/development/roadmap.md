@@ -152,3 +152,49 @@ Scope this milestone narrowly. It should prepare the existing CLI for npm public
 - Published to npm and tagged as `v0.1.0`.
 
 Do not add new presets, plugin architecture, hosted services, or unrelated CLI commands in this milestone.
+
+## Milestone 6.1: 0.1.1 Public Preview Hardening
+
+Scope this milestone narrowly. It should patch the first public preview based on real user and agent feedback.
+
+### Milestone 6.1.1: Missing Target Path Handling
+
+- `pakemin init <missing-dir>` creates the target directory.
+- `pakemin doctor <missing-dir>` returns a clear error.
+- Wildcard language detection does not crash on missing paths.
+
+### Milestone 6.1.2: ADR Validation Contract
+
+- Keep ADR filename validation as a default convention.
+- Document `0001-kebab-case.md` as a public Pakemin convention.
+- Ensure validation errors point clearly to the convention.
+
+### Milestone 6.1.3: Version Source of Truth
+
+- Remove the hardcoded CLI version.
+- Read the CLI version from `package.json`.
+- Prepare patch version `0.1.1`.
+
+### Milestone 6.1.4: CLI Option Parser Hardening
+
+- Treat `--key=value` as a value option, not a boolean flag.
+- Add focused parser tests.
+
+### Milestone 6.1.5: Repo Hygiene
+
+- Add a root `.gitignore`.
+- Ignore `node_modules`, npm tarballs, logs, `.DS_Store`, and temporary cache artifacts.
+
+### Milestone 6.1.6: Node Engine CI Matrix
+
+- Run CI on Node.js 18, 20, 22, and 24.
+- Keep existing test and validation jobs.
+
+### Milestone 6.1.7: 0.1.1 Release Readiness
+
+- Run full checks.
+- Run `npm pack`.
+- Install the tarball into a temporary project.
+- Smoke test the CLI lifecycle.
+
+Do not publish `0.1.1` until explicitly approved.
