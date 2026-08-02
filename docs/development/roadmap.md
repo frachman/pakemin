@@ -77,12 +77,12 @@ Do not add language presets, plugin architecture, hosted services, or publishing
 
 ## Milestone 5.25: CLI Code Organization
 
-Scope this milestone narrowly. It should improve maintainability before npm publication without changing user-facing behavior.
+Scope this milestone narrowly. It improves maintainability before npm publication without changing user-facing behavior.
 
-- Split the current CLI implementation into smaller modules.
-- Keep command behavior unchanged.
-- Keep the CLI dependency-free unless an ADR accepts a dependency.
-- Preserve existing tests and add focused tests only when behavior is touched.
+- CLI implementation split into smaller modules.
+- Command behavior remains unchanged.
+- CLI remains dependency-free.
+- Existing tests remain the behavior safety net.
 
 Do not add new CLI commands, presets, adapter support, plugin architecture, or release automation in this milestone.
 
