@@ -18,8 +18,18 @@ export function writeFiles(root, files, options) {
       continue;
     }
 
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.writeFileSync(target, `${entry.content.trimEnd()}\n`);
+    try {
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.writeFileSync(target, `${entry.content.trimEnd()}\n`);
+    } catch (error) {
+      if (error.code === "ENOTDIR" || error.code === "EEXIST") {
+        throw new Error(
+          `unable to write ${entry.file}: a path segment exists as a file, not a directory`
+        );
+      }
+
+      throw error;
+    }
     written.push(entry.file);
   }
 
@@ -42,6 +52,10 @@ export function resolveTarget(cwd, target) {
 
 export function exists(file) {
   return fs.existsSync(file);
+}
+
+export function isDirectory(target) {
+  return exists(target) && fs.statSync(target).isDirectory();
 }
 
 export function relative(root, file) {

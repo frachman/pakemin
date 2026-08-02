@@ -4,7 +4,7 @@ import process from "node:process";
 import { ADAPTERS } from "./catalog.js";
 import { coreFiles, presetFiles } from "./content.js";
 import { selectAdapters } from "./adapters.js";
-import { ensureDirectory, exists, resolveTarget, writeFiles } from "./fs-utils.js";
+import { ensureDirectory, exists, isDirectory, resolveTarget, writeFiles } from "./fs-utils.js";
 import { detectLanguages, reportDetection, selectPresets } from "./languages.js";
 import { isFlagSet, parseOptions } from "./options.js";
 import { reportWriteResult, write } from "./output.js";
@@ -15,6 +15,11 @@ export function initCommand(args, io) {
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const force = isFlagSet(options, "force");
   const dryRun = isFlagSet(options, "dry-run");
+
+  if (exists(root) && !isDirectory(root)) {
+    write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
+    return 1;
+  }
 
   if (!dryRun) {
     ensureDirectory(root);
@@ -41,6 +46,12 @@ export function initCommand(args, io) {
 export function validateCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
+
+  if (exists(root) && !isDirectory(root)) {
+    write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
+    return 1;
+  }
+
   const result = validateProject(root, {
     requireCore: !isFlagSet(options, "links-only"),
     requireAdapters: isFlagSet(options, "adapters")
@@ -102,6 +113,11 @@ export function doctorCommand(args, io) {
 
   if (!exists(root)) {
     write(io.stderr, `Error: target path does not exist: ${root}\n`);
+    return 1;
+  }
+
+  if (!isDirectory(root)) {
+    write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
     return 1;
   }
 

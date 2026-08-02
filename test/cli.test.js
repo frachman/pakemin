@@ -47,6 +47,19 @@ test("init creates a missing target directory", async () => {
   assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), true);
 });
 
+test("init reports a clear error when target path is a file", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "target-file");
+  fs.writeFileSync(root, "not a directory\n");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["init", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /target path exists but is not a directory/);
+  assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
+});
+
 test("init auto preset does not crash when target directory is missing", async () => {
   const parent = tempProject();
   const root = path.join(parent, "new-project");
@@ -70,6 +83,21 @@ test("init does not overwrite by default", async () => {
   assert.equal(exitCode, 1);
   assert.equal(fs.readFileSync(path.join(root, ".ai/README.md"), "utf8"), "custom\n");
   assert.match(io.stdout.text, /exists: .ai\/README.md/);
+});
+
+test("init reports a clear error when a path segment is a file", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, ".ai"), "not a directory\n");
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(
+    io.stderr.text,
+    /unable to write .ai\/README.md: a path segment exists as a file, not a directory/
+  );
+  assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
 });
 
 test("init force value flag overwrites existing portable core files", async () => {
@@ -301,6 +329,19 @@ test("doctor reports a clear error for missing target directory", async () => {
   assert.match(io.stderr.text, /target path does not exist/);
 });
 
+test("doctor reports a clear error when target path is a file", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "target-file");
+  fs.writeFileSync(root, "not a directory\n");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["doctor", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /target path exists but is not a directory/);
+  assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
+});
+
 test("adapters generate creates thin adapter files", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
@@ -499,6 +540,19 @@ test("validate links-only value flag does not require starter documents", async 
 
   assert.equal(exitCode, 0);
   assert.match(io.stdout.text, /Pakemin validation passed/);
+});
+
+test("validate reports a clear error when target path is a file", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "target-file");
+  fs.writeFileSync(root, "not a directory\n");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["validate", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /target path exists but is not a directory/);
+  assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
 });
 
 function tempProject() {
