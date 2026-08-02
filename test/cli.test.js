@@ -60,6 +60,26 @@ test("init reports a clear error when target path is a file", async () => {
   assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
 });
 
+test("init reports a clear error when target path is a dangling symlink", async (t) => {
+  const parent = tempProject();
+  const root = path.join(parent, "dangling-link");
+  const missingTarget = path.join(parent, "missing-target");
+
+  try {
+    fs.symlinkSync(missingTarget, root);
+  } catch {
+    t.skip("symlinks are not available in this environment");
+    return;
+  }
+
+  const io = memoryIo(parent);
+  const exitCode = await runCli(["init", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /unable to create target directory/);
+  assert.doesNotMatch(io.stderr.text, /ENOENT|EEXIST/);
+});
+
 test("init auto preset does not crash when target directory is missing", async () => {
   const parent = tempProject();
   const root = path.join(parent, "new-project");

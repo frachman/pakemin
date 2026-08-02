@@ -37,7 +37,11 @@ export function writeFiles(root, files, options) {
 }
 
 export function ensureDirectory(dir) {
-  fs.mkdirSync(dir, { recursive: true });
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch {
+    throw new Error(`unable to create target directory: ${dir}`);
+  }
 }
 
 export function listMarkdownFiles(root) {
