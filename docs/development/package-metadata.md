@@ -9,7 +9,7 @@ This document records the current package metadata decisions for Pakemin.
 The package is published and pre-1.0:
 
 - `name`: `pakemin`
-- `version`: `0.1.0`
+- `version`: `0.1.1`
 - `private`: omitted
 - `license`: `MIT`
 - command namespace: `pakemin`
@@ -24,7 +24,7 @@ Use `0.x` versions until Pakemin v1.0 conventions and CLI behavior are stable.
 
 Before v1.0, minor versions may add or adjust behavior. Patch versions should be compatible fixes.
 
-The first npm release is `0.1.0`.
+The first npm release is `0.1.0`. The next patch candidate is `0.1.1`.
 
 ## Review Notes
 

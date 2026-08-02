@@ -6,6 +6,10 @@ import test from "node:test";
 
 import { runCli, validateProject } from "../src/cli.js";
 
+const packageJson = JSON.parse(
+  fs.readFileSync(new URL("../package.json", import.meta.url), "utf8")
+);
+
 test("version reports package version", async () => {
   const root = tempProject();
   const io = memoryIo(root);
@@ -13,7 +17,7 @@ test("version reports package version", async () => {
   const exitCode = await runCli(["--version"], io);
 
   assert.equal(exitCode, 0);
-  assert.equal(io.stdout.text, "0.1.0\n");
+  assert.equal(io.stdout.text, `${packageJson.version}\n`);
 });
 
 test("init creates the portable core", async () => {

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 import {
   adaptersGenerateCommand,
   adaptersListCommand,
@@ -9,7 +11,9 @@ import { write } from "./output.js";
 
 export { validateProject } from "./validation.js";
 
-const VERSION = "0.1.0";
+const packageJson = JSON.parse(
+  fs.readFileSync(new URL("../package.json", import.meta.url), "utf8")
+);
 
 export async function runCli(args, io) {
   const command = args[0];
@@ -20,7 +24,7 @@ export async function runCli(args, io) {
   }
 
   if (command === "--version" || command === "-v") {
-    write(io.stdout, `${VERSION}\n`);
+    write(io.stdout, `${packageJson.version}\n`);
     return 0;
   }
 
