@@ -72,6 +72,32 @@ test("init does not overwrite by default", async () => {
   assert.match(io.stdout.text, /exists: .ai\/README.md/);
 });
 
+test("init force value flag overwrites existing portable core files", async () => {
+  const root = tempProject();
+  fs.mkdirSync(path.join(root, ".ai"), { recursive: true });
+  fs.writeFileSync(path.join(root, ".ai/README.md"), "custom\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--force=true"], io);
+
+  assert.equal(exitCode, 0);
+  assert.notEqual(fs.readFileSync(path.join(root, ".ai/README.md"), "utf8"), "custom\n");
+  assert.match(io.stdout.text, /created: .ai\/README.md/);
+});
+
+test("init dry-run value flag does not write files", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "dry-run-project");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["init", root, "--dry-run=true"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /dry-run: .ai\/README.md/);
+  assert.doesNotMatch(io.stdout.text, /created:/);
+  assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), false);
+});
+
 test("init reports detected stacks without applying presets by default", async () => {
   const root = tempProject();
   fs.writeFileSync(path.join(root, "go.mod"), "module example.com/app\n");
@@ -287,6 +313,19 @@ test("adapters generate can select adapters by id", async () => {
   assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
 });
 
+test("adapters generate force value flag overwrites existing adapter files", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+  fs.writeFileSync(path.join(root, "AGENTS.md"), "custom\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--force=true"], io);
+
+  assert.equal(exitCode, 0);
+  assert.notEqual(fs.readFileSync(path.join(root, "AGENTS.md"), "utf8"), "custom\n");
+  assert.match(io.stdout.text, /created: AGENTS.md/);
+});
+
 test("adapters generate warns when only flag has no value", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
@@ -323,6 +362,17 @@ test("validate can require supported adapters", async () => {
 
   assert.equal(validExitCode, 0);
   assert.match(validIo.stdout.text, /Pakemin validation passed/);
+});
+
+test("validate adapters value flag requires supported adapters", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["validate", root, "--adapters=true"], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stdout.text, /AGENTS.md is missing/);
 });
 
 test("validate requires v1 starter documents", async () => {
@@ -375,6 +425,17 @@ test("validate can run in links-only mode", async () => {
 
   const io = memoryIo(root);
   const exitCode = await runCli(["validate", root, "--links-only"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Pakemin validation passed/);
+});
+
+test("validate links-only value flag does not require starter documents", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "README.md"), "# Docs\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["validate", root, "--links-only=true"], io);
 
   assert.equal(exitCode, 0);
   assert.match(io.stdout.text, /Pakemin validation passed/);

@@ -19,3 +19,8 @@ export function parseOptions(args) {
 
   return { flags, values, positionals };
 }
+
+export function isFlagSet(options, key) {
+  return options.flags.has(key)
+    || Object.prototype.hasOwnProperty.call(options.values, key);
+}

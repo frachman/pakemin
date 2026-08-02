@@ -6,15 +6,15 @@ import { coreFiles, presetFiles } from "./content.js";
 import { selectAdapters } from "./adapters.js";
 import { ensureDirectory, exists, resolveTarget, writeFiles } from "./fs-utils.js";
 import { detectLanguages, reportDetection, selectPresets } from "./languages.js";
-import { parseOptions } from "./options.js";
+import { isFlagSet, parseOptions } from "./options.js";
 import { reportWriteResult, write } from "./output.js";
 import { validateProject } from "./validation.js";
 
 export function initCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
-  const force = options.flags.has("force");
-  const dryRun = options.flags.has("dry-run");
+  const force = isFlagSet(options, "force");
+  const dryRun = isFlagSet(options, "dry-run");
 
   if (!dryRun) {
     ensureDirectory(root);
@@ -42,8 +42,8 @@ export function validateCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const result = validateProject(root, {
-    requireCore: !options.flags.has("links-only"),
-    requireAdapters: options.flags.has("adapters")
+    requireCore: !isFlagSet(options, "links-only"),
+    requireAdapters: isFlagSet(options, "adapters")
   });
 
   for (const warning of result.warnings) {
@@ -66,8 +66,8 @@ export function validateCommand(args, io) {
 export function adaptersGenerateCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
-  const force = options.flags.has("force");
-  const dryRun = options.flags.has("dry-run");
+  const force = isFlagSet(options, "force");
+  const dryRun = isFlagSet(options, "dry-run");
   const adapters = selectAdapters(options.values.only);
 
   if (options.flags.has("only")) {

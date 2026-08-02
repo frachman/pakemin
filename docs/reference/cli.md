@@ -29,6 +29,8 @@ node /path/to/pakemin init
 
 Pakemin uses `0.x` versions before v1.0. Minor releases may add or adjust pre-1.0 behavior; patch releases should be compatible fixes.
 
+Boolean flags such as `--force`, `--dry-run`, `--links-only`, and `--adapters` are enabled by presence. They do not support `--flag=false` to disable; omit the flag instead.
+
 ## Commands
 
 ```text
