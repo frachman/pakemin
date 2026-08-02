@@ -21,6 +21,7 @@
     "vendor-agnostic"
   ],
   "type": "module",
+  "main": "./bin/pakemin.js",
   "bin": {
     "pakemin": "./bin/pakemin.js"
   },

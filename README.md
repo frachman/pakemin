@@ -37,15 +37,16 @@ Run Pakemin from a checkout:
 git clone git@github.com:frachman/pakemin.git
 cd pakemin
 node ./bin/pakemin.js --help
+node . --help
 ```
 
 Use it in another project:
 
 ```text
 cd /path/to/your-project
-node /path/to/pakemin/bin/pakemin.js init
-node /path/to/pakemin/bin/pakemin.js adapters generate
-node /path/to/pakemin/bin/pakemin.js validate --adapters
+node /path/to/pakemin init
+node /path/to/pakemin adapters generate
+node /path/to/pakemin validate --adapters
 ```
 
 For local development, you can link the command:

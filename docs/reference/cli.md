@@ -10,6 +10,14 @@ During the pre-release milestone, run the CLI from a checkout:
 
 ```text
 node ./bin/pakemin.js --help
+node . --help
+```
+
+From another project, point Node at the Pakemin checkout:
+
+```text
+cd /path/to/your-project
+node /path/to/pakemin init
 ```
 
 The package is private until the repository owner chooses a final license and release strategy.
