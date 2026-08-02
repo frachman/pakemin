@@ -24,6 +24,10 @@ export function initCommand(args, io) {
   const presets = selectPresets(options.values.preset, detected);
   const files = coreFiles();
 
+  if (options.flags.has("preset")) {
+    write(io.stdout, "warning: --preset was provided with no value; no preset was applied\n");
+  }
+
   if (presets.length > 0) {
     files.push(...presetFiles(presets));
   }
@@ -65,6 +69,10 @@ export function adaptersGenerateCommand(args, io) {
   const force = options.flags.has("force");
   const dryRun = options.flags.has("dry-run");
   const adapters = selectAdapters(options.values.only);
+
+  if (options.flags.has("only")) {
+    write(io.stdout, "warning: --only was provided with no value; all adapters will be generated\n");
+  }
 
   if (!exists(path.join(root, ".ai/README.md"))) {
     write(io.stderr, "Error: .ai/README.md was not found. Run `pakemin init` first.\n");

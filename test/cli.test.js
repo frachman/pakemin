@@ -211,6 +211,20 @@ test("init rejects unknown presets when combined with known presets", async () =
   assert.match(io.stderr.text, /unknown preset id\(s\): unknown-lang/);
 });
 
+test("init warns when preset flag has no value", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--preset"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(
+    io.stdout.text,
+    /warning: --preset was provided with no value; no preset was applied/
+  );
+  assert.equal(fs.existsSync(path.join(root, ".ai/context/technology-stack.md")), false);
+});
+
 test("doctor reports detected stacks", async () => {
   const root = tempProject();
   fs.writeFileSync(path.join(root, "pom.xml"), "<project></project>\n");
@@ -271,6 +285,25 @@ test("adapters generate can select adapters by id", async () => {
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
   assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
   assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
+});
+
+test("adapters generate warns when only flag has no value", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--only"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(
+    io.stdout.text,
+    /warning: --only was provided with no value; all adapters will be generated/
+  );
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
 });
 
 test("validate can require supported adapters", async () => {
