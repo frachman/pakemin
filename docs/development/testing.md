@@ -24,7 +24,7 @@ Validate the reference repository as a Pakemin-compatible project:
 node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
 ```
 
-The same checks run in CI for pushes to `main` and pull requests.
+The same checks run in CI for pushes to `master` and pull requests.
 
 ## End-to-End Smoke Test
 
@@ -44,4 +44,4 @@ Expected result: initialization creates `.ai`, adapter generation creates thin v
 
 - The package is not published.
 - The `pakemin` command is available from the checkout, not as a global install.
-- Language-aware detection and presets are deferred to the extensibility milestone.
+- npm package smoke testing is still deferred to publish readiness.
