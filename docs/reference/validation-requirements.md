@@ -17,6 +17,8 @@ Documentation changes should validate that:
 - required core headings are present in starter documents;
 - documents remain inside the current milestone scope.
 
+Relative Markdown link validation resolves the path portion of a link. Query strings and fragments, such as `?tab=readme` or `#section`, are ignored when checking whether the target file exists.
+
 ## Specification Validation
 
 Specification validation should check that:

@@ -553,6 +553,29 @@ test("validate detects broken relative Markdown links", async () => {
   assert.match(io.stdout.text, /links to missing target docs\/missing.md/);
 });
 
+test("validate accepts relative Markdown links with query strings", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "README.md"), "[With query](./target.md?foo=bar)\n");
+  fs.writeFileSync(path.join(root, "target.md"), "# Target\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["validate", root, "--links-only"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Pakemin validation passed/);
+});
+
+test("validate detects broken relative Markdown links with query strings", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "README.md"), "[Missing](./missing.md?foo=bar)\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["validate", root, "--links-only"], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stdout.text, /links to missing target .\/missing.md\?foo=bar/);
+});
+
 test("validate can run in links-only mode", async () => {
   const root = tempProject();
   fs.writeFileSync(path.join(root, "README.md"), "# Docs\n");

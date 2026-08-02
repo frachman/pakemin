@@ -62,7 +62,7 @@ export function validateProject(root, options = {}) {
   for (const file of markdownFiles) {
     const links = markdownLinks(fs.readFileSync(file, "utf8"));
     for (const href of links) {
-      const target = href.split("#", 1)[0];
+      const target = href.split(/[?#]/, 1)[0];
       if (!target || isExternalLink(target)) {
         continue;
       }
