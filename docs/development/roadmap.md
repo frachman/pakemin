@@ -125,6 +125,7 @@ Scope this milestone narrowly. It should validate conventions that reduce agent 
 - Validate required starter files.
 - Validate Markdown links, adapter pointers, ADR naming, and core headings.
 - Add tests for fresh init plus validation.
+- Validation upgrade: implemented with convention-based checks and tests.
 
 Keep validation convention-based, not schema-heavy.
 
@@ -135,6 +136,7 @@ Scope this milestone narrowly. It should demonstrate the v1.0 conventions in a r
 - Update the reference repository to show v1.0 conventions.
 - Include small examples for requirements, ADRs, milestones, tasks, workflows, role context, and memory.
 - Keep examples short enough to copy and adapt.
+- Reference repository v1 refresh: implemented in [../../examples/saas-reference-repository/.ai/README.md](../../examples/saas-reference-repository/.ai/README.md).
 
 Do not add unrelated product features in this milestone.
 

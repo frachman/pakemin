@@ -4,6 +4,7 @@ import path from "node:path";
 import { ADAPTERS, CORE_CATEGORIES } from "./catalog.js";
 import { exists, listMarkdownFiles, relative } from "./fs-utils.js";
 import { isExternalLink, markdownLinks } from "./markdown.js";
+import { STARTER_DOCUMENTS } from "./starter-documents.js";
 
 export function validateProject(root, options = {}) {
   const requireCore = options.requireCore !== false;
@@ -21,7 +22,24 @@ export function validateProject(root, options = {}) {
       const readme = path.join(root, ".ai", category, "README.md");
       if (!exists(readme)) {
         errors.push(`.ai/${category}/README.md is missing`);
+        continue;
       }
+
+      requireHeadings(root, readme, [`# ${titleCase(category)}`, "## Documents"], errors);
+    }
+
+    for (const entry of STARTER_DOCUMENTS) {
+      const starterFile = path.join(root, entry.file);
+      if (!exists(starterFile)) {
+        errors.push(`${entry.file} is missing`);
+        continue;
+      }
+
+      requireHeadings(root, starterFile, ["# "], errors);
+    }
+
+    if (exists(coreReadme)) {
+      requireHeadings(root, coreReadme, ["# Portable Core", "## Categories"], errors);
     }
   }
 
@@ -60,5 +78,37 @@ export function validateProject(root, options = {}) {
     warnings.push("no Markdown files found");
   }
 
+  validateAdrFilenames(root, errors);
+
   return { errors, warnings };
+}
+
+function requireHeadings(root, file, headings, errors) {
+  const text = fs.readFileSync(file, "utf8");
+  for (const heading of headings) {
+    if (!text.includes(heading)) {
+      errors.push(`${relative(root, file)} is missing heading ${heading}`);
+    }
+  }
+}
+
+function validateAdrFilenames(root, errors) {
+  const adrDir = path.join(root, "docs/adr");
+  if (!exists(adrDir)) {
+    return;
+  }
+
+  for (const entry of fs.readdirSync(adrDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith(".md") || entry.name === "README.md") {
+      continue;
+    }
+
+    if (!/^\d{4}-[a-z0-9]+(?:-[a-z0-9]+)*\.md$/.test(entry.name)) {
+      errors.push(`docs/adr/${entry.name} should use a numeric kebab-case ADR filename`);
+    }
+  }
+}
+
+function titleCase(value) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }

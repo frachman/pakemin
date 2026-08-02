@@ -13,21 +13,22 @@ Documentation changes should validate that:
 - ADR links resolve;
 - normal documentation filenames are not numbered;
 - ADR filenames use a stable numeric prefix;
+- Pakemin starter documents exist when validating a portable core;
+- required core headings are present in starter documents;
 - documents remain inside the current milestone scope.
 
 ## Specification Validation
 
-Future specification validation should check that:
+Specification validation should check that:
 
 - project-owned sources of truth are identifiable;
 - vendor adapters do not become independent sources of truth;
-- required precedence rules are visible;
 - context, memory, rules, workflows, skills, templates, and overrides are distinguishable;
 - sensitive context is not included in generated adapters unless explicitly allowed.
 
 ## Boundaries
 
-This document does not define a validation engine, command syntax, schema, or package format.
+This document does not define a schema or package format.
 
 ## Open Questions
 

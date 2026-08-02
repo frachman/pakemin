@@ -22,3 +22,7 @@ Follow the Pakemin precedence model:
 4. Project decisions and context.
 5. Shared framework defaults.
 6. Vendor adapter defaults.
+
+## Loading Strategy
+
+Read this file first. Then load task-relevant context, rules, memory, and workflows.

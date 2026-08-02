@@ -188,6 +188,28 @@ test("validate can require supported adapters", async () => {
   assert.match(validIo.stdout.text, /Pakemin validation passed/);
 });
 
+test("validate requires v1 starter documents", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+  fs.rmSync(path.join(root, ".ai/templates/task.md"));
+
+  const result = validateProject(root);
+
+  assert.ok(result.errors.includes(".ai/templates/task.md is missing"));
+});
+
+test("validate checks ADR filename convention", () => {
+  const root = tempProject();
+  fs.mkdirSync(path.join(root, "docs/adr"), { recursive: true });
+  fs.writeFileSync(path.join(root, "docs/adr/bad-name.md"), "# Bad ADR\n");
+
+  const result = validateProject(root, { requireCore: false });
+
+  assert.ok(
+    result.errors.includes("docs/adr/bad-name.md should use a numeric kebab-case ADR filename")
+  );
+});
+
 test("validate fails when portable core is missing", () => {
   const root = tempProject();
   const result = validateProject(root);
