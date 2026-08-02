@@ -65,7 +65,7 @@ function helpText() {
 An AI Engineering Specification for vendor-agnostic project knowledge.
 
 Usage:
-  pakemin init [path] [--force] [--dry-run] [--preset=<id>]
+  pakemin init [path] [--force] [--dry-run] [--preset=<id>[,<id>...]]
   pakemin validate [path] [--links-only] [--adapters]
   pakemin adapters list [path]
   pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
