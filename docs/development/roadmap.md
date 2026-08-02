@@ -103,7 +103,7 @@ Scope this milestone narrowly. It should define how project knowledge is written
 - Define folder responsibilities.
 - Define naming conventions.
 - Define stable context versus evolving memory.
-- Define conventions for requirements, ADRs, milestones, tasks, workflows, role context, and memory.
+- Document conventions: drafted in [../reference/document-conventions.md](../reference/document-conventions.md).
 
 Keep conventions Markdown-first and lightweight.
 

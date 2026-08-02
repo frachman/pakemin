@@ -24,7 +24,9 @@ It should distinguish durable project facts from temporary working state. It sho
 
 ## Boundaries
 
-The current milestone does not define exact filenames, schemas, validation rules, or serialization formats beyond the Markdown-first default.
+The current milestone does not define strict schemas or serialization formats beyond the Markdown-first default.
+
+Lightweight v1.0 document conventions are defined in [Document conventions](../reference/document-conventions.md).
 
 See also:
 
@@ -36,7 +38,6 @@ See also:
 
 ## Open Questions
 
-- Should project memory be Markdown, YAML, or mixed?
 - How should stale memory be identified?
 - What belongs in a skill versus a workflow?
 - How should sensitive project context be excluded from generated adapters?
