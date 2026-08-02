@@ -4,7 +4,7 @@ import process from "node:process";
 import { ADAPTERS } from "./catalog.js";
 import { coreFiles, presetFiles } from "./content.js";
 import { selectAdapters } from "./adapters.js";
-import { exists, resolveTarget, writeFiles } from "./fs-utils.js";
+import { ensureDirectory, exists, resolveTarget, writeFiles } from "./fs-utils.js";
 import { detectLanguages, reportDetection, selectPresets } from "./languages.js";
 import { parseOptions } from "./options.js";
 import { reportWriteResult, write } from "./output.js";
@@ -15,6 +15,11 @@ export function initCommand(args, io) {
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
   const force = options.flags.has("force");
   const dryRun = options.flags.has("dry-run");
+
+  if (!dryRun) {
+    ensureDirectory(root);
+  }
+
   const detected = detectLanguages(root);
   const presets = selectPresets(options.values.preset, detected);
   const files = coreFiles();
@@ -86,6 +91,12 @@ export function adaptersListCommand(args, io) {
 export function doctorCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
+
+  if (!exists(root)) {
+    write(io.stderr, `Error: target path does not exist: ${root}\n`);
+    return 1;
+  }
+
   const detected = detectLanguages(root);
   const checks = [
     ["Node.js", process.version],

@@ -26,6 +26,10 @@ export function writeFiles(root, files, options) {
   return { written, skipped, blocked };
 }
 
+export function ensureDirectory(dir) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
 export function listMarkdownFiles(root) {
   const results = [];
   walk(root, results);

@@ -31,6 +31,29 @@ test("init creates the portable core", async () => {
   assert.match(io.stdout.text, /Initialized Pakemin portable core/);
 });
 
+test("init creates a missing target directory", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "new-project");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["init", root], io);
+
+  assert.equal(exitCode, 0);
+  assert.equal(fs.existsSync(root), true);
+  assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), true);
+});
+
+test("init auto preset does not crash when target directory is missing", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "new-project");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["init", root, "--preset=auto"], io);
+
+  assert.equal(exitCode, 0);
+  assert.equal(fs.existsSync(path.join(root, ".ai/README.md")), true);
+});
+
 test("init does not overwrite by default", async () => {
   const root = tempProject();
   fs.mkdirSync(path.join(root, ".ai/context"), { recursive: true });
@@ -137,6 +160,17 @@ test("doctor reports detected stacks", async () => {
 
   assert.equal(exitCode, 0);
   assert.match(io.stdout.text, /detected: java \(pom.xml\)/);
+});
+
+test("doctor reports a clear error for missing target directory", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "missing-project");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["doctor", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /target path does not exist/);
 });
 
 test("adapters generate creates thin adapter files", async () => {

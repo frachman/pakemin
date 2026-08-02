@@ -48,6 +48,10 @@ export function reportDetection(stream, detected, applied) {
 }
 
 function markerExists(root, marker) {
+  if (!exists(root)) {
+    return false;
+  }
+
   if (!marker.includes("*")) {
     return exists(path.join(root, marker));
   }
