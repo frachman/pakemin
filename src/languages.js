@@ -12,7 +12,10 @@ export function selectPresets(preset, detected) {
 
   const requested = preset.split(",").map((value) => value.trim()).filter(Boolean);
   const ids = requested.includes("auto")
-    ? detected.map((language) => language.id)
+    ? [...new Set([
+      ...detected.map((language) => language.id),
+      ...requested.filter((id) => id !== "auto")
+    ])]
     : requested;
 
   const unknown = ids.filter((id) => !LANGUAGE_PRESETS.some((language) => language.id === id));

@@ -124,6 +124,52 @@ test("init applies auto presets for detected stacks", async () => {
   );
 });
 
+test("init combines auto presets with explicit presets", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "go.mod"), "module example.com/app\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=auto,rust"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Applied presets: go, rust/);
+
+  const technologyStack = fs.readFileSync(
+    path.join(root, ".ai/context/technology-stack.md"),
+    "utf8"
+  );
+  assert.match(technologyStack, /Go project detected/);
+  assert.match(technologyStack, /Rust project detected/);
+});
+
+test("init applies explicit presets when auto detects nothing", async () => {
+  const root = tempProject();
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=auto,rust"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Rust project detected/
+  );
+});
+
+test("init auto preset alone only applies detected presets", async () => {
+  const root = tempProject();
+  fs.writeFileSync(path.join(root, "go.mod"), "module example.com/app\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["init", root, "--preset=auto"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Applied presets: go/);
+  assert.doesNotMatch(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Rust project detected/
+  );
+});
+
 test("init detects wildcard language markers", async () => {
   const root = tempProject();
   fs.writeFileSync(path.join(root, "Demo.csproj"), "<Project></Project>\n");
@@ -153,6 +199,16 @@ test("init rejects unknown presets", async () => {
 
   assert.equal(exitCode, 1);
   assert.match(io.stderr.text, /unknown preset id/);
+});
+
+test("init rejects unknown presets when combined with known presets", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--preset=rust,unknown-lang"], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /unknown preset id\(s\): unknown-lang/);
 });
 
 test("doctor reports detected stacks", async () => {

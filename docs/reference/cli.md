@@ -39,7 +39,7 @@ Creates a `.ai` portable core with category `README.md` files and compact starte
 
 Default `init` may report detected stacks and suggest preset commands. It does not apply language-specific presets unless `--preset` is provided.
 
-Use `--preset=auto` to explicitly apply presets for detected stacks.
+Use `--preset=auto` to explicitly apply presets for detected stacks. Use `--preset=auto,<id>` to combine detected presets with explicitly listed presets.
 
 ```text
 pakemin validate [path] [--links-only] [--adapters]
