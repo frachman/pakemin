@@ -251,6 +251,34 @@ test("init warns when preset flag has no value", async () => {
   assert.equal(fs.existsSync(path.join(root, ".ai/context/technology-stack.md")), false);
 });
 
+test("init warns when preset value is empty", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--preset="], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(
+    io.stdout.text,
+    /warning: --preset was provided with no value; no preset was applied/
+  );
+  assert.equal(fs.existsSync(path.join(root, ".ai/context/technology-stack.md")), false);
+});
+
+test("init does not warn when preset has a value", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--preset=node"], io);
+
+  assert.equal(exitCode, 0);
+  assert.doesNotMatch(io.stdout.text, /warning: --preset was provided with no value/);
+  assert.match(
+    fs.readFileSync(path.join(root, ".ai/context/technology-stack.md"), "utf8"),
+    /Node.js project detected/
+  );
+});
+
 test("doctor reports detected stacks", async () => {
   const root = tempProject();
   fs.writeFileSync(path.join(root, "pom.xml"), "<project></project>\n");
@@ -343,6 +371,38 @@ test("adapters generate warns when only flag has no value", async () => {
   assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
   assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
   assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
+});
+
+test("adapters generate warns when only value is empty", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--only="], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(
+    io.stdout.text,
+    /warning: --only was provided with no value; all adapters will be generated/
+  );
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
+  assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
+});
+
+test("adapters generate does not warn when only has a value", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--only=agents"], io);
+
+  assert.equal(exitCode, 0);
+  assert.doesNotMatch(io.stdout.text, /warning: --only was provided with no value/);
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
 test("validate can require supported adapters", async () => {
