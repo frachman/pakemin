@@ -11,8 +11,16 @@ permissions:
 
 jobs:
   test:
-    name: Test and validate
+    name: Test and validate on Node.js ${{ matrix.node-version }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - "18"
+          - "20"
+          - "22"
+          - "24"
 
     steps:
       - name: Checkout
@@ -21,7 +29,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "24"
+          node-version: ${{ matrix.node-version }}
 
       - name: Run tests
         run: npm test
@@ -31,3 +39,18 @@ jobs:
 
       - name: Validate reference repository
         run: node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
+
+  required-check:
+    name: Test and validate
+    runs-on: ubuntu-latest
+    needs: test
+    if: always()
+
+    steps:
+      - name: Check matrix result
+        run: |
+          if [ "${{ needs.test.result }}" != "success" ]; then
+            echo "Node.js matrix failed"
+            exit 1
+          fi
+          echo "Node.js matrix passed"
