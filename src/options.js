@@ -7,9 +7,10 @@ export function parseOptions(args) {
     if (arg.startsWith("--")) {
       const option = arg.slice(2);
       const [key, value] = option.split("=", 2);
-      flags.add(key);
       if (value !== undefined) {
         values[key] = value;
+      } else {
+        flags.add(key);
       }
     } else {
       positionals.push(arg);
