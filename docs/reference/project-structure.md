@@ -15,9 +15,13 @@ This document describes the initial repository structure for the documentation f
 ├── bin
 │   └── pakemin.js
 ├── src
-│   └── cli.js
+│   ├── cli.js
+│   ├── commands.js
+│   ├── validation.js
+│   └── ...
 ├── test
-│   └── cli.test.js
+│   ├── cli.test.js
+│   └── cli-smoke.test.js
 ├── docs
 │   ├── README.md
 │   ├── getting-started
@@ -49,4 +53,4 @@ ADR filenames should use a stable sequence number such as `0001-markdown-first.m
 
 ## Future Work
 
-Future milestones may define shared framework layout, adapter templates, and generated validation behavior.
+Future milestones may refine shared framework layout, adapter templates, and validation behavior.

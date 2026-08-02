@@ -6,7 +6,7 @@ This document records the current package metadata decisions for Pakemin.
 
 ## Current State
 
-The package is publishable and pre-1.0:
+The package is published and pre-1.0:
 
 - `name`: `pakemin`
 - `version`: `0.1.0`
@@ -30,4 +30,4 @@ The first npm release is `0.1.0`.
 
 A package lock is not required while Pakemin has no runtime or development dependencies.
 
-The first release can be published manually after repository checks, `npm pack`, and tarball installation smoke tests pass.
+Future releases should run repository checks, `npm pack`, tarball installation smoke tests, and npm registry smoke tests.

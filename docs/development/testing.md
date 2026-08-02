@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This document describes how to verify Pakemin during the current pre-release milestones.
+This document describes how to verify Pakemin during public preview development.
 
 ## Automated Checks
 
@@ -40,8 +40,16 @@ node ./bin/pakemin.js doctor /tmp/pakemin-smoke
 
 Expected result: initialization creates `.ai`, adapter generation creates thin vendor files, adapter listing reports supported adapters as found, and validation passes.
 
-## Current Gaps
+## npm Smoke Test
 
-- The package is not published.
-- The `pakemin` command is available from the checkout, not as a global install.
-- npm package smoke testing is still deferred to publish readiness.
+After a package is published, install it from npm and run a temporary-project smoke test:
+
+```text
+npm install -g pakemin
+pakemin --version
+pakemin init /tmp/pakemin-npm-smoke
+pakemin adapters generate /tmp/pakemin-npm-smoke
+pakemin validate /tmp/pakemin-npm-smoke --adapters
+```
+
+Expected result: the installed version matches the release, initialization creates the v1 scaffold, adapter generation succeeds, and validation passes.

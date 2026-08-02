@@ -151,7 +151,7 @@ Those areas may be explored later, but they are outside the current documentatio
 
 If Pakemin helps your project, give it a star, share it, or open an issue or PR.
 
-Bug reports, adapter improvements, documentation fixes, and language preset feedback are especially welcome during the pre-release stage.
+Bug reports, adapter improvements, documentation fixes, and language preset feedback are especially welcome during the public preview stage.
 
 ## Repository Guide
 
@@ -166,7 +166,7 @@ Bug reports, adapter improvements, documentation fixes, and language preset feed
 
 ## Current Status
 
-Pakemin is pre-release and prepared for its first npm release.
+Pakemin is available on npm as a pre-1.0 public preview.
 
 Completed foundations include documentation, specification drafts, a reference repository, a minimal CLI, adapter support, CI, MIT licensing, and explicit language presets.
 
