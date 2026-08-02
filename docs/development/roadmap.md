@@ -92,7 +92,7 @@ Scope this milestone narrowly. It should define the direction before v1.0 framew
 
 - Accept Pakemin v1.0 as a lightweight AI Development Framework.
 - Define philosophy, principles, and boundaries.
-- Capture the framework direction in an ADR.
+- Framework direction: accepted in [../adr/0007-v1-framework-direction.md](../adr/0007-v1-framework-direction.md).
 
 Do not add CLI behavior, starter files, validation rules, schemas, or dependencies in this milestone.
 

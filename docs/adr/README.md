@@ -12,6 +12,7 @@ Parent: [Documentation](../README.md)
 - [ADR-0004: Minimal CLI](0004-minimal-cli.md): allows a dependency-free local CLI for the minimal tooling milestone.
 - [ADR-0005: Initial Adapter Support](0005-initial-adapter-support.md): defines the first supported adapter set.
 - [ADR-0006: Language Detection and Presets](0006-language-detection-and-presets.md): defines safe language-aware detection and explicit presets.
+- [ADR-0007: v1.0 Framework Direction](0007-v1-framework-direction.md): accepts Pakemin v1.0 as a lightweight AI Development Framework.
 
 ## Format
 
