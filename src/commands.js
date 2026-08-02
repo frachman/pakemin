@@ -29,7 +29,7 @@ export function initCommand(args, io) {
   const presets = selectPresets(options.values.preset, detected);
   const files = coreFiles();
 
-  if (isFlagSet(options, "preset") && !options.values.preset) {
+  if (isFlagSet(options, "preset") && !options.values.preset?.trim()) {
     write(io.stdout, "warning: --preset was provided with no value; no preset was applied\n");
   }
 
@@ -81,7 +81,7 @@ export function adaptersGenerateCommand(args, io) {
   const dryRun = isFlagSet(options, "dry-run");
   const adapters = selectAdapters(options.values.only);
 
-  if (isFlagSet(options, "only") && !options.values.only) {
+  if (isFlagSet(options, "only") && !options.values.only?.trim()) {
     write(io.stdout, "warning: --only was provided with no value; all adapters will be generated\n");
   }
 

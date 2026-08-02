@@ -64,7 +64,7 @@ pakemin init [path] --preset=auto,rust
 
 Creates the portable core and applies detected presets plus the Rust preset.
 
-If `--preset` or `--preset=` is provided without a value, Pakemin prints a warning and continues without applying language presets.
+If `--preset`, `--preset=`, or a blank `--preset` value is provided, Pakemin prints a warning and continues without applying language presets.
 
 ## Boundaries
 
