@@ -32,6 +32,8 @@ Example:
 pakemin adapters generate . --only=agents,cursor
 ```
 
+If `--only` is provided without a value, Pakemin prints a warning and generates all supported adapters.
+
 ```text
 pakemin validate [path] --adapters
 ```

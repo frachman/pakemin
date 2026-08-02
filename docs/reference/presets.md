@@ -15,7 +15,7 @@ Presets add small, language-aware starting points to the Pakemin portable core.
 - `ruby`
 - `auto`
 
-`auto` applies presets for detected stacks. It is explicit and must be requested by the user.
+`auto` applies presets for detected stacks. It is explicit and must be requested by the user. Combine `auto` with explicit IDs, such as `auto,rust`, to apply detected presets plus listed presets.
 
 ## Detection
 
@@ -57,6 +57,14 @@ pakemin init [path] --preset=auto
 ```
 
 Creates the portable core and applies presets for detected stacks.
+
+```text
+pakemin init [path] --preset=auto,rust
+```
+
+Creates the portable core and applies detected presets plus the Rust preset.
+
+If `--preset` is provided without a value, Pakemin prints a warning and continues without applying language presets.
 
 ## Boundaries
 

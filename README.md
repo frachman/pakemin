@@ -119,7 +119,10 @@ pakemin init --preset=rust
 pakemin init --preset=dotnet
 pakemin init --preset=ruby
 pakemin init --preset=auto
+pakemin init --preset=auto,rust
 ```
+
+Use `--preset=auto,<id>` to combine detected stacks with explicit presets.
 
 Presets write small starter documents into `.ai/context` and `.ai/rules`. They do not install dependencies, modify source code, or run build tools.
 

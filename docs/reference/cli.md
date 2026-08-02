@@ -41,6 +41,8 @@ Default `init` may report detected stacks and suggest preset commands. It does n
 
 Use `--preset=auto` to explicitly apply presets for detected stacks. Use `--preset=auto,<id>` to combine detected presets with explicitly listed presets.
 
+If `--preset` is provided without a value, Pakemin prints a warning and continues without applying language presets.
+
 ```text
 pakemin validate [path] [--links-only] [--adapters]
 ```
@@ -70,6 +72,8 @@ pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
 Generates thin adapter files for `AGENTS.md`, Claude, Gemini, Cursor, and GitHub Copilot. Existing adapter files are not overwritten unless `--force` is provided.
 
 Use `--only` with comma-separated adapter IDs to generate a subset.
+
+If `--only` is provided without a value, Pakemin prints a warning and generates all supported adapters.
 
 ```text
 pakemin doctor [path]
