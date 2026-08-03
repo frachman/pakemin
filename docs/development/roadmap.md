@@ -198,7 +198,7 @@ Scope this milestone narrowly. It should patch the first public preview based on
 ### Milestone 6.1.8: Boolean Flag Value Recognition
 
 - Introduce the `isFlagSet()` helper to correctly parse explicit values passed to boolean flags.
-- Fix bug where explicit flags such as `--dry-run=true` or `--force=false` were treated as missing.
+- Fix bug where explicit flags such as `--dry-run=true` were treated as missing. Note: boolean flags are recognized by presence, not by their literal value, so `--force=false` still enables force (see the caveat already documented in docs/reference/cli.md).
 
 ### Milestone 6.1.9: Blank and Whitespace Value Warnings
 
