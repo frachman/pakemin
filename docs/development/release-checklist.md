@@ -21,6 +21,13 @@ This checklist defines the minimum readiness review before Pakemin is published 
 - Run `pakemin --help` from the tarball install.
 - Run `pakemin init`, `pakemin adapters generate`, and `pakemin validate --adapters` from the tarball install.
 
+## Required for Patch Releases (e.g., 0.1.1)
+
+- Confirm `package.json` version matches the version about to be published.
+- Confirm a git tag matching `v<package.json version>` exists (or will be created as part of this release) and points at the commit being published.
+- Confirm CHANGELOG.md has an entry for the version being published.
+- Re-run `npm pack`, install the tarball into a temporary project, and smoke test `pakemin --version`, `pakemin init`, `pakemin adapters generate`, and `pakemin validate --adapters` from the tarball install — since fixes landed after the last time this was verified.
+
 ## Out of Scope
 
-This checklist does not define release automation, signing, changelog generation, or v1.0 semantic-version guarantees.
+This checklist does not define release automation, signing, or v1.0 semantic-version guarantees.
