@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Clear error messages for non-directory and dangling symlink target paths instead of raw Node.js errors
 - Markdown link validation no longer reports false positives for valid files with query strings or hash anchors
 
-## [0.1.0] - 2026-07-XX
+## [0.1.0] - 2026-08-02
 
 ### Added
 
