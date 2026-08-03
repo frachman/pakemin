@@ -58,6 +58,8 @@ pakemin adapters generate
 pakemin validate --adapters
 ```
 
+Run `pakemin adapters generate` after `pakemin init` so AI coding tools can discover the shared `.ai/README.md` portable core through their own instruction files.
+
 For local development, you can link the command:
 
 ```text
