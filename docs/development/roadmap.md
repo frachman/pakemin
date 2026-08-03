@@ -222,4 +222,45 @@ Scope this milestone narrowly. It should patch the first public preview based on
 - Install the tarball into a temporary project.
 - Smoke test the CLI lifecycle.
 
-Do not publish `0.1.1` until explicitly approved.
+Published to npm and tagged as `v0.1.1`.
+
+## Milestone 7: Post-0.1.1 Direction (Proposed)
+
+Scope this milestone narrowly. It should close the gap between installable public preview and a project that people can adopt, contribute to, and rely on long-term.
+
+### Milestone 7.1: Public and Contributor Readiness
+
+- Add a concise usage tutorial covering install, `init`, adapter generation, validation, and the first useful edit in `.ai`.
+- Add `CONTRIBUTING.md` covering local setup, tests, validation, commit expectations, and PR expectations.
+- Consider `CODE_OF_CONDUCT.md` if the project intends to actively welcome outside contributors.
+
+Do not add contributor tooling, bots, or automated triage in this milestone.
+
+### Milestone 7.2: Init Upgrade Command
+
+- Design a future `pakemin upgrade` command, or similarly named command, for reconciling existing `.ai` folders with newer starter document conventions.
+- Report starter-file differences for manual review instead of blindly overwriting user customizations.
+- Requires an ADR before implementation because it adds a new command surface.
+
+### Milestone 7.3: Adapter Coverage Expansion
+
+- Evaluate demand for additional vendor adapters beyond the current supported set, such as Windsurf, Zed, Continue.dev, Amazon Q Developer, or JetBrains AI Assistant.
+- Requires an ADR before implementation, following the process used for ADR-0005.
+
+### Milestone 7.4: Additional Language Presets
+
+- Evaluate demand for additional language presets beyond the current set, such as PHP, C++, Swift, Kotlin, or Elixir.
+- Requires an ADR before implementation, following the process used for ADR-0006.
+
+### Milestone 7.5: Real-World Dogfooding
+
+- Use Pakemin on at least one real, actively developed project for a sustained period.
+- Collect concrete friction points from day-to-day use instead of relying only on synthetic edge-case testing.
+- Feed validated findings into a future patch milestone, following the same pattern as Milestone 6.1.
+
+### Milestone 7.6: v1.0 Readiness Criteria
+
+- Define written criteria for what v1.0 means for Pakemin, including CLI stability guarantees, minimum adapter and preset coverage, and documentation completeness.
+- Requires an ADR before implementation because it changes versioning and stability commitments.
+
+None of the sub-milestones above are approved for implementation by being listed here. Each one gated by "Requires an ADR" needs an accepted ADR before any code or new command surface is built.
