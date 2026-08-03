@@ -23,6 +23,7 @@ This checklist defines the minimum readiness review before Pakemin is published 
 
 ## Required for Patch Releases (e.g., 0.1.1)
 
+- Work from a dedicated version branch, such as `v0.1.2`, until the release is validated and approved for `master`.
 - Confirm `package.json` version matches the version about to be published.
 - Confirm a git tag matching `v<package.json version>` exists (or will be created as part of this release) and points at the commit being published.
 - Confirm CHANGELOG.md has an entry for the version being published.

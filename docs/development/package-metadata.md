@@ -26,6 +26,8 @@ Before v1.0, minor versions may add or adjust behavior. Patch versions should be
 
 The first npm release is `0.1.0`. The next patch candidate is `0.1.1`.
 
+`master` represents the latest stable public state. Changes for a future release should be developed on a dedicated version branch named after the intended version, such as `v0.1.2` or `v0.2.0`, then merged after validation and maintainer approval.
+
 ## Review Notes
 
 A package lock is not required while Pakemin has no runtime or development dependencies.

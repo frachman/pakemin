@@ -12,4 +12,6 @@ Use ADRs in [docs/adr](docs/adr/README.md) for significant architectural decisio
 
 Report assumptions when requirements are unclear. Avoid inventing product, schema, package, or adapter behavior beyond the documented scope.
 
+Treat `master` as the latest stable public state. For changes targeting a future release, work on a dedicated version branch before pushing, using a branch name that matches the intended version such as `v0.1.2` or `v0.2.0`. Do not push release-bound changes directly to `master` unless the maintainer explicitly requests it.
+
 After documentation changes, validate relative Markdown links.
