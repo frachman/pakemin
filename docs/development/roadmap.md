@@ -190,7 +190,32 @@ Scope this milestone narrowly. It should patch the first public preview based on
 - Run CI on Node.js 18, 20, 22, and 24.
 - Keep existing test and validation jobs.
 
-### Milestone 6.1.7: 0.1.1 Release Readiness
+### Milestone 6.1.7: Preset Auto-Detection Combination
+
+- Union explicitly specified preset IDs with auto-detected stacks when using `--preset=auto,<id>`.
+- Fix bug that discarded explicit preset options in the presence of the wildcard auto option.
+
+### Milestone 6.1.8: Boolean Flag Value Recognition
+
+- Introduce the `isFlagSet()` helper to correctly parse explicit values passed to boolean flags.
+- Fix bug where explicit flags such as `--dry-run=true` or `--force=false` were treated as missing.
+
+### Milestone 6.1.9: Blank and Whitespace Value Warnings
+
+- Add explicit warnings when value options such as `--preset` or `--only` are provided with empty or whitespace-only values.
+- Document options parser warnings in the CLI reference guides.
+
+### Milestone 6.1.10: Non-Directory and Dangling Symlink Target Handling
+
+- Ensure `init`, `validate`, and `doctor` command executors handle file paths or dangling symlinks at target or core paths safely.
+- Replace low-level Node.js filesystem errors with user-friendly target validation messages.
+
+### Milestone 6.1.11: Link Validation Query String Handling
+
+- Strip query strings and hash anchors before verifying local relative Markdown file links.
+- Prevent false-positive validation errors for links pointing to valid files containing query parameters.
+
+### Milestone 6.1.12: 0.1.1 Release Readiness
 
 - Run full checks.
 - Run `npm pack`.
