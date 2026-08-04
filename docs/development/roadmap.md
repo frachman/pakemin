@@ -246,7 +246,7 @@ Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Impleme
 
 ### Milestone 7.1: Documentation Consistency Cleanup
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
 - Fix stale architecture, package metadata, example, changelog, and README wording that no longer matches the `0.1.1` release.
 - Add a mandatory documentation consistency review to the release checklist.
@@ -254,7 +254,7 @@ Status: Planned for v0.1.2
 
 ### Milestone 7.2: First-Time User Tutorial
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
 - Add a concise tutorial covering install, `init`, adapter generation, validation, and the first useful edit in `.ai`.
 - Explain why `pakemin adapters generate` should run after `pakemin init`.
@@ -262,7 +262,7 @@ Status: Planned for v0.1.2
 
 ### Milestone 7.3: Reference Repository Canonicalization
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
 - Remove or clearly label duplicate legacy example documents in the reference repository.
 - Keep one canonical example per concept, especially active memory, feature workflow, bugfix workflow, and review workflow.
@@ -270,7 +270,7 @@ Status: Planned for v0.1.2
 
 ### Milestone 7.4: Contributor Readiness
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
 - Add `CONTRIBUTING.md` covering local setup, tests, validation, branch policy, commit expectations, and PR expectations.
 - Consider `CODE_OF_CONDUCT.md` only if the project intends to actively welcome outside contributors.
@@ -278,7 +278,7 @@ Status: Planned for v0.1.2
 
 ### Milestone 7.5: CLI UX and Verification Follow-Up
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
 - Decide the intended behavior for `pakemin validate <missing-path>`.
 - If behavior changes, return a clear missing-target error and add tests.
