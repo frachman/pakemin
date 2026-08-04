@@ -22,7 +22,7 @@ Confirm it is available:
 pakemin --help
 ```
 
-If `pakemin` is not found after a global install, the `npm` global binaries directory is not on your `PATH` — a common issue with nvm-managed Node installs. Add it to `PATH` (and to your shell profile) so the command resolves, then rerun `pakemin --help`. `npm bin -g` prints the directory to add.
+If `pakemin` is not found after a global install, the `npm` global binaries directory is not on your `PATH` — a common issue with nvm-managed Node installs. Run `npm prefix -g` to print the global npm prefix; the global binaries directory is the `bin` directory under that prefix. Add that `bin` directory to `PATH` (and to your shell profile) so the command resolves, then rerun `pakemin --help`.
 
 ## 2. Initialize a Project
 
