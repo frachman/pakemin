@@ -236,9 +236,9 @@ Scope this milestone narrowly. It should patch the first public preview based on
 
 Published to npm and tagged as `v0.1.1`.
 
-## Milestone 7: Post-0.1.1 Adoption Readiness (Proposed)
+## Milestone 7: Post-0.1.1 Adoption Readiness
 
-Status: Proposed for v0.1.2
+Status: In Progress for v0.1.2
 
 Scope this milestone narrowly. It should turn the hardened public preview into a release that people can adopt, contribute to, and rely on without expanding Pakemin's feature surface.
 

@@ -31,7 +31,7 @@ Pakemin uses `0.x` versions before v1.0. Minor releases may add or adjust pre-1.
 
 Boolean flags such as `--force`, `--dry-run`, `--links-only`, and `--adapters` are enabled by presence. They do not support `--flag=false` to disable; omit the flag instead.
 
-Command target paths must be directories. `pakemin init <missing-dir>` creates the missing target directory; commands return a clear error when the target path exists as a file.
+Command target paths must be directories. `pakemin init <missing-dir>` creates the missing target directory; it is the only command that creates a missing target. `pakemin validate <missing-path>` and `pakemin doctor <missing-path>` return a clear missing-target error instead, and all commands return a clear error when the target path exists as a file.
 
 ## Commands
 
