@@ -11,5 +11,4 @@ Parent: [Portable core](../README.md)
 - [Architecture](architecture.md): summarizes the system design.
 - [Stack](stack.md): records runtime and tooling notes.
 - [Roles](roles.md): defines maintainer, contributor, and AI agent responsibilities.
-- [Technology stack](technology-stack.md): lists assumed technologies.
 - [Repository map](repository-map.md): describes the intended repository layout.
