@@ -47,6 +47,11 @@ export function validateCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
 
+  if (!exists(root)) {
+    write(io.stderr, `Error: target path does not exist: ${root}\n`);
+    return 1;
+  }
+
   if (exists(root) && !isDirectory(root)) {
     write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
     return 1;

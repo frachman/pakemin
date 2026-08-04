@@ -631,6 +631,18 @@ test("validate reports a clear error when target path is a file", async () => {
   assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
 });
 
+test("validate reports a clear error for missing target directory", async () => {
+  const parent = tempProject();
+  const root = path.join(parent, "missing-project");
+  const io = memoryIo(parent);
+
+  const exitCode = await runCli(["validate", root], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stderr.text, /target path does not exist/);
+  assert.doesNotMatch(io.stdout.text, /is missing/);
+});
+
 function tempProject() {
   return fs.mkdtempSync(path.join(os.tmpdir(), "pakemin-test-"));
 }
