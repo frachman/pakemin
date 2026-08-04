@@ -5,6 +5,23 @@ All notable changes to Pakemin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - Unreleased
+
+### Added
+
+- First-time user tutorial walking through install, `init`, adapter generation, validation, and the first useful edit in `.ai`
+- `CONTRIBUTING.md` with local setup, checks, branch policy, and pull request expectations
+
+### Changed
+
+- Removed duplicate legacy example documents from the reference repository so each concept has one canonical example
+- Refreshed documentation wording to match the released `0.1.1` state
+- Added a mandatory documentation consistency review to the release checklist
+
+### Fixed
+
+- `pakemin validate <missing-path>` now returns a clear "target path does not exist" error instead of a list of misleading "missing" errors
+
 ## [0.1.1] - 2026-08-03
 
 ### Fixed
