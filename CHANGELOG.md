@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed duplicate legacy example documents from the reference repository so each concept has one canonical example
 - Refreshed documentation wording to match the released `0.1.1` state
 - Added a mandatory documentation consistency review to the release checklist
+- The npm package now includes `docs`, `examples`, `CONTRIBUTING.md`, and `CHANGELOG.md` so README and documentation links work for npm and tarball users
+- Expanded the first-time user tutorial with a Node.js prerequisite, install troubleshooting, representative command output, a language-presets pointer, and a closing step on committing project knowledge
+- Corrected the roadmap's Milestone 7 statuses and synced the package metadata documentation with the packaged `files` list
 
 ### Fixed
 
