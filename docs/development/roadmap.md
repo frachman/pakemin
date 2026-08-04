@@ -224,43 +224,54 @@ Scope this milestone narrowly. It should patch the first public preview based on
 
 Published to npm and tagged as `v0.1.1`.
 
-## Milestone 7: Post-0.1.1 Direction (Proposed)
+## Milestone 7: Post-0.1.1 Adoption Readiness (Proposed)
 
-Scope this milestone narrowly. It should close the gap between installable public preview and a project that people can adopt, contribute to, and rely on long-term.
+Scope this milestone narrowly. It should turn the hardened public preview into a release that people can adopt, contribute to, and rely on without expanding Pakemin's feature surface.
 
-### Milestone 7.1: Public and Contributor Readiness
+Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Implementation may happen in small commits, but npm should receive one final `0.1.2` publish only after the full adoption-readiness scope is validated and explicitly approved.
 
-- Add a concise usage tutorial covering install, `init`, adapter generation, validation, and the first useful edit in `.ai`.
-- Add `CONTRIBUTING.md` covering local setup, tests, validation, commit expectations, and PR expectations.
-- Consider `CODE_OF_CONDUCT.md` if the project intends to actively welcome outside contributors.
+### Milestone 7.1: Documentation Consistency Cleanup
 
-Do not add contributor tooling, bots, or automated triage in this milestone.
+- Fix stale architecture, package metadata, example, changelog, and README wording that no longer matches the `0.1.1` release.
+- Add a mandatory documentation consistency review to the release checklist.
+- Keep this milestone documentation-only.
 
-### Milestone 7.2: Init Upgrade Command
+### Milestone 7.2: First-Time User Tutorial
 
-- Design a future `pakemin upgrade` command, or similarly named command, for reconciling existing `.ai` folders with newer starter document conventions.
-- Report starter-file differences for manual review instead of blindly overwriting user customizations.
-- Requires an ADR before implementation because it adds a new command surface.
+- Add a concise tutorial covering install, `init`, adapter generation, validation, and the first useful edit in `.ai`.
+- Explain why `pakemin adapters generate` should run after `pakemin init`.
+- Link the tutorial from the README and Getting Started documentation.
 
-### Milestone 7.3: Adapter Coverage Expansion
+### Milestone 7.3: Reference Repository Canonicalization
 
-- Evaluate demand for additional vendor adapters beyond the current supported set, such as Windsurf, Zed, Continue.dev, Amazon Q Developer, or JetBrains AI Assistant.
-- Requires an ADR before implementation, following the process used for ADR-0005.
+- Remove or clearly label duplicate legacy example documents in the reference repository.
+- Keep one canonical example per concept, especially active memory, feature workflow, bugfix workflow, and review workflow.
+- Make AI loading paths deterministic for the reference repository.
 
-### Milestone 7.4: Additional Language Presets
+### Milestone 7.4: Contributor Readiness
 
-- Evaluate demand for additional language presets beyond the current set, such as PHP, C++, Swift, Kotlin, or Elixir.
-- Requires an ADR before implementation, following the process used for ADR-0006.
+- Add `CONTRIBUTING.md` covering local setup, tests, validation, branch policy, commit expectations, and PR expectations.
+- Consider `CODE_OF_CONDUCT.md` only if the project intends to actively welcome outside contributors.
+- Do not add contributor tooling, bots, or automated triage in this milestone.
 
-### Milestone 7.5: Real-World Dogfooding
+### Milestone 7.5: CLI UX and Verification Follow-Up
 
-- Use Pakemin on at least one real, actively developed project for a sustained period.
-- Collect concrete friction points from day-to-day use instead of relying only on synthetic edge-case testing.
-- Feed validated findings into a future patch milestone, following the same pattern as Milestone 6.1.
+- Decide the intended behavior for `pakemin validate <missing-path>`.
+- If behavior changes, return a clear missing-target error and add tests.
+- Improve missing command examples and release smoke-check guidance.
 
-### Milestone 7.6: v1.0 Readiness Criteria
+### Milestone 7.6: Release Readiness for v0.1.2
 
-- Define written criteria for what v1.0 means for Pakemin, including CLI stability guarantees, minimum adapter and preset coverage, and documentation completeness.
-- Requires an ADR before implementation because it changes versioning and stability commitments.
+- Run full tests, documentation validation, reference repository validation, `npm pack`, tarball installation, and npm registry smoke tests.
+- Publish `0.1.2` only after explicit maintainer approval.
+- Do not publish intermediate npm versions for individual Milestone 7 sub-milestones.
 
-None of the sub-milestones above are approved for implementation by being listed here. Each one gated by "Requires an ADR" needs an accepted ADR before any code or new command surface is built.
+## Future Milestones: ADR-Gated Scope
+
+- Design a future `pakemin upgrade` command for reconciling existing `.ai` folders with newer starter document conventions. Requires an ADR before implementation because it adds a new command surface.
+- Evaluate demand for additional vendor adapters, such as Windsurf, Zed, Continue.dev, Amazon Q Developer, or JetBrains AI Assistant. Requires an ADR before implementation, following the process used for ADR-0005.
+- Evaluate demand for additional language presets, such as PHP, C++, Swift, Kotlin, or Elixir. Requires an ADR before implementation, following the process used for ADR-0006.
+- Define written v1.0 readiness criteria, including CLI stability guarantees, minimum adapter and preset coverage, and documentation completeness. Requires an ADR before implementation because it changes versioning and stability commitments.
+- Continue real-world dogfooding and feed validated findings into future patch milestones.
+
+None of the future milestones above are approved for implementation by being listed here. Each item gated by "Requires an ADR" needs an accepted ADR before any code or new command surface is built.
