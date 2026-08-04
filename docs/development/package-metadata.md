@@ -14,7 +14,7 @@ The package is published and pre-1.0:
 - `license`: `MIT`
 - command namespace: `pakemin`
 - runtime: Node.js 18 or newer
-- package files: `bin`, `src`, `README.md`, and `LICENSE`
+- package files: `bin`, `src`, `docs`, `examples`, `README.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, and `LICENSE`
 
 MIT is used to keep early public adoption simple and familiar.
 
