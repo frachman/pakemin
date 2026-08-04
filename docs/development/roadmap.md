@@ -4,6 +4,14 @@
 
 This document records the provisional Pakemin roadmap. Milestones may change as the specification matures.
 
+## Status Legend
+
+- Completed: implemented, validated, and released or merged.
+- In Progress: actively being worked on.
+- Planned: accepted as upcoming work for the named release.
+- Proposed: draft direction, not yet accepted for implementation.
+- ADR Required: needs an accepted ADR before implementation.
+
 ## Milestone 0: Documentation Foundation
 
 - Vision and philosophy.
@@ -142,6 +150,8 @@ Do not add unrelated product features in this milestone.
 
 ## Milestone 6.0: npm Publish Readiness
 
+Status: Completed
+
 Scope this milestone narrowly. It should prepare the existing CLI for npm publication without expanding the product surface.
 
 - Decide release and versioning policy.
@@ -154,6 +164,8 @@ Scope this milestone narrowly. It should prepare the existing CLI for npm public
 Do not add new presets, plugin architecture, hosted services, or unrelated CLI commands in this milestone.
 
 ## Milestone 6.1: 0.1.1 Public Preview Hardening
+
+Status: Completed
 
 Scope this milestone narrowly. It should patch the first public preview based on real user and agent feedback.
 
@@ -226,11 +238,15 @@ Published to npm and tagged as `v0.1.1`.
 
 ## Milestone 7: Post-0.1.1 Adoption Readiness (Proposed)
 
+Status: Proposed for v0.1.2
+
 Scope this milestone narrowly. It should turn the hardened public preview into a release that people can adopt, contribute to, and rely on without expanding Pakemin's feature surface.
 
 Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Implementation may happen in small commits, but npm should receive one final `0.1.2` publish only after the full adoption-readiness scope is validated and explicitly approved.
 
 ### Milestone 7.1: Documentation Consistency Cleanup
+
+Status: Planned for v0.1.2
 
 - Fix stale architecture, package metadata, example, changelog, and README wording that no longer matches the `0.1.1` release.
 - Add a mandatory documentation consistency review to the release checklist.
@@ -238,11 +254,15 @@ Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Impleme
 
 ### Milestone 7.2: First-Time User Tutorial
 
+Status: Planned for v0.1.2
+
 - Add a concise tutorial covering install, `init`, adapter generation, validation, and the first useful edit in `.ai`.
 - Explain why `pakemin adapters generate` should run after `pakemin init`.
 - Link the tutorial from the README and Getting Started documentation.
 
 ### Milestone 7.3: Reference Repository Canonicalization
+
+Status: Planned for v0.1.2
 
 - Remove or clearly label duplicate legacy example documents in the reference repository.
 - Keep one canonical example per concept, especially active memory, feature workflow, bugfix workflow, and review workflow.
@@ -250,11 +270,15 @@ Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Impleme
 
 ### Milestone 7.4: Contributor Readiness
 
+Status: Planned for v0.1.2
+
 - Add `CONTRIBUTING.md` covering local setup, tests, validation, branch policy, commit expectations, and PR expectations.
 - Consider `CODE_OF_CONDUCT.md` only if the project intends to actively welcome outside contributors.
 - Do not add contributor tooling, bots, or automated triage in this milestone.
 
 ### Milestone 7.5: CLI UX and Verification Follow-Up
+
+Status: Planned for v0.1.2
 
 - Decide the intended behavior for `pakemin validate <missing-path>`.
 - If behavior changes, return a clear missing-target error and add tests.
@@ -262,11 +286,15 @@ Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Impleme
 
 ### Milestone 7.6: Release Readiness for v0.1.2
 
+Status: Planned for v0.1.2
+
 - Run full tests, documentation validation, reference repository validation, `npm pack`, tarball installation, and npm registry smoke tests.
 - Publish `0.1.2` only after explicit maintainer approval.
 - Do not publish intermediate npm versions for individual Milestone 7 sub-milestones.
 
 ## Future Milestones: ADR-Gated Scope
+
+Status: Proposed, ADR Required
 
 - Design a future `pakemin upgrade` command for reconciling existing `.ai` folders with newer starter document conventions. Requires an ADR before implementation because it adds a new command surface.
 - Evaluate demand for additional vendor adapters, such as Windsurf, Zed, Continue.dev, Amazon Q Developer, or JetBrains AI Assistant. Requires an ADR before implementation, following the process used for ADR-0005.
