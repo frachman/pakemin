@@ -164,6 +164,7 @@ Bug reports, adapter improvements, documentation fixes, and language preset feed
 
 - [Documentation overview](docs/README.md)
 - [Getting started](docs/getting-started/README.md)
+- [First-Time User Tutorial](docs/getting-started/tutorial.md)
 - [Architecture](docs/architecture/README.md)
 - [Reference](docs/reference/README.md)
 - [CLI reference](docs/reference/cli.md)
