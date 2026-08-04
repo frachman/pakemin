@@ -118,7 +118,7 @@ Validation remains green after your edit. You now have a working, validated Pake
 The whole point of the portable-core model is that project knowledge belongs to the project. Commit `.ai/` and the generated adapter files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/pakemin.md`, `.github/copilot-instructions.md`) to version control so the knowledge records and adapters are tracked, shared, and reviewed with the rest of your code:
 
 ```text
-git add .ai AGENTS.md CLAUDE.md GEMINI.md .cursor .github
+git add .ai AGENTS.md CLAUDE.md GEMINI.md .cursor/rules/pakemin.md .github/copilot-instructions.md
 git commit -m "Add Pakemin portable core and adapters"
 ```
 
