@@ -160,6 +160,8 @@ If Pakemin helps your project, give it a star, share it, or open an issue or PR.
 
 Bug reports, adapter improvements, documentation fixes, and language preset feedback are especially welcome during the public preview stage.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a local checkout and open a pull request.
+
 ## Repository Guide
 
 - [Documentation overview](docs/README.md)
