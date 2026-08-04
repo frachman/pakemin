@@ -27,6 +27,7 @@ This checklist defines the minimum readiness review before Pakemin is published 
 - Confirm `package.json` version matches the version about to be published.
 - Confirm a git tag matching `v<package.json version>` exists (or will be created as part of this release) and points at the commit being published.
 - Confirm CHANGELOG.md has an entry for the version being published.
+- Confirm README, getting-started, reference-repository, example, and CHANGELOG wording matches the version being published (documentation consistency review); fix any stale milestone or version references.
 - Re-run `npm pack`, install the tarball into a temporary project, and smoke test `pakemin --version`, `pakemin init`, `pakemin adapters generate`, and `pakemin validate --adapters` from the tarball install — since fixes landed after the last time this was verified.
 
 ## Out of Scope
