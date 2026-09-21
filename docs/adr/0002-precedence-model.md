@@ -1,6 +1,6 @@
 # ADR-0002: Precedence Model
 
-- Status: Accepted
+- Status: Superseded by ADR-0009
 - Date: 2026-08-01
 - Decision owners: Farandy Rachman
 
@@ -9,6 +9,10 @@
 Pakemin needs a clear rule for resolving conflicts between current user requests, platform restrictions, project-specific content, shared framework defaults, and vendor adapter behavior.
 
 Without an explicit precedence model, adapters and project documentation may interpret the same instruction differently.
+
+## Supersession Note
+
+This historical flat model is superseded for project-owned authority by [ADR-0009: Layered Authority and Provenance](0009-layered-authority.md). Safety and platform restrictions remain above Pakemin project authority.
 
 ## Decision
 

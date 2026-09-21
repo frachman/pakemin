@@ -1,6 +1,6 @@
 # ADR-0007: v1.0 Framework Direction
 
-- Status: Accepted
+- Status: Superseded by ADR-0008
 - Date: 2026-08-02
 - Decision owners: Farandy Rachman
 
@@ -11,6 +11,10 @@ Pakemin already defines a portable `.ai` core with context, memory, rules, workf
 Early use shows that folders alone do not give AI agents enough guidance. Agents still need a clear way to understand document purpose, naming, stable context, evolving memory, requirements, decisions, milestones, tasks, roles, and loading behavior.
 
 Pakemin needs a v1.0 direction that reduces prompt length without becoming tied to one AI vendor or turning into a full orchestration platform.
+
+## Supersession Note
+
+This framework direction is superseded by [ADR-0008: Governance Positioning](0008-governance-positioning.md). Its Markdown-first and local-first boundaries remain relevant unless a newer ADR changes them.
 
 ## Decision
 

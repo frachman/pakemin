@@ -12,10 +12,7 @@ Use this checklist to review the sample SaaS reference repository without Pakemi
 ## Adapters
 
 - Root `AGENTS.md` points to `.ai/README.md`.
-- `CLAUDE.md` points to `.ai/README.md`.
-- `GEMINI.md` points to `.ai/README.md`.
-- `.cursor/rules/pakemin.md` points to `.ai/README.md`.
-- `.github/copilot-instructions.md` points to `.ai/README.md`.
+- Any optional compatibility adapter present points to `.ai/README.md`.
 - Adapter files do not duplicate substantial portable-core content.
 
 ## Content Boundaries

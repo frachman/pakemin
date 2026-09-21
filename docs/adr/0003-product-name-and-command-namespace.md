@@ -1,6 +1,6 @@
 # ADR-0003: Product Name and Command Namespace
 
-- Status: Accepted
+- Status: Superseded in part by ADR-0008
 - Date: 2026-08-01
 - Decision owners: Farandy Rachman
 
@@ -12,7 +12,7 @@ The repository owner chose the name Pakemin. The name aligns with the Javanese i
 
 ## Decision
 
-The product name is Pakemin. The descriptive category is AI Engineering Specification.
+The product name is Pakemin. At the time, the descriptive category was AI Engineering Specification.
 
 Future CLI examples should use the `pakemin` command namespace, such as:
 
@@ -31,7 +31,7 @@ Documentation can use a stable project name before the CLI milestone begins.
 
 The earlier `aes` command examples are retired before implementation, avoiding a later command rename.
 
-The phrase AI Engineering Specification remains useful as a category and concept. It should not replace Pakemin as the product name.
+The product name remains Pakemin. [ADR-0008: Governance Positioning](0008-governance-positioning.md) supersedes the descriptive category with AI Engineering Governance Framework.
 
 ## Alternatives Considered
 

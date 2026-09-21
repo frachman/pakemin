@@ -24,7 +24,7 @@ Validate the reference repository as a Pakemin-compatible project:
 node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
 ```
 
-The same checks run in CI for pushes to `master` and pull requests.
+The same checks run in CI for pushes to `master` and `v*` release branches, and for pull requests.
 
 ## End-to-End Smoke Test
 
@@ -38,7 +38,7 @@ node ./bin/pakemin.js validate /tmp/pakemin-smoke --adapters
 node ./bin/pakemin.js doctor /tmp/pakemin-smoke
 ```
 
-Expected result: initialization creates `.ai`, adapter generation creates thin vendor files, adapter listing reports supported adapters as found, and validation passes.
+Expected result: initialization creates `.ai`, default adapter generation creates `AGENTS.md`, adapter listing identifies primary and optional roles, and validation passes.
 
 ## npm Smoke Test
 

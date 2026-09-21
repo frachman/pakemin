@@ -68,7 +68,7 @@ Run adapter generation **after** `pakemin init`:
 pakemin adapters generate
 ```
 
-This must run after `init` because adapters are thin files that point AI coding tools to the `.ai/README.md` portable core. Until adapters are generated, tools have no instruction file directing them to that core. The command creates files such as `AGENTS.md`, `CLAUDE.md`, and `.cursor/rules/pakemin.md`.
+This must run after `init` because adapters are thin files that point AI coding tools to the `.ai/README.md` portable core. The default command creates `AGENTS.md`. Generate a compatibility adapter only when your tool needs one, for example `pakemin adapters generate --only=claude`.
 
 ## 4. Validate the Project
 
@@ -82,15 +82,11 @@ A passing validation confirms required starter files are present and your intern
 
 ### What a validation error looks like
 
-If you run `pakemin validate --adapters` before generating adapters, you will see errors listing each adapter it expects but that does not exist yet:
+If you run `pakemin validate --adapters` before generating adapters, you will see an error for the required default adapter:
 
 ```text
 error: AGENTS.md is missing
-error: CLAUDE.md is missing
-error: GEMINI.md is missing
-error: .cursor/rules/pakemin.md is missing
-error: .github/copilot-instructions.md is missing
-Pakemin validation failed with 5 error(s)
+Pakemin validation failed with 1 error(s)
 ```
 
 This is expected before step 3. Resolve it by running `pakemin adapters generate` first (see step 3), then re-running `pakemin validate --adapters`.
@@ -115,10 +111,10 @@ Validation remains green after your edit. You now have a working, validated Pake
 
 ## 6. Commit Your Project Knowledge
 
-The whole point of the portable-core model is that project knowledge belongs to the project. Commit `.ai/` and the generated adapter files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/pakemin.md`, `.github/copilot-instructions.md`) to version control so the knowledge records and adapters are tracked, shared, and reviewed with the rest of your code:
+The whole point of the portable-core model is that project knowledge belongs to the project. Commit `.ai/`, `AGENTS.md`, and any compatibility adapters you intentionally generated so the knowledge records and adapters are tracked, shared, and reviewed with the rest of your code:
 
 ```text
-git add .ai AGENTS.md CLAUDE.md GEMINI.md .cursor/rules/pakemin.md .github/copilot-instructions.md
+git add .ai AGENTS.md
 git commit -m "Add Pakemin portable core and adapters"
 ```
 

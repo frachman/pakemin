@@ -6,11 +6,11 @@ Adapters are thin vendor-specific entry points that help AI coding agents find t
 
 ## Supported Adapters
 
-- `agents`: creates `AGENTS.md`.
-- `claude`: creates `CLAUDE.md`.
-- `gemini`: creates `GEMINI.md`.
-- `cursor`: creates `.cursor/rules/pakemin.md`.
-- `copilot`: creates `.github/copilot-instructions.md`.
+- `agents`: primary default adapter; creates `AGENTS.md`.
+- `claude`: optional compatibility adapter; creates `CLAUDE.md`.
+- `gemini`: optional compatibility adapter; creates `GEMINI.md`.
+- `cursor`: optional compatibility adapter; creates `.cursor/rules/pakemin.md`.
+- `copilot`: optional compatibility adapter; creates `.github/copilot-instructions.md`.
 
 ## CLI Usage
 
@@ -18,13 +18,13 @@ Adapters are thin vendor-specific entry points that help AI coding agents find t
 pakemin adapters list [path]
 ```
 
-Lists supported adapters and whether each adapter file exists in the target project.
+Lists each adapter's role (primary or optional), file status, and path.
 
 ```text
 pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
 ```
 
-Generates all supported adapters by default. Use `--only` with comma-separated adapter IDs to generate a subset.
+Generates the primary default profile (`AGENTS.md`). Use `--only` with comma-separated adapter IDs to generate an optional compatibility adapter or a custom subset.
 
 Example:
 
@@ -32,16 +32,18 @@ Example:
 pakemin adapters generate . --only=agents,cursor
 ```
 
-If `--only`, `--only=`, or a blank `--only` value is provided, Pakemin prints a warning and generates all supported adapters.
+If `--only`, `--only=`, or a blank `--only` value is provided, Pakemin prints a warning and generates the default profile.
 
 ```text
 pakemin validate [path] --adapters
 ```
 
-Validates that all supported adapter files exist and point to `.ai/README.md`.
+Requires the default `AGENTS.md` adapter and validates its pointer to `.ai/README.md`. Optional adapters are not required, but any optional adapter present in the project must also have a valid pointer.
 
 ## Boundaries
 
 Adapters are not the canonical project specification. Durable project knowledge belongs in `.ai`.
 
 Adapter support does not imply that every vendor has identical loading behavior or capabilities.
+
+For standard local Claude Code, an absent `CLAUDE.md` allows its `AGENTS.md` fallback. Keep or generate `CLAUDE.md` explicitly for legacy versions, explicit overrides, or hosted providers where that fallback is unavailable. Pakemin never removes user-owned adapter files automatically.

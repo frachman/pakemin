@@ -61,23 +61,23 @@ When a target project contains `docs/adr`, ADR files must use the public Pakemin
 
 Use `--links-only` when validating documentation that is not itself a Pakemin-compatible project.
 
-Use `--adapters` to require all supported adapter files and verify that they point to `.ai/README.md`.
+Use `--adapters` to require the primary default adapter and verify that it points to `.ai/README.md`. Existing optional compatibility adapters are also checked when present.
 
 ```text
 pakemin adapters list [path]
 ```
 
-Lists supported adapters and whether each adapter file exists in the target project.
+Lists each adapter's role (primary or optional), file status, and path.
 
 ```text
 pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
 ```
 
-Generates thin adapter files for `AGENTS.md`, Claude, Gemini, Cursor, and GitHub Copilot. Existing adapter files are not overwritten unless `--force` is provided.
+Generates the primary `AGENTS.md` adapter by default. Claude, Gemini, Cursor, and GitHub Copilot adapters remain available through explicit `--only` selection. Existing adapter files are not overwritten unless `--force` is provided.
 
 Use `--only` with comma-separated adapter IDs to generate a subset.
 
-If `--only`, `--only=`, or a blank `--only` value is provided, Pakemin prints a warning and generates all supported adapters.
+If `--only`, `--only=`, or a blank `--only` value is provided, Pakemin prints a warning and generates the default adapter profile.
 
 ```text
 pakemin doctor [path]
