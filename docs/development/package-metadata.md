@@ -9,7 +9,7 @@ This document records the current package metadata decisions for Pakemin.
 The package is published and pre-1.0:
 
 - `name`: `pakemin`
-- `version`: `0.1.2`
+- `version`: `0.1.2` until approved v0.2.0 release preparation
 - `private`: omitted
 - `license`: `MIT`
 - command namespace: `pakemin`
@@ -24,7 +24,7 @@ Use `0.x` versions until Pakemin v1.0 conventions and CLI behavior are stable.
 
 Before v1.0, minor versions may add or adjust behavior. Patch versions should be compatible fixes.
 
-The first npm release is `0.1.0`. The `0.1.1` patch release is published. The `0.1.2` patch release is being prepared and will be published once validated and approved.
+The `0.1.0`, `0.1.1`, and `0.1.2` releases are published. This branch targets `0.2.0` but does not change the package version until approved release preparation. Package SemVer does not define a future portable-core format or verification-report contract version; see [ADR-0011](../adr/0011-versioning-boundaries.md).
 
 `master` represents the latest stable public state. Changes for a future release should be developed on a dedicated version branch named after the intended version, such as `v0.1.2` or `v0.2.0`, then merged after validation and maintainer approval.
 

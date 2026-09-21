@@ -14,9 +14,9 @@ Pakemin should support these differences while keeping project knowledge portabl
 
 Adapters should be thin. They may point to canonical documentation, summarize loading instructions, or translate a subset of the portable core when a tool cannot follow links reliably.
 
-The initial supported adapters are defined by [ADR-0005: Initial Adapter Support](../adr/0005-initial-adapter-support.md):
+The supported adapters are defined by [ADR-0005: Initial Adapter Support](../adr/0005-initial-adapter-support.md). [ADR-0010](../adr/0010-primary-adapter-profile.md) defines their profiles:
 
-- `AGENTS.md`
+- `AGENTS.md` is the primary default adapter.
 - `CLAUDE.md`
 - `GEMINI.md`
 - Cursor rules
@@ -27,6 +27,8 @@ The initial supported adapters are defined by [ADR-0005: Initial Adapter Support
 Adapters must not become independent documentation sets. If an adapter needs substantial content, the corresponding source should exist in the portable core.
 
 See [Adapter contract](adapter-contract.md) for the draft contract.
+
+For standard local Claude Code, `AGENTS.md` is read as a fallback when `CLAUDE.md` is absent. Existing `CLAUDE.md` takes precedence and hosted-provider support may differ; generate the Claude adapter explicitly when needed.
 
 ## Open Questions
 

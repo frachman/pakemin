@@ -12,7 +12,7 @@ An adapter should:
 - load or point to the relevant portable-core documents;
 - state tool-specific limitations only when necessary;
 - avoid duplicating substantial project knowledge;
-- preserve the precedence model defined by ADRs;
+- preserve the layered authority and provenance defined by ADRs;
 - make unsupported behavior explicit.
 
 Adapters may be handwritten during early milestones. Future tooling may generate them from the portable core.
@@ -21,7 +21,7 @@ See [Adapters](../reference/adapters.md) for the current supported adapter set.
 
 ## Responsibilities
 
-Adapters are compatibility layers. They should help a specific agent find the right instructions without changing the meaning of the portable core.
+Adapters are compatibility layers. `AGENTS.md` is the primary default entry point; other supported adapters are optional. They should help a specific agent find the right instructions without changing the meaning of the portable core.
 
 ## Boundaries
 

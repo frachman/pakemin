@@ -6,7 +6,7 @@ This document summarizes the architecture of Pakemin.
 
 ## Design
 
-Pakemin separates project-owned knowledge from vendor-specific agent entry points.
+Pakemin connects project-owned knowledge, scoped authority, and deterministic verification without making vendor-specific entry points canonical.
 
 ```mermaid
 flowchart TD
@@ -18,9 +18,11 @@ flowchart TD
   A --> G[Templates]
   A --> H[Overrides]
   A --> I[Vendor adapters]
+  J[Layered authority] --> A
+  J --> K[Verification evidence]
 ```
 
-The portable core is the canonical source for project context, decisions, rules, workflows, and reusable instructions. Vendor adapters are thin files or generated configurations that help specific AI agents consume the portable core.
+The portable core is the canonical source for project context, decisions, rules, workflows, and reusable instructions. Vendor adapters are thin files or generated configurations that help specific AI agents consume the portable core. The primary default entry point is `AGENTS.md`.
 
 ## Responsibilities
 
@@ -34,21 +36,13 @@ Architecture decision records are responsible for recording significant decision
 
 ## Boundaries
 
-Pakemin is not currently defining a schema, CLI, package format, installation method, adapter generator, or validation engine.
+Pakemin includes a minimal local CLI, adapter generator, and documentation validation. It does not define a strict schema, hosted service, agent runtime, plugin system, or model-specific orchestration platform.
 
 ## Precedence
 
-The precedence model is defined by [ADR-0002: Precedence Model](../adr/0002-precedence-model.md):
-
-1. Safety and platform restrictions.
-2. Explicit current user instruction.
-3. Project-specific overrides.
-4. Project decisions and context.
-5. Shared framework defaults.
-6. Vendor adapter defaults.
+The project-owned authority hierarchy is defined by [ADR-0009: Layered Authority and Provenance](../adr/0009-layered-authority.md): Defaults, optional Organization, Repository, Scope, and Task. Child authority can only remain equally restrictive or become more restrictive, and every effective rule retains provenance. Safety and platform restrictions remain higher than project authority.
 
 ## Open Questions
 
-- Should adapters copy content or only reference it?
-- How should agents that cannot recursively load linked files be supported?
-- Should `AGENTS.md` be the universal fallback adapter?
+- Does a portable-core manifest need separately versioned semantics?
+- When accepted, what is the smallest useful verification implementation slice?

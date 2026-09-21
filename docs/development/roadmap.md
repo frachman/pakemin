@@ -238,11 +238,11 @@ Published to npm and tagged as `v0.1.1`.
 
 ## Milestone 7: Post-0.1.1 Adoption Readiness
 
-Status: In Progress for v0.1.2
+Status: Completed for v0.1.2
 
 Scope this milestone narrowly. It should turn the hardened public preview into a release that people can adopt, contribute to, and rely on without expanding Pakemin's feature surface.
 
-Milestones 7.1 through 7.6 are the prioritized draft scope for `v0.1.2`. Implementation may happen in small commits, but npm should receive one final `0.1.2` publish only after the full adoption-readiness scope is validated and explicitly approved.
+Milestones 7.1 through 7.6 were the prioritized scope for `v0.1.2`, released on 2026-08-03.
 
 ### Milestone 7.1: Documentation Consistency Cleanup
 
@@ -286,11 +286,22 @@ Status: Completed for v0.1.2
 
 ### Milestone 7.6: Release Readiness for v0.1.2
 
-Status: Planned for v0.1.2
+Status: Completed for v0.1.2
 
-- Run full tests, documentation validation, reference repository validation, `npm pack`, tarball installation, and npm registry smoke tests.
-- Publish `0.1.2` only after explicit maintainer approval.
-- Do not publish intermediate npm versions for individual Milestone 7 sub-milestones.
+- Full tests, documentation validation, reference repository validation, `npm pack`, and tarball installation were completed before release.
+- `0.1.2` was published after maintainer approval.
+
+## Milestone 8: v0.2.0 Governance Foundation
+
+Status: In Progress for v0.2.0 (unreleased)
+
+- Governance positioning, layered authority, primary adapter profile, and versioning boundaries are accepted in [ADRs 0008–0011](../adr/README.md).
+- [Verification Contract v0](../architecture/verification-contract-v0.md) is a proposal; do not implement a verification command until it is accepted.
+- Make `AGENTS.md` the default adapter profile while retaining explicit optional compatibility adapters.
+- Update the reference repository and migration guidance to distinguish default and optional adapters.
+- Keep package version `0.1.2` until explicit release-preparation approval.
+
+Do not add schemas, plugin systems, hosted services, network integrations, or a broad agent runtime in this milestone.
 
 ## Future Milestones: ADR-Gated Scope
 

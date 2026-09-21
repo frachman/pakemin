@@ -1,6 +1,8 @@
 # Documentation
 
-This directory contains the vendor-agnostic documentation for Pakemin, an AI Engineering Specification for project-owned AI knowledge.
+This directory contains the vendor-agnostic documentation for Pakemin, an AI Engineering Governance Framework for coding agents.
+
+Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
 
 ## Categories
 

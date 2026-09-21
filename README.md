@@ -3,7 +3,7 @@
 
   <h1>Pakemin</h1>
 
-  <p>An AI Engineering Specification for vendor-agnostic project knowledge.</p>
+  <p>Open-source AI engineering governance for coding agents.</p>
 
   <p>
     <a href="https://www.npmjs.com/package/pakemin"><img src="https://img.shields.io/npm/v/pakemin.svg" alt="npm version"></a>
@@ -13,7 +13,9 @@
   </p>
 </div>
 
-The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin helps a project make its AI-facing knowledge explicit and dependable without tying that knowledge to one vendor.
+Give AI the right context. Define clear authority. Verify every change.
+
+The name comes from the Javanese idea of `pakem`: a trusted rule, pattern, or reference point. Pakemin is an open-source AI Engineering Governance Framework for making AI-facing project knowledge explicit and dependable without tying it to one vendor.
 
 ## Why Pakemin Exists
 
@@ -21,7 +23,7 @@ AI coding agents are becoming part of everyday software work, but each tool tend
 
 That duplication creates drift. One file says how tests should run, another has outdated architecture notes, and a third contains rules that nobody remembers to update. The project slowly loses a single source of truth for the knowledge agents need.
 
-Pakemin solves this by putting durable AI-facing project knowledge in `.ai/`, owned by the repository itself. Vendor adapters stay thin: they point agents to the portable core instead of becoming separate instruction systems.
+Pakemin solves this with three connected pillars: Right Context in a project-owned `.ai/` core, Clear Authority through scoped and restrictive rules, and Verifiable Changes through deterministic evidence. Vendor adapters stay thin: they point agents to the portable core instead of becoming separate instruction systems.
 
 The goal is not to wrap LLMs or choose a winning agent. The goal is to make project knowledge portable, reviewable, and stable as teams move between AI coding tools.
 
@@ -102,9 +104,12 @@ pakemin validate --adapters
 └── overrides/
 ```
 
-`pakemin adapters generate` creates thin adapter files for supported AI coding tools:
+`pakemin adapters generate` creates the default thin adapter:
 
 - `AGENTS.md`
+
+Optional compatibility adapters can be generated explicitly:
+
 - `CLAUDE.md`
 - `GEMINI.md`
 - `.cursor/rules/pakemin.md`
@@ -176,9 +181,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a local checkout and op
 
 ## Current Status
 
-Pakemin is available on npm as a pre-1.0 public preview.
+Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
 
-Completed foundations include documentation, specification drafts, a reference repository, a minimal CLI, adapter support, CI, MIT licensing, and explicit language presets.
+The stable release includes a dependency-free CLI, project-owned `.ai` scaffolding, thin adapter support, validation, language presets, and a reference repository. Layered authority and verification are documented v0.2.0 work; the proposed verification contract is not yet implemented.
 
 Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
 

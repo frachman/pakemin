@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The portable core is the vendor-independent source of truth for project knowledge used by AI coding agents.
+The portable core is the vendor-independent source of truth for project knowledge used by AI coding agents. It is project-owned in `.ai/`.
 
 ## Design
 
@@ -20,7 +20,7 @@ The core is expected to cover these categories:
 
 The portable core should be readable by humans, reviewable in Git, and usable by multiple AI agents.
 
-It should distinguish durable project facts from temporary working state. It should also separate project-owned knowledge from vendor-specific loading behavior.
+It should distinguish durable project facts from temporary working state and project-owned authority from vendor-specific loading behavior. Effective rules must retain the provenance required by [ADR-0009](../adr/0009-layered-authority.md).
 
 ## Boundaries
 

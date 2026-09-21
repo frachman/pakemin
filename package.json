@@ -1,7 +1,7 @@
 {
   "name": "pakemin",
   "version": "0.1.2",
-  "description": "An AI Engineering Specification for vendor-agnostic project knowledge.",
+  "description": "Open-source AI engineering governance for coding agents.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -15,8 +15,9 @@
     "ai",
     "agents",
     "coding-agents",
-    "documentation",
-    "specification",
+    "governance",
+    "context",
+    "verification",
     "vendor-agnostic"
   ],
   "type": "module",

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Pakemin is an AI Engineering Specification for helping software projects work with multiple AI coding agents without duplicating project knowledge across vendor-specific instruction files.
+Pakemin is an open-source AI Engineering Governance Framework for helping software projects work with coding agents without duplicating project knowledge across vendor-specific instruction files.
 
 The central principle is that project knowledge belongs to the project, not to the AI vendor.
 
@@ -14,9 +14,9 @@ When each file contains full instructions, the project gradually accumulates con
 
 ## Current Status
 
-Pakemin is available as a pre-1.0 public preview.
+Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
 
-The current release includes a dependency-free CLI, v1-oriented `.ai` scaffolding, thin adapter generation, validation, language presets, and a reference repository.
+The stable release includes a dependency-free CLI, v1-oriented `.ai` scaffolding, thin adapter generation, validation, language presets, and a reference repository. v0.2.0 adds accepted governance decisions; its verification contract remains a proposal until implementation is approved.
 
 Pakemin does not include schemas, plugin architecture, hosted services, automated extraction, or agent orchestration.
 
@@ -24,7 +24,7 @@ Pakemin does not include schemas, plugin architecture, hosted services, automate
 
 ```mermaid
 flowchart TD
-  A[Project-owned specification] --> B[Portable core]
+  A[Project-owned governance] --> B[Portable core]
   B --> C[Vendor adapter]
   C --> D[AI coding agent]
   D --> E[Development tools]

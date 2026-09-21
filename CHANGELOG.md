@@ -5,6 +5,12 @@ All notable changes to Pakemin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - Unreleased
+
+### Changed
+
+- Documentation now describes the planned governance direction, layered authority, primary adapter profile, and separate versioning boundaries.
+
 ## [0.1.2] - 2026-08-03
 
 ### Added

@@ -16,6 +16,10 @@ Pakemin is explicit over hidden. Important instructions, decisions, and constrai
 
 Pakemin favors thin adapters. Vendor-specific files should point to or translate the portable core, not become competing sources of truth.
 
+Pakemin uses restrictive authority. Child scopes may add context but may not silently weaken parent authority; effective rules must retain provenance.
+
+Pakemin requires verifiable changes. A deterministic result must identify applicable rules, evidence, and provenance rather than depend on a particular model.
+
 Pakemin preserves human authority. Agents may propose and execute work, but humans own decisions, approvals, and project direction.
 
 Pakemin is Git friendly. Changes should produce understandable diffs and fit normal pull-request review.
