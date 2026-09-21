@@ -298,9 +298,9 @@ Status: In Progress for v0.2.0 (unreleased)
 - Governance positioning, layered authority, primary adapter profile, and versioning boundaries are accepted in [ADRs 0008–0011](../adr/README.md).
 - Governance source boundaries and the declarative governance schema are accepted in [ADRs 0012–0013](../adr/README.md).
 - Least Change verification is accepted in [ADR-0014](../adr/0014-least-change-verification.md).
-- [Governance Schema v0](../reference/governance-schema-v0.md) is the accepted normative input contract and is not implemented in the current CLI.
+- [Governance Schema v0](../reference/governance-schema-v0.md) source loading and load-time validation are complete as internal modules; actual-path resolution and verification remain deferred.
 - [Verification Contract v0](../architecture/verification-contract-v0.md) is the accepted normative repository-level evaluation and report contract and is not implemented in the current CLI.
-- Governance-contract implementation-readiness errata are complete; implementation remains not started.
+- Milestone 8 loader and validation work is complete. Resolver, Git change collection, evaluator, report, `pakemin check`, and the deferred task-envelope contract remain out of scope.
 - Make `AGENTS.md` the default adapter profile while retaining explicit optional compatibility adapters.
 - Update the reference repository and migration guidance to distinguish default and optional adapters.
 - Keep package version `0.1.2` until explicit release-preparation approval.

@@ -6,6 +6,12 @@ This document describes how to verify Pakemin during public preview development.
 
 ## Automated Checks
 
+Install the locked dependency graph before running checks:
+
+```text
+npm ci
+```
+
 Run the Node.js test suite:
 
 ```text
@@ -25,6 +31,8 @@ node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
 ```
 
 The same checks run in CI for pushes to `master` and `v*` release branches, and for pull requests.
+
+The Node.js suite includes focused repository-local governance loader, schema, and path-pattern tests. They validate only loading and load-time configuration validation; they do not run path resolution, Git collection, rule evaluation, reporting, or a CLI command.
 
 ## End-to-End Smoke Test
 

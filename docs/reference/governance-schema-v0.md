@@ -3,7 +3,7 @@
 - Status: Normative specification
 - Contract version: 0
 - Target release: v0.2.0 (unreleased)
-- Implementation status: Not implemented
+- Implementation status: Source loading and load-time validation implemented; actual-path resolution and verification not implemented.
 
 This contract is derived from [ADR-0013](../adr/0013-declarative-governance-schema.md). It defines repository-local YAML governance; Markdown remains the format for context, decisions, explanations, and workflows.
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - Unreleased
 
+### Added
+
+- Internal repository-local governance source loading and Schema v0 load-time validation. This does not add a user-facing command or verification behavior.
+
 ### Changed
 
 - Documentation now describes the planned governance direction, layered authority, primary adapter profile, and separate versioning boundaries.
