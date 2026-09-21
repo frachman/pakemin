@@ -87,7 +87,7 @@ export function adaptersGenerateCommand(args, io) {
   const adapters = selectAdapters(options.values.only);
 
   if (isFlagSet(options, "only") && !options.values.only?.trim()) {
-    write(io.stdout, "warning: --only was provided with no value; all adapters will be generated\n");
+    write(io.stdout, "warning: --only was provided with no value; the default adapter profile will be generated\n");
   }
 
   if (!exists(path.join(root, ".ai/README.md"))) {
@@ -106,7 +106,7 @@ export function adaptersListCommand(args, io) {
 
   for (const adapter of ADAPTERS) {
     const status = exists(path.join(root, adapter.file)) ? "found" : "missing";
-    write(io.stdout, `${adapter.id}\t${status}\t${adapter.file}\n`);
+    write(io.stdout, `${adapter.id}\t${adapter.role}\t${status}\t${adapter.file}\n`);
   }
 
   return 0;

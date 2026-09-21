@@ -13,6 +13,7 @@ export const ADAPTERS = [
     id: "agents",
     name: "AGENTS.md",
     file: "AGENTS.md",
+    role: "primary",
     content: `# Agent Instructions
 
 This repository uses Pakemin. Treat [.ai/README.md](.ai/README.md) as the project-owned source of truth.
@@ -26,6 +27,7 @@ Keep this adapter thin. Move durable project knowledge into \`.ai\` instead of e
     id: "claude",
     name: "CLAUDE.md",
     file: "CLAUDE.md",
+    role: "optional",
     content: `# Claude Instructions
 
 This repository uses Pakemin. Start with [.ai/README.md](.ai/README.md), then load the relevant documents for the task.
@@ -37,6 +39,7 @@ Use this file only as a Claude entry point. Do not duplicate the portable core h
     id: "gemini",
     name: "GEMINI.md",
     file: "GEMINI.md",
+    role: "optional",
     content: `# Gemini Instructions
 
 This repository uses Pakemin. Start with [.ai/README.md](.ai/README.md), then load the relevant documents for the task.
@@ -48,6 +51,7 @@ Use this file only as a Gemini entry point. Do not duplicate the portable core h
     id: "cursor",
     name: "Cursor rule",
     file: ".cursor/rules/pakemin.md",
+    role: "optional",
     content: `# Pakemin Cursor Rule
 
 This repository uses Pakemin. The portable core is in [.ai/README.md](../../.ai/README.md).
@@ -61,6 +65,7 @@ Keep Cursor-specific instructions thin. Durable knowledge belongs in \`.ai\`.
     id: "copilot",
     name: "GitHub Copilot instructions",
     file: ".github/copilot-instructions.md",
+    role: "optional",
     content: `# GitHub Copilot Instructions
 
 This repository uses Pakemin. The portable core is in [.ai/README.md](../.ai/README.md).

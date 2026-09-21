@@ -32,8 +32,8 @@ test("CLI smoke lifecycle covers init, adapters, validate, and doctor", () => {
 
   const list = runPakemin(["adapters", "list", root]);
   assert.equal(list.status, 0);
-  assert.match(list.stdout, /agents\tfound\tAGENTS.md/);
-  assert.match(list.stdout, /copilot\tfound\t.github\/copilot-instructions.md/);
+  assert.match(list.stdout, /agents\tprimary\tfound\tAGENTS.md/);
+  assert.match(list.stdout, /copilot\toptional\tmissing\t.github\/copilot-instructions.md/);
 
   const validate = runPakemin(["validate", root, "--adapters"]);
   assert.equal(validate.status, 0);

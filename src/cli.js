@@ -62,7 +62,7 @@ export async function runCli(args, io) {
 function helpText() {
   return `Pakemin
 
-An AI Engineering Specification for vendor-agnostic project knowledge.
+Open-source AI engineering governance for coding agents.
 
 Usage:
   pakemin init [path] [--force] [--dry-run] [--preset=<id>[,<id>...]]
@@ -75,8 +75,8 @@ Usage:
 Commands:
   init                 Create a minimal .ai portable core.
   validate             Validate local Pakemin structure and Markdown links.
-  adapters list        List supported vendor adapters.
-  adapters generate    Generate thin vendor adapter files.
+  adapters list        List primary and optional compatibility adapters.
+  adapters generate    Generate the default adapter profile or selected adapters.
   doctor               Print local environment and project checks.
 `;
 }

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { ADAPTERS, CORE_CATEGORIES } from "./catalog.js";
+import { defaultAdapters } from "./adapters.js";
 import { exists, listMarkdownFiles, relative } from "./fs-utils.js";
 import { isExternalLink, markdownLinks } from "./markdown.js";
 import { STARTER_DOCUMENTS } from "./starter-documents.js";
@@ -46,8 +47,12 @@ export function validateProject(root, options = {}) {
   if (requireAdapters) {
     for (const adapter of ADAPTERS) {
       const adapterFile = path.join(root, adapter.file);
-      if (!exists(adapterFile)) {
+      if (!exists(adapterFile) && defaultAdapters().includes(adapter)) {
         errors.push(`${adapter.file} is missing`);
+        continue;
+      }
+
+      if (!exists(adapterFile)) {
         continue;
       }
 

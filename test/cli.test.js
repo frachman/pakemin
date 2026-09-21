@@ -376,7 +376,7 @@ test("doctor reports a clear error when target path is a file", async () => {
   assert.doesNotMatch(io.stderr.text, /EEXIST|ENOTDIR/);
 });
 
-test("adapters generate creates thin adapter files", async () => {
+test("adapters generate creates the primary default adapter only", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
 
@@ -385,8 +385,8 @@ test("adapters generate creates thin adapter files", async () => {
 
   assert.equal(exitCode, 0);
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
+  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), false);
   assert.match(io.stdout.text, /Generated Pakemin adapters/);
 });
 
@@ -399,8 +399,8 @@ test("adapters list reports supported adapter status", async () => {
   const exitCode = await runCli(["adapters", "list", root], io);
 
   assert.equal(exitCode, 0);
-  assert.match(io.stdout.text, /agents\tfound\tAGENTS.md/);
-  assert.match(io.stdout.text, /claude\tmissing\tCLAUDE.md/);
+  assert.match(io.stdout.text, /agents\tprimary\tfound\tAGENTS.md/);
+  assert.match(io.stdout.text, /claude\toptional\tmissing\tCLAUDE.md/);
 });
 
 test("adapters generate can select adapters by id", async () => {
@@ -416,6 +416,19 @@ test("adapters generate can select adapters by id", async () => {
   assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
 });
 
+test("explicit Claude generation preserves an existing user file without force", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+  fs.writeFileSync(path.join(root, "CLAUDE.md"), "user-owned\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["adapters", "generate", root, "--only=claude"], io);
+
+  assert.equal(exitCode, 1);
+  assert.equal(fs.readFileSync(path.join(root, "CLAUDE.md"), "utf8"), "user-owned\n");
+  assert.match(io.stdout.text, /exists: CLAUDE.md \(use --force to overwrite\)/);
+});
+
 test("adapters generate force value flag overwrites existing adapter files", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
@@ -429,7 +442,7 @@ test("adapters generate force value flag overwrites existing adapter files", asy
   assert.match(io.stdout.text, /created: AGENTS.md/);
 });
 
-test("adapters generate warns when only flag has no value", async () => {
+test("adapters generate uses the default profile when only has no value", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
 
@@ -439,13 +452,10 @@ test("adapters generate warns when only flag has no value", async () => {
   assert.equal(exitCode, 0);
   assert.match(
     io.stdout.text,
-    /warning: --only was provided with no value; all adapters will be generated/
+    /warning: --only was provided with no value; the default adapter profile will be generated/
   );
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
 test("adapters generate warns when only value is empty", async () => {
@@ -458,13 +468,10 @@ test("adapters generate warns when only value is empty", async () => {
   assert.equal(exitCode, 0);
   assert.match(
     io.stdout.text,
-    /warning: --only was provided with no value; all adapters will be generated/
+    /warning: --only was provided with no value; the default adapter profile will be generated/
   );
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
 test("adapters generate warns when only value is whitespace only", async () => {
@@ -477,13 +484,10 @@ test("adapters generate warns when only value is whitespace only", async () => {
   assert.equal(exitCode, 0);
   assert.match(
     io.stdout.text,
-    /warning: --only was provided with no value; all adapters will be generated/
+    /warning: --only was provided with no value; the default adapter profile will be generated/
   );
   assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), true);
-  assert.equal(fs.existsSync(path.join(root, "GEMINI.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".cursor/rules/pakemin.md")), true);
-  assert.equal(fs.existsSync(path.join(root, ".github/copilot-instructions.md")), true);
+  assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
 test("adapters generate does not warn when only has a value", async () => {
@@ -499,7 +503,7 @@ test("adapters generate does not warn when only has a value", async () => {
   assert.equal(fs.existsSync(path.join(root, "CLAUDE.md")), false);
 });
 
-test("validate can require supported adapters", async () => {
+test("validate requires the default adapter profile", async () => {
   const root = tempProject();
   await runCli(["init", root], memoryIo(root));
 
@@ -516,6 +520,19 @@ test("validate can require supported adapters", async () => {
 
   assert.equal(validExitCode, 0);
   assert.match(validIo.stdout.text, /Pakemin validation passed/);
+});
+
+test("validate checks an existing optional adapter pointer", async () => {
+  const root = tempProject();
+  await runCli(["init", root], memoryIo(root));
+  await runCli(["adapters", "generate", root], memoryIo(root));
+  fs.writeFileSync(path.join(root, "CLAUDE.md"), "custom\n");
+
+  const io = memoryIo(root);
+  const exitCode = await runCli(["validate", root, "--adapters"], io);
+
+  assert.equal(exitCode, 1);
+  assert.match(io.stdout.text, /CLAUDE.md does not point to .ai\/README.md/);
 });
 
 test("validate adapters value flag requires supported adapters", async () => {
