@@ -28,7 +28,7 @@ The current milestone does not define strict schemas or serialization formats be
 
 For v0.2, [ADR-0013](../adr/0013-declarative-governance-schema.md) defines a narrow YAML manifest only for deterministic governance. It does not change the Markdown-first representation for project knowledge.
 
-[Governance Schema v0](../reference/governance-schema-v0.md) is a normative draft under review and is not implemented by the current CLI.
+[Governance Schema v0](../reference/governance-schema-v0.md) is the accepted normative input contract and is not implemented by the current CLI.
 
 Lightweight v1.0 document conventions are defined in [Document conventions](../reference/document-conventions.md).
 

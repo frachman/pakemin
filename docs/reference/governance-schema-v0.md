@@ -1,6 +1,6 @@
 # Governance Schema v0
 
-- Status: Normative draft
+- Status: Normative specification
 - Contract version: 0
 - Target release: v0.2.0 (unreleased)
 - Implementation status: Not implemented
