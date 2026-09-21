@@ -1,6 +1,6 @@
 # ADR-0012: Governance Source Boundaries
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-09-21
 - Decision owners: Farandy Rachman
 

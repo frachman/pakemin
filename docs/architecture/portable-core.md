@@ -20,7 +20,7 @@ The core is expected to cover these categories:
 
 The portable core should be readable by humans, reviewable in Git, and usable by multiple AI agents.
 
-It should distinguish durable project facts from temporary working state and project-owned authority from vendor-specific loading behavior. Effective rules must retain the provenance required by [ADR-0009](../adr/0009-layered-authority.md). The proposed repository-visible and private-state boundary is defined in [ADR-0012](../adr/0012-governance-source-boundaries.md).
+It should distinguish durable project facts from temporary working state and project-owned authority from vendor-specific loading behavior. Effective rules must retain the provenance required by [ADR-0009](../adr/0009-layered-authority.md). The repository-visible and private-state boundary is defined in [ADR-0012](../adr/0012-governance-source-boundaries.md).
 
 ## Boundaries
 

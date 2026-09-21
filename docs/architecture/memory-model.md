@@ -29,7 +29,7 @@ Memory should not duplicate permanent project context. When a memory item become
 
 Memory should not store secrets or sensitive content that cannot safely be shared with supported agents.
 
-Repository-visible memory must remain safe for the repository's intended visibility. Private runtime or conversational state belongs outside `.ai/` under the proposed boundary in [ADR-0012](../adr/0012-governance-source-boundaries.md).
+Repository-visible memory must remain safe for the repository's intended visibility. Private runtime or conversational state belongs outside `.ai/` under the boundary in [ADR-0012](../adr/0012-governance-source-boundaries.md).
 
 ## Open Questions
 
