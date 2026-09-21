@@ -75,7 +75,7 @@ function readSource(file, document, kind) {
     throw internalError(error);
   }
   const parsed = parseYaml(bytes, document, kind);
-  return parsed.errors ? { errors: parsed.errors } : { source: { document, ...parsed } };
+  return parsed.errors ? { errors: parsed.errors } : { source: { document, kind, ...parsed } };
 }
 
 function resolveDirectory(entry, root) {
