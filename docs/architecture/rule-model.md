@@ -29,7 +29,7 @@ Rules do not override current user instructions, safety restrictions, or platfor
 
 Rules should not encode vendor-specific behavior. Vendor-specific constraints belong in adapter documentation unless they affect the portable core.
 
-The proposed evaluation states and final governance outcomes for machine-enforceable rules are defined in [ADR-0014](../adr/0014-least-change-verification.md).
+The evaluation states and final governance outcomes for machine-enforceable rules are defined in [ADR-0014](../adr/0014-least-change-verification.md).
 
 ## Open Questions
 

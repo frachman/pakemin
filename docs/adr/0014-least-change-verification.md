@@ -1,6 +1,6 @@
 # ADR-0014: Least Change Verification
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-09-21
 - Decision owners: Farandy Rachman
 

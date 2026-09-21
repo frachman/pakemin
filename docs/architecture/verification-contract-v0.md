@@ -7,7 +7,7 @@
 
 This proposed provider-agnostic contract defines deterministic evidence for a proposed repository change. It does not add a `pakemin check` command or enforce policy until accepted and implemented.
 
-The proposed Least Change model, evaluation states, governance outcomes, and process exit codes are defined in [ADR-0014](../adr/0014-least-change-verification.md). This document is not yet the normative contract.
+The Least Change model, evaluation states, governance outcomes, and process exit codes are defined in [ADR-0014](../adr/0014-least-change-verification.md). This document is not yet the normative contract.
 
 ## Inputs
 

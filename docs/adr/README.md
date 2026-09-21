@@ -19,7 +19,7 @@ Parent: [Documentation](../README.md)
 - [ADR-0011: Versioning Boundaries](0011-versioning-boundaries.md): separates package, format, and verification-report versions.
 - [ADR-0012: Governance Source Boundaries](0012-governance-source-boundaries.md): defines repository-visible governance and private-state boundaries.
 - [ADR-0013: Declarative Governance Schema](0013-declarative-governance-schema.md): defines a narrow YAML model for deterministic governance.
-- [ADR-0014: Least Change Verification](0014-least-change-verification.md): proposes deterministic governance outcomes for actual changes.
+- [ADR-0014: Least Change Verification](0014-least-change-verification.md): defines deterministic governance outcomes for actual changes.
 
 ## Format
 
