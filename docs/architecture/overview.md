@@ -40,7 +40,7 @@ Pakemin includes a minimal local CLI, adapter generator, and documentation valid
 
 ## Precedence
 
-The project-owned authority hierarchy is defined by [ADR-0009: Layered Authority and Provenance](../adr/0009-layered-authority.md): Defaults, optional Organization, Repository, Scope, and Task. Child authority can only remain equally restrictive or become more restrictive, and every effective rule retains provenance. Safety and platform restrictions remain higher than project authority.
+The project-owned authority hierarchy is defined by [ADR-0009: Layered Authority and Provenance](../adr/0009-layered-authority.md): Defaults, optional Organization, Repository, Scope, and Task. Child authority can only remain equally restrictive or become more restrictive, and every effective rule retains provenance. Safety and platform restrictions remain higher than project authority. [ADR-0014](../adr/0014-least-change-verification.md) proposes how effective authority is compared with actual changes.
 
 ## Open Questions
 
