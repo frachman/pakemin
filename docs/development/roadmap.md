@@ -296,6 +296,7 @@ Status: Completed for v0.1.2
 Status: In Progress for v0.2.0 (unreleased)
 
 - Governance positioning, layered authority, primary adapter profile, and versioning boundaries are accepted in [ADRs 0008–0011](../adr/README.md).
+- Governance source boundaries are accepted in [ADR-0012](../adr/0012-governance-source-boundaries.md); the declarative governance schema is proposed in [ADR-0013](../adr/0013-declarative-governance-schema.md).
 - [Verification Contract v0](../architecture/verification-contract-v0.md) is a proposal; do not implement a verification command until it is accepted.
 - Make `AGENTS.md` the default adapter profile while retaining explicit optional compatibility adapters.
 - Update the reference repository and migration guidance to distinguish default and optional adapters.

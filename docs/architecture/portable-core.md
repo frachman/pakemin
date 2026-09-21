@@ -26,6 +26,8 @@ It should distinguish durable project facts from temporary working state and pro
 
 The current milestone does not define strict schemas or serialization formats beyond the Markdown-first default.
 
+For v0.2, [ADR-0013](../adr/0013-declarative-governance-schema.md) proposes a narrow YAML manifest only for deterministic governance. It does not change the Markdown-first representation for project knowledge.
+
 Lightweight v1.0 document conventions are defined in [Document conventions](../reference/document-conventions.md).
 
 See also:
