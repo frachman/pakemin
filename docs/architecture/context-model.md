@@ -26,7 +26,7 @@ They should point to source files, decisions, or external documentation when tho
 
 ## Boundaries
 
-Context is not the place for transient task notes, unresolved incidents, or personal preferences. Those belong in memory, workflows, rules, or user instructions.
+Context is not the place for transient task notes, unresolved incidents, personal preferences, credentials, or private runtime state. Those belong in memory, workflows, rules, user instructions, or an appropriate private local location. The proposed source boundary is defined in [ADR-0012](../adr/0012-governance-source-boundaries.md).
 
 ## Open Questions
 
