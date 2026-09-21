@@ -30,6 +30,6 @@ The `0.1.0`, `0.1.1`, and `0.1.2` releases are published. This branch targets `0
 
 ## Review Notes
 
-A package lock is not required while Pakemin has no runtime or development dependencies.
+A committed `package-lock.json` records the exact `yaml` runtime dependency for reproducible installation.
 
 Future releases should run repository checks, `npm pack`, tarball installation smoke tests, and npm registry smoke tests.
