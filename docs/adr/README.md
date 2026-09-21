@@ -18,7 +18,7 @@ Parent: [Documentation](../README.md)
 - [ADR-0010: Primary Adapter Profile](0010-primary-adapter-profile.md): makes `AGENTS.md` the default adapter entry point.
 - [ADR-0011: Versioning Boundaries](0011-versioning-boundaries.md): separates package, format, and verification-report versions.
 - [ADR-0012: Governance Source Boundaries](0012-governance-source-boundaries.md): defines repository-visible governance and private-state boundaries.
-- [ADR-0013: Declarative Governance Schema](0013-declarative-governance-schema.md): proposes a narrow YAML model for deterministic governance.
+- [ADR-0013: Declarative Governance Schema](0013-declarative-governance-schema.md): defines a narrow YAML model for deterministic governance.
 
 ## Format
 

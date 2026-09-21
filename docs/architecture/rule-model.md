@@ -6,7 +6,7 @@ Rules define constraints that should consistently govern AI-assisted work in a p
 
 ## Design
 
-Rules should be explicit, testable where possible, and scoped to the project or shared framework that owns them. The proposed declarative model for machine-enforceable rules is recorded in [ADR-0013](../adr/0013-declarative-governance-schema.md); Markdown remains appropriate for explanatory and non-deterministic guidance.
+Rules should be explicit, testable where possible, and scoped to the project or shared framework that owns them. The declarative model for machine-enforceable rules is defined in [ADR-0013](../adr/0013-declarative-governance-schema.md); Markdown remains appropriate for explanatory and non-deterministic guidance.
 
 Useful rules include:
 

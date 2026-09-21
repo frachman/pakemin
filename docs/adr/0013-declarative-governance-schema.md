@@ -1,6 +1,6 @@
 # ADR-0013: Declarative Governance Schema
 
-- Status: Proposed
+- Status: Accepted
 - Date: 2026-09-21
 - Decision owners: Farandy Rachman
 
@@ -12,7 +12,7 @@ Pakemin needs a deterministic, human-reviewable way to express machine-enforceab
 
 Pakemin uses Markdown for human-readable context, decisions, explanations, and workflows. It uses YAML only for a machine-enforceable manifest, scopes, authority, and typed rules.
 
-The proposed canonical manifest is `.ai/pakemin.yaml`. It is version-controlled, declares a format version independent from the npm package version, and provides deterministic governance discovery. It may reference additional repository-local governance files. It must not contain credentials, runtime state, private organization bindings, or machine-specific absolute paths. Validation must be possible using committed repository files alone.
+The canonical manifest is `.ai/pakemin.yaml`. It is version-controlled, declares a format version independent from the npm package version, and provides deterministic governance discovery. It may reference additional repository-local governance files. It must not contain credentials, runtime state, private organization bindings, or machine-specific absolute paths. Validation must be possible using committed repository files alone.
 
 Scopes are declared centrally and selected by repository-relative filesystem paths with normalized `/` separators. Scope IDs are stable and unique. A scope has no more than one parent; unknown parents, inheritance cycles, and multiple inheritance are invalid. Matching and precedence must be deterministic; exact matching semantics belong in the normative schema reference.
 
@@ -31,7 +31,7 @@ Every enforceable rule has a stable, unique ID for provenance, evidence associat
 
 Examples include `repository.source-change-requires-tests`, `repository.ci-change-requires-review`, and `docs.allowed-paths`.
 
-Schema v0 proposes exactly four deterministic rule types:
+Schema v0 defines exactly four deterministic rule types:
 
 1. `allowed-paths` constrains changes to declared paths.
 2. `forbidden-paths` rejects changes to protected paths.
