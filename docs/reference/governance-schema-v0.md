@@ -19,7 +19,9 @@ The required entry point is `.ai/pakemin.yaml`. It MUST be valid UTF-8 YAML cont
 
 Missing entry points, multiple documents, and unsupported format versions are configuration errors when governance verification is requested.
 
-The only top-level keys are `formatVersion`, `includes`, `scopes`, `rules`, and `exceptions`. `formatVersion` is required; the collections default to empty when absent. Unknown keys, duplicate mapping keys, YAML tags, executable constructors, anchors, and aliases are configuration errors. Comments have no semantic effect. Implementations MUST preserve scalar types and MUST NOT coerce numeric or boolean values into identifiers.
+Before locating governance files, an implementation MUST canonicalize the supplied repository root, resolve its `.ai` entry, and require the `.ai` canonical target to be a directory within the canonical repository root. It then resolves `.ai/pakemin.yaml` against that directory and requires its canonical target to remain inside canonical `.ai` and be a regular file. `.ai` MAY be a symlink only when its target remains inside repository root; the manifest MAY be a symlink only when its target remains inside `.ai` and is regular. A cycle, unresolved `.ai`, non-directory `.ai`, or escaping `.ai` is `invalid-governance-root`; an escaping manifest is `manifest-outside-ai`; an existing non-regular manifest is `manifest-not-file`. A missing manifest entry, including a broken final manifest link, is `missing-manifest`. Implementations MUST NOT read bytes before containment and regular-file checks succeed.
+
+The document root MUST be a mapping. The only top-level keys are `formatVersion`, `includes`, `scopes`, `rules`, and `exceptions`. `formatVersion` is required; the collections default to empty when absent. Unknown keys, duplicate mapping keys, YAML tags, executable constructors, anchors, and aliases are configuration errors. Comments have no semantic effect. Implementations MUST preserve scalar types and MUST NOT coerce numeric or boolean values into identifiers.
 
 ```yaml
 formatVersion: "0"
@@ -59,7 +61,7 @@ Examples: `repository`, `shared-ui`, `repository.source-change-requires-tests`, 
 
 ## Scopes
 
-Every scope has only `id`, `parent`, and `paths`; unknown fields are configuration errors. Every manifest has exactly one root scope with ID `repository`. It MUST NOT have `parent`, MUST declare `paths: ["**"]`, and covers the repository root. Each non-root scope MUST have exactly one known `parent` and at least one `paths` pattern. Scope IDs are stable and unique; cycles and multiple inheritance are configuration errors.
+`scopes` MUST be a list. Each scope entry MUST be a mapping. The root `repository` scope permits only string `id` and list `paths`; a non-root scope permits only string `id`, string `parent`, and list `paths`. `paths` MUST be a nonempty list of strings. Wrong field types, unknown fields, or missing required fields are `invalid-scope-shape` and do not produce cascading descendant errors. Every manifest has exactly one root scope with ID `repository`. It MUST NOT have `parent`, MUST declare `paths: ["**"]`, and covers the repository root. A structurally valid root with a parent or other paths is `invalid-repository-scope`. Each non-root scope MUST have exactly one known `parent`. Unknown parents are `unknown-parent-scope`; cycles are `scope-cycle`.
 
 ```yaml
 scopes:
@@ -179,7 +181,7 @@ exceptions:
     approvedBy: maintainer
 ```
 
-Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be a descendant of the target rule's scope. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
+Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be the target rule scope or a descendant. A known but unrelated scope is `invalid-exception-scope`; an absent scope is `unknown-exception-scope`. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
 
 For `allowed-paths`, an exception waives only its target rule for the exact path; every other applicable allowed rule still applies. For `forbidden-paths`, it waives only its target forbidden rule for the exact path; every other applicable forbidden rule remains active. Rename source and destination paths are evaluated independently. Unknown fields, duplicate IDs, unknown targets, unrelated scopes, wildcard paths, or invalid shapes are configuration errors.
 
@@ -200,7 +202,9 @@ Validation proceeds in this order:
 9. Validate exceptions and targets.
 10. During path resolution, reject an actual unrelated sibling-scope match.
 
-An implementation MAY report multiple errors, but ordering MUST be stable. Error output sorts by canonical source path, then field location, then reason code. Include loading may follow manifest order, but semantic merging is order-independent. Scope chains sort root-to-leaf; resolved rules by scope depth then rule ID; exceptions by exception ID; and matched paths bytewise by canonical path. This document defines schema-validation requirements only, not Verification Contract error JSON.
+A source that cannot be decoded, parsed, or interpreted as a mapping does not proceed to key or collection validation. An invalid collection does not proceed into entries, and an invalid entry does not proceed into fields. Reference, hierarchy, rule-target, and exception-target checks run only after the referenced categories are structurally valid. These blocking rules suppress dependent cascades but not unrelated errors in other valid sources or collections. Resolution-time errors remain outside load-time schema validation.
+
+An implementation MAY report multiple errors, but ordering MUST be stable. Error output sorts by canonical source document, then field location, then reason code, all bytewise. A source document is a canonical repository-relative `/` path such as `.ai/pakemin.yaml`; it contains no absolute prefix, platform separator, `.` segment, or `..` segment. Field locations are RFC 6901 JSON Pointers over the parsed YAML document: root is `""`, `/formatVersion` is the manifest version, `/includes/1` is the second include, `/rules/0/paths/1` is the first rule's second path, and `/exceptions/2/approvedBy` is a fragment's third exception approval. Invalid YAML or a non-mapping root uses `""` when no deeper model location exists. Escape `~` as `~0` and `/` as `~1`. Pointers are relative to their own source document; parser line and column MAY supplement them but do not affect identity or ordering. Include loading may follow manifest order, but semantic merging is order-independent. Scope chains sort root-to-leaf; resolved rules by scope depth then rule ID; exceptions by exception ID; and matched paths bytewise by canonical path. This document defines schema-validation requirements only, not Verification Contract error JSON.
 
 ## Schema Error Catalog
 
@@ -211,11 +215,15 @@ Every configuration error reports the stable code below, its source document, an
 | `missing-manifest` | `.ai/pakemin.yaml` is absent. | load |
 | `invalid-yaml` | YAML cannot be safely parsed as UTF-8. | load |
 | `multiple-yaml-documents` | A source has more than one YAML document. | load |
+| `invalid-document-shape` | A parsed manifest or fragment root is not a mapping. | load |
 | `unsupported-format-version` | `formatVersion` is missing or not `"0"`. | load |
 | `unknown-top-level-key` | A source has an unrecognized top-level key. | load |
 | `duplicate-mapping-key` | A YAML mapping repeats a key. | load |
 | `unsupported-yaml-feature` | Tags, constructors, anchors, or aliases are used. | load |
 | `invalid-include-path` | An include is malformed, absolute, traverses, or is a glob/remote reference. | load |
+| `invalid-governance-root` | `.ai` is not a contained canonical directory or cannot be safely resolved. | load |
+| `manifest-outside-ai` | The manifest canonicalizes outside `.ai`. | load |
+| `manifest-not-file` | An existing manifest is not a regular file. | load |
 | `include-outside-ai` | An include canonicalizes outside `.ai/`. | load |
 | `include-not-file` | An include resolves to a directory or non-regular file. | load |
 | `include-cycle` | Include resolution encounters a symlink cycle. | load |
@@ -227,6 +235,7 @@ Every configuration error reports the stable code below, its source document, an
 | `duplicate-exception-id` | Exception IDs repeat across sources. | load |
 | `missing-repository-scope` | Exactly one `repository` root scope is absent. | load |
 | `invalid-repository-scope` | The root has a parent or does not declare `["**"]`. | load |
+| `invalid-scope-shape` | `scopes` or a scope entry has invalid collection, fields, or types. | load |
 | `unknown-parent-scope` | A scope parent is absent. | load |
 | `scope-cycle` | Parent links form a cycle. | load |
 | `ambiguous-scope-match` | A resolved path matches unrelated scopes. | resolution |
@@ -236,10 +245,13 @@ Every configuration error reports the stable code below, its source document, an
 | `invalid-rule-shape` | A rule lacks required fields or has forbidden fields/types. | load |
 | `unknown-exception-rule` | An exception names an absent rule. | load |
 | `unknown-exception-scope` | An exception names an absent scope. | load |
+| `invalid-exception-scope` | An exception scope is known but unrelated to its target rule scope. | load |
 | `unsupported-exception-target` | An exception targets a rule type other than allowed or forbidden paths. | load |
 | `invalid-exception-path` | An exception path is wildcarded or not canonical. | load |
 | `exception-outside-scope` | A resolved exception path does not match its scope. | resolution |
 | `invalid-exception-shape` | An exception lacks required fields or has forbidden fields/types. | load |
+
+`includes` not being a list, or an include entry not being a string, is `invalid-include-path`. A non-list `rules` value or non-mapping rule entry is `invalid-rule-shape`; a non-list `exceptions` value or non-mapping exception entry is `invalid-exception-shape`. Invalid collections and entries stop descendant validation for that value.
 
 ## Complete Examples
 
@@ -317,6 +329,40 @@ rules:
 ```
 
 ### Invalid configurations
+
+```yaml
+- not-a-mapping
+```
+
+Expected: configuration error `invalid-document-shape` at `""`.
+
+```yaml
+true
+```
+
+Expected: configuration error `invalid-document-shape` at `""`.
+
+```yaml
+scopes:
+  repository:
+    paths: ["**"]
+```
+
+Expected: configuration error `invalid-scope-shape` at `/scopes`.
+
+```yaml
+exceptions:
+  - id: exception.unrelated
+    rule: repository.protect-shared-ui
+    scope: docs
+    paths: ["apps/docs/index.md"]
+    reason: Invalid scope relationship.
+    approvedBy: maintainer
+```
+
+Expected: configuration error `invalid-exception-scope` at `/exceptions/0/scope`.
+
+If `.ai` canonicalizes outside the repository, expected error is `invalid-governance-root` at `""`; if `.ai/pakemin.yaml` canonicalizes outside `.ai`, expected error is `manifest-outside-ai` at `""`. Included-document locations remain local: for example, a fragment's first rule error is `/rules/0`, not a pointer prefixed with the manifest include position.
 
 ```yaml
 rules:
