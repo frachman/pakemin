@@ -31,6 +31,8 @@ Rules should not encode vendor-specific behavior. Vendor-specific constraints be
 
 The evaluation states and final governance outcomes for machine-enforceable rules are defined in [ADR-0014](../adr/0014-least-change-verification.md).
 
+[Governance Schema v0](../reference/governance-schema-v0.md) defines the typed rule and exception input contract; it is not implemented by the current CLI.
+
 ## Open Questions
 
 - Which rule categories are normative?
