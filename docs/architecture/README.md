@@ -6,7 +6,7 @@ Parent: [Documentation](../README.md)
 
 ## Documents
 
-- [Overview](overview.md): summarizes the portable core, adapters, shared framework, and precedence model.
+- [Overview](overview.md): summarizes the portable core, adapters, and layered authority.
 - [Portable core](portable-core.md): defines the project-owned core categories.
 - [Vendor adapters](vendor-adapters.md): explains the role and boundaries of vendor-specific adapter files.
 - [Context model](context-model.md): defines durable project knowledge used by agents.
@@ -14,3 +14,4 @@ Parent: [Documentation](../README.md)
 - [Rule model](rule-model.md): defines constraints for consistent agent behavior.
 - [Workflow model](workflow-model.md): defines reusable engineering processes.
 - [Adapter contract](adapter-contract.md): defines responsibilities and boundaries for vendor adapters.
+- [Verification Contract v0](verification-contract-v0.md): proposes provider-agnostic verification outcomes and evidence.

@@ -13,6 +13,10 @@ Parent: [Documentation](../README.md)
 - [ADR-0005: Initial Adapter Support](0005-initial-adapter-support.md): defines the first supported adapter set.
 - [ADR-0006: Language Detection and Presets](0006-language-detection-and-presets.md): defines safe language-aware detection and explicit presets.
 - [ADR-0007: v1.0 Framework Direction](0007-v1-framework-direction.md): accepts Pakemin v1.0 as a lightweight AI Development Framework.
+- [ADR-0008: Governance Positioning](0008-governance-positioning.md): defines Pakemin as an AI Engineering Governance Framework.
+- [ADR-0009: Layered Authority and Provenance](0009-layered-authority.md): supersedes the flat project-authority model.
+- [ADR-0010: Primary Adapter Profile](0010-primary-adapter-profile.md): makes `AGENTS.md` the default adapter entry point.
+- [ADR-0011: Versioning Boundaries](0011-versioning-boundaries.md): separates package, format, and verification-report versions.
 
 ## Format
 
