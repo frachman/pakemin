@@ -33,6 +33,8 @@ The evaluation states and final governance outcomes for machine-enforceable rule
 
 [Governance Schema v0](../reference/governance-schema-v0.md) is the accepted normative input contract for typed rules and exceptions; it is not implemented by the current CLI.
 
+[Verification Contract v0](verification-contract-v0.md) is the accepted normative repository-level evaluation and report contract; it is not implemented by the current CLI.
+
 ## Open Questions
 
 - Which rule categories are normative?

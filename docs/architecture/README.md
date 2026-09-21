@@ -14,4 +14,4 @@ Parent: [Documentation](../README.md)
 - [Rule model](rule-model.md): defines constraints for consistent agent behavior.
 - [Workflow model](workflow-model.md): defines reusable engineering processes.
 - [Adapter contract](adapter-contract.md): defines responsibilities and boundaries for vendor adapters.
-- [Verification Contract v0](verification-contract-v0.md): proposes provider-agnostic verification outcomes and evidence.
+- [Verification Contract v0](verification-contract-v0.md): accepted normative repository-level evaluation and report contract.
