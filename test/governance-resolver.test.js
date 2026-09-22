@@ -278,11 +278,18 @@ test("returned arrays never alias governance or a later resolution", () => {
   assert.deepEqual(value, snapshot); assert.deepEqual(resolveGovernancePaths(value, ["a.md"]).resolution.paths[0], { path: "a.md", directScopeIds: ["repository"], effectiveScopeIds: ["repository"], ruleIds: [], exceptionIds: [] });
 });
 
-test("CLI help has no public check command", () => {
+test("CLI help advertises check and check requires comparison flags", () => {
   const help = spawnSync(process.execPath, ["./bin/pakemin.js", "--help"], { cwd: process.cwd(), encoding: "utf8" });
-  assert.equal(help.stdout.includes("  check"), false);
-  const unsupported = spawnSync(process.execPath, ["./bin/pakemin.js", "check"], { cwd: process.cwd(), encoding: "utf8" });
-  assert.notEqual(unsupported.status, 0);
+  assert.equal(help.stdout.includes("  check"), true);
+  const check = spawnSync(process.execPath, ["./bin/pakemin.js", "check"], { cwd: process.cwd(), encoding: "utf8" });
+  assert.equal(check.status, 4);
+  assert.equal(check.stdout, "");
+  const envelope = JSON.parse(check.stderr);
+  assert.equal(envelope.contractVersion, "0");
+  assert.equal(envelope.errorKind, "runtime");
+  assert.equal(envelope.exitCode, 4);
+  assert.equal(envelope.errors.every((error) => error.code === "invalid-comparison"), true);
+  assert.equal("outcome" in envelope, false);
 });
 
 test("acceptance coverage map names every resolver acceptance row", () => {

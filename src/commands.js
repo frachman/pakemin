@@ -5,10 +5,13 @@ import { ADAPTERS } from "./catalog.js";
 import { coreFiles, presetFiles } from "./content.js";
 import { selectAdapters } from "./adapters.js";
 import { ensureDirectory, exists, isDirectory, resolveTarget, writeFiles } from "./fs-utils.js";
+import { loadGovernance } from "./governance/index.js";
 import { detectLanguages, reportDetection, selectPresets } from "./languages.js";
 import { isFlagSet, parseOptions } from "./options.js";
 import { reportWriteResult, write } from "./output.js";
 import { validateProject } from "./validation.js";
+import { collectChanges, resolveComparison, verifyRepository } from "./verification/index.js";
+import { configurationEnvelope, runtimeEnvelope, runtimeError } from "./verification/changes.js";
 
 export function initCommand(args, io) {
   const options = parseOptions(args);
@@ -112,6 +115,36 @@ export function adaptersListCommand(args, io) {
   return 0;
 }
 
+export function checkCommand(args, io) {
+  const options = parseOptions(args);
+  const root = resolveTarget(io.cwd, options.positionals[0] || ".");
+  const hasBaseline = Object.hasOwn(options.values, "baseline");
+  const hasTarget = Object.hasOwn(options.values, "target");
+  const workingTree = isFlagSet(options, "working-tree");
+
+  const errors = [];
+  if (!hasBaseline || !options.values.baseline?.trim()) errors.push(runtimeError("invalid-comparison", "invalid comparison: --baseline is required"));
+  if (workingTree && hasTarget) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target and --working-tree are mutually exclusive"));
+  else if (!workingTree && (!hasTarget || !options.values.target?.trim())) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target or --working-tree is required"));
+  if (errors.length) return emitEnvelope(io, runtimeEnvelope(errors));
+
+  const loaded = loadGovernance(root);
+  if (!loaded.ok) return emitEnvelope(io, configurationEnvelope(loaded.errors));
+
+  const target = workingTree ? "working-tree" : options.values.target;
+  const resolved = resolveComparison(root, options.values.baseline, target);
+  if (!resolved.ok) return emitEnvelope(io, runtimeEnvelope(resolved.errors));
+
+  const collected = collectChanges(root, options.values.baseline, target);
+  if (!collected.ok) return emitEnvelope(io, runtimeEnvelope(collected.errors));
+
+  const result = verifyRepository(loaded.governance, resolved.comparison, collected.changes);
+  if (!result.ok) return emitEnvelope(io, result);
+
+  write(io.stdout, `${JSON.stringify(result.report, null, 2)}\n`);
+  return { pass: 0, fail: 1, "requires-review": 2 }[result.report.outcome];
+}
+
 export function doctorCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
@@ -140,4 +173,10 @@ export function doctorCommand(args, io) {
 
   reportDetection(io.stdout, detected, []);
   return 0;
+}
+
+function emitEnvelope(io, envelope) {
+  const { ok, ...display } = envelope;
+  write(io.stderr, `${JSON.stringify(display, null, 2)}\n`);
+  return envelope.exitCode;
 }

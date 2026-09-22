@@ -3,6 +3,7 @@ import fs from "node:fs";
 import {
   adaptersGenerateCommand,
   adaptersListCommand,
+  checkCommand,
   doctorCommand,
   initCommand,
   validateCommand
@@ -37,6 +38,10 @@ export async function runCli(args, io) {
       return validateCommand(args.slice(1), io);
     }
 
+    if (command === "check") {
+      return checkCommand(args.slice(1), io);
+    }
+
     if (command === "adapters") {
       if (args[1] === "generate") {
         return adaptersGenerateCommand(args.slice(2), io);
@@ -67,6 +72,7 @@ Open-source AI engineering governance for coding agents.
 Usage:
   pakemin init [path] [--force] [--dry-run] [--preset=<id>[,<id>...]]
   pakemin validate [path] [--links-only] [--adapters]
+  pakemin check [path] [--baseline=<revision>] [--target=<revision>] [--working-tree]
   pakemin adapters list [path]
   pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
   pakemin doctor [path]
@@ -75,6 +81,7 @@ Usage:
 Commands:
   init                 Create a minimal .ai portable core.
   validate             Validate local Pakemin structure and Markdown links.
+  check                Verify repository governance for a Git change set.
   adapters list        List primary and optional compatibility adapters.
   adapters generate    Generate the default adapter profile or selected adapters.
   doctor               Print local environment and project checks.
