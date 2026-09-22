@@ -47,3 +47,15 @@ test("allows literal exclamation marks but rejects negation and extglob", () => 
     assert.deepEqual(result.errors, [{ code: "invalid-path-pattern", source: { document: ".ai/pakemin.yaml", field: "/rules/0/paths/0" } }]);
   }
 });
+
+test("special keys remain visible to schema validation without prototype pollution", () => {
+  const result = load('formatVersion: "0"\n__proto__: value\nconstructor: value\nprototype: value\nscopes:\n  - id: repository\n    paths: ["**"]\n    __proto__: value\n');
+  assert.equal({}.value, undefined);
+  assert.deepEqual(result.errors, [
+    { code: "unknown-top-level-key", source: { document: ".ai/pakemin.yaml", field: "/__proto__" } },
+    { code: "unknown-top-level-key", source: { document: ".ai/pakemin.yaml", field: "/constructor" } },
+    { code: "unknown-top-level-key", source: { document: ".ai/pakemin.yaml", field: "/prototype" } },
+    { code: "missing-repository-scope", source: { document: ".ai/pakemin.yaml", field: "/scopes" } },
+    { code: "invalid-scope-shape", source: { document: ".ai/pakemin.yaml", field: "/scopes/0" } }
+  ]);
+});
