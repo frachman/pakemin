@@ -20,7 +20,7 @@ export function validateGovernance(sources) {
     ok: true,
     governance: {
       formatVersion: "0",
-      manifest: manifest.document,
+      manifest: ".ai/pakemin.yaml",
       sources: sources.map((source) => source.document).sort(compare),
       scopes: output(byDepth(scopes, (item) => depth(item, scopeById))),
       rules: output(byDepth(items.rules, (item) => depth(scopeById.get(item.definition.scope), scopeById))),

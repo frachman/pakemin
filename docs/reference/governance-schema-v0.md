@@ -61,7 +61,7 @@ Examples: `repository`, `shared-ui`, `repository.source-change-requires-tests`, 
 
 ## Scopes
 
-`scopes` MUST be a list. Each scope entry MUST be a mapping. The root `repository` scope permits only string `id` and list `paths`; a non-root scope permits only string `id`, string `parent`, and list `paths`. `paths` MUST be a nonempty list of strings. Wrong field types, unknown fields, or missing required fields are `invalid-scope-shape` and do not produce cascading descendant errors. Every manifest has exactly one root scope with ID `repository`. It MUST NOT have `parent`, MUST declare `paths: ["**"]`, and covers the repository root. A structurally valid root with a parent or other paths is `invalid-repository-scope`. Each non-root scope MUST have exactly one known `parent`. Unknown parents are `unknown-parent-scope`; cycles are `scope-cycle`.
+`scopes` MUST be a list. Each scope entry MUST be a mapping. The root `repository` scope permits string `id`, list `paths`, and an optional string `parent` only so it can be recognized and diagnosed specifically; a non-root scope permits only string `id`, string `parent`, and list `paths`. `paths` MUST be a nonempty list of strings. Wrong field types, unknown fields, or missing required fields are `invalid-scope-shape` and do not produce cascading descendant errors. Every manifest has exactly one root scope with ID `repository`. It MUST NOT have `parent`, MUST declare `paths: ["**"]`, and covers the repository root. A structurally valid root with a parent or other paths is `invalid-repository-scope`. Each non-root scope MUST have exactly one known `parent`. Unknown parents are `unknown-parent-scope`; cycles are `scope-cycle`.
 
 ```yaml
 scopes:

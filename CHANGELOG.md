@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Documentation now describes the planned governance direction, layered authority, primary adapter profile, and separate versioning boundaries.
 
+### Fixed
+
+- Completed pre-release Governance Schema v0 loader and load-time validator conformance remediation.
+
 ## [0.1.2] - 2026-08-03
 
 ### Added
