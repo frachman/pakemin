@@ -94,3 +94,54 @@ test("does not duplicate ambiguity when an exception path is requested", () => {
   assert.equal(result.errors.length, 2);
   assert.equal(result.errors.some((error) => error.code === "exception-outside-scope"), false);
 });
+
+test("keeps direct parent and child matches, one scope per matching pattern set, and numeric depth", () => {
+  let scopes = '  - id: repository\n    paths: ["**"]\n';
+  for (let index = 1; index <= 11; index += 1) scopes += `  - id: level-${index}\n    parent: ${index === 1 ? "repository" : `level-${index - 1}`}\n    paths: ["deep/**", "deep/leaf/**"]\n`;
+  const value = governance(`formatVersion: "0"\nscopes:\n${scopes}`);
+  const result = resolveGovernancePaths(value, ["deep/leaf/a.md"]);
+  assert.deepEqual(result.resolution.paths[0].directScopeIds, ["repository", ...Array.from({ length: 11 }, (_, index) => `level-${index + 1}`)]);
+  assert.deepEqual(result.resolution.paths[0].effectiveScopeIds, ["repository", ...Array.from({ length: 11 }, (_, index) => `level-${index + 1}`)]);
+});
+
+test("resolver is filesystem-independent and does not mutate or alias inputs", () => {
+  const value = governance(base);
+  const before = structuredClone(value); const paths = ["deleted/file.md"];
+  const original = fs.readFileSync; fs.readFileSync = () => { throw new Error("resolver read filesystem"); };
+  try {
+    const result = resolveGovernancePaths(value, paths);
+    assert.equal(result.ok, true);
+    result.resolution.paths[0].directScopeIds.push("mutated");
+  } finally { fs.readFileSync = original; }
+  assert.deepEqual(value, before); assert.deepEqual(paths, ["deleted/file.md"]);
+});
+
+test("returns one pointer-specific outside-scope error per authored path occurrence", () => {
+  const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: docs.allowed\n    type: allowed-paths\n    scope: docs\n    paths: ["docs/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.allowed\n    scope: docs\n    paths: ["other/a.md", "other/a.md", "other/b.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+  assert.deepEqual(resolveGovernancePaths(value, []), { ok: false, errors: [
+    { code: "exception-outside-scope", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/0" }, path: "other/a.md" },
+    { code: "exception-outside-scope", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/1" }, path: "other/a.md" },
+    { code: "exception-outside-scope", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/2" }, path: "other/b.md" }
+  ] });
+});
+
+test("resolution-time conformance fixtures are keyed to the exact inventory", () => {
+  const fixtures = {
+    "ambiguous-scope-match": () => {
+      const value = governance(`${base}  - id: one\n    parent: repository\n    paths: ["same/**"]\n  - id: two\n    parent: repository\n    paths: ["same/**"]\n`);
+      return resolveGovernancePaths(value, ["same/a.md"]);
+    },
+    "exception-outside-scope": () => {
+      const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: docs.allowed\n    type: allowed-paths\n    scope: docs\n    paths: ["docs/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.allowed\n    scope: docs\n    paths: ["other/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+      return resolveGovernancePaths(value, []);
+    }
+  };
+  assert.deepEqual(Object.keys(fixtures).sort(), RESOLUTION_TIME_SCHEMA_CODES.slice().sort());
+  assert.deepEqual(fixtures["ambiguous-scope-match"](), { ok: false, errors: [
+    { code: "ambiguous-scope-match", source: { document: ".ai/pakemin.yaml", field: "/scopes/1/paths/0" }, path: "same/a.md" },
+    { code: "ambiguous-scope-match", source: { document: ".ai/pakemin.yaml", field: "/scopes/2/paths/0" }, path: "same/a.md" }
+  ] });
+  assert.deepEqual(fixtures["exception-outside-scope"](), { ok: false, errors: [
+    { code: "exception-outside-scope", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/0" }, path: "other/a.md" }
+  ] });
+});
