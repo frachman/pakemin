@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Internal repository-local governance source loading and Schema v0 load-time validation. This does not add a user-facing command or verification behavior.
+- Internal actual-path governance resolver for scope chains, relevant rules, and exact exception applicability. This does not add a user-facing command or verification behavior.
 
 ### Changed
 

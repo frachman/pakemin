@@ -32,7 +32,7 @@ node ./bin/pakemin.js validate examples/saas-reference-repository --adapters
 
 The same checks run in CI for pushes to `master` and `v*` release branches, and for pull requests.
 
-The Node.js suite includes focused repository-local governance loader, schema, and path-pattern tests, including load-time error-code conformance and direct loader-security fixtures for YAML features, special object keys, symlinks, containment, and parser-boundary isolation. They validate only loading and load-time configuration validation; they do not run path resolution, Git collection, rule evaluation, reporting, or a CLI command.
+The Node.js suite includes focused repository-local governance loader, schema, path-pattern, and actual-path resolver tests. It has separate load-time 36/36 and resolution-time 2/2 conformance inventories, plus loader-security fixtures for YAML features, special object keys, symlinks, containment, and parser-boundary isolation. It does not run Git collection, rule evaluation, reporting, or a CLI command.
 
 ## End-to-End Smoke Test
 

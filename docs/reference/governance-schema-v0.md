@@ -3,7 +3,7 @@
 - Status: Normative specification
 - Contract version: 0
 - Target release: v0.2.0 (unreleased)
-- Implementation status: Source loading and load-time validation implemented; actual-path resolution and verification not implemented.
+- Implementation status: Source loading, load-time validation, and actual-path resolution implemented; Git change collection and verification not implemented.
 
 This contract is derived from [ADR-0013](../adr/0013-declarative-governance-schema.md). It defines repository-local YAML governance; Markdown remains the format for context, decisions, explanations, and workflows.
 
@@ -72,7 +72,7 @@ scopes:
     paths: ["apps/docs/**"]
 ```
 
-Paths are normalized repository-relative paths using `/`. A matching file inherits every ancestor scope. Effective scopes are ordered from `repository` to the deepest scope. During resolution, if an actual path matches unrelated scopes, resolution fails with `ambiguous-scope-match`; declaration order, lexical order, and apparent pattern specificity never select a winner. A validator MAY report a statically provable unrelated overlap early, but need not solve general glob intersection.
+Paths are normalized repository-relative paths using `/`. A matching file inherits every ancestor scope. Effective scopes are ordered from `repository` to the deepest scope. During resolution, if an actual path matches unrelated scopes, resolution fails with `ambiguous-scope-match`; declaration order, lexical order, and apparent pattern specificity never select a winner. Each participating non-root scope produces one diagnostic, attributed to its lowest-index authored matching pattern, with the resolved canonical path. A validator MAY report a statically provable unrelated overlap early, but need not solve general glob intersection.
 
 ## Path Normalization
 
@@ -181,7 +181,7 @@ exceptions:
     approvedBy: maintainer
 ```
 
-Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be the target rule scope or a descendant. A known but unrelated scope is `invalid-exception-scope`; an absent scope is `unknown-exception-scope`. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
+Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be the target rule scope or a descendant. A known but unrelated scope is `invalid-exception-scope`; an absent scope is `unknown-exception-scope`. A resolver validates every exception path, including when its requested path set is empty. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
 
 For `allowed-paths`, an exception waives only its target rule for the exact path; every other applicable allowed rule still applies. For `forbidden-paths`, it waives only its target forbidden rule for the exact path; every other applicable forbidden rule remains active. Rename source and destination paths are evaluated independently. Unknown fields, duplicate IDs, unknown targets, unrelated scopes, wildcard paths, or invalid shapes are configuration errors.
 
