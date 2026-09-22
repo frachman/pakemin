@@ -222,3 +222,28 @@ test("check separates streams and never emits a partial report", () => {
   assert.equal(missingFlags.stdout, "");
   assert.equal("outcome" in JSON.parse(missingFlags.stderr), false);
 });
+
+test("check reports clear target-path errors like the other commands", () => {
+  const parent = temporary("pakemin-check-target-");
+  const missing = path.join(parent, "nope");
+  const missingResult = spawnSync(process.execPath, [BIN, "check", missing, "--baseline=x", "--target=y"], { cwd: parent, encoding: "utf8" });
+  assert.equal(missingResult.status, 1);
+  assert.equal(missingResult.stdout, "");
+  assert.match(missingResult.stderr, /Error: target path does not exist/);
+
+  const file = path.join(parent, "plainfile");
+  fs.writeFileSync(file, "x\n");
+  const fileResult = spawnSync(process.execPath, [BIN, "check", file, "--baseline=x", "--target=y"], { cwd: parent, encoding: "utf8" });
+  assert.equal(fileResult.status, 1);
+  assert.equal(fileResult.stdout, "");
+  assert.match(fileResult.stderr, /Error: target path exists but is not a directory/);
+});
+
+test("check --help prints help without running", () => {
+  const { root } = initRepo(BASE);
+  const help = spawnSync(process.execPath, [BIN, "check", root, "--help"], { cwd: root, encoding: "utf8" });
+  assert.equal(help.status, 0);
+  assert.equal(help.stderr, "");
+  assert.match(help.stdout, /Usage:/);
+  assert.match(help.stdout, /pakemin check/);
+});

@@ -35,6 +35,30 @@ test("init creates the portable core", async () => {
   assert.match(io.stdout.text, /Initialized Pakemin portable core/);
 });
 
+test("help flag prints help without executing the command", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", root, "--help"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Usage:/);
+  assert.equal(fs.existsSync(path.join(root, ".ai")), false);
+  assert.equal(fs.existsSync(path.join(root, "AGENTS.md")), false);
+});
+
+test("short help flag is not treated as a target path", async () => {
+  const root = tempProject();
+  const io = memoryIo(root);
+
+  const exitCode = await runCli(["init", "-h"], io);
+
+  assert.equal(exitCode, 0);
+  assert.match(io.stdout.text, /Usage:/);
+  assert.equal(fs.existsSync(path.join(root, "-h")), false);
+  assert.equal(fs.existsSync(path.join(root, ".ai")), false);
+});
+
 test("init creates a missing target directory", async () => {
   const parent = tempProject();
   const root = path.join(parent, "new-project");

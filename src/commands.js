@@ -122,6 +122,16 @@ export function checkCommand(args, io) {
   const hasTarget = Object.hasOwn(options.values, "target");
   const workingTree = isFlagSet(options, "working-tree");
 
+  if (!exists(root)) {
+    write(io.stderr, `Error: target path does not exist: ${root}\n`);
+    return 1;
+  }
+
+  if (exists(root) && !isDirectory(root)) {
+    write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
+    return 1;
+  }
+
   const errors = [];
   if (!hasBaseline || !options.values.baseline?.trim()) errors.push(runtimeError("invalid-comparison", "invalid comparison: --baseline is required"));
   if (workingTree && hasTarget) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target and --working-tree are mutually exclusive"));

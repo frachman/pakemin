@@ -29,6 +29,11 @@ export async function runCli(args, io) {
     return 0;
   }
 
+  if (args.slice(1).includes("--help") || args.slice(1).includes("-h")) {
+    write(io.stdout, helpText());
+    return 0;
+  }
+
   try {
     if (command === "init") {
       return initCommand(args.slice(1), io);

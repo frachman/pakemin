@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `pakemin <command> --help` and `-h` print the CLI help instead of executing the command.
+- `pakemin check` returns the same clear target-path errors as the other commands instead of a bare loading failure.
 - Completed pre-release Governance Schema v0 loader and load-time validator conformance remediation.
 - Hardened the internal actual-path resolver boundary and completed its pre-release acceptance coverage; no public verification command is added.
 - Finalized pre-release resolver provenance, exact-exception, array-integrity, and acceptance-coverage hardening; no public verification command is added.
