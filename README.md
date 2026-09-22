@@ -25,6 +25,8 @@ That duplication creates drift. One file says how tests should run, another has 
 
 Pakemin solves this with three connected pillars: Right Context in a project-owned `.ai/` core, Clear Authority through scoped and restrictive rules, and Verifiable Changes through deterministic evidence. Vendor adapters stay thin: they point agents to the portable core instead of becoming separate instruction systems.
 
+This also means switching agents does not mean starting from zero. Project knowledge lives in `.ai/` instead of any vendor's files or chat history, so a new tool follows its thin adapter to the same portable core. `.ai/memory/` records active work with owner and status, so a different agent — or a teammate — can pick up where the last one left off. Continuity comes from version-controlled project state, not from a particular agent account or captured sessions.
+
 The goal is not to wrap LLMs or choose a winning agent. The goal is to make project knowledge portable, reviewable, and stable as teams move between AI coding tools.
 
 ## Purpose
@@ -181,6 +183,7 @@ pakemin check --baseline=<revision> --target=<revision>
 
 - Keep project knowledge independent from any one AI vendor.
 - Store project context, decisions, rules, and workflows in version-controlled files.
+- Preserve work continuity across agents, sessions, and teammates through project-owned memory.
 - Support gradual adoption in existing repositories.
 - Keep the system readable and editable by humans.
 - Provide a foundation for future CLI tooling and adapters.
