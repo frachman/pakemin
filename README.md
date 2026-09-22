@@ -148,6 +148,35 @@ pakemin doctor [path]
 
 `pakemin check` verifies a Git change set against repository governance and prints a deterministic report. It requires an explicit baseline and an explicit target or working-tree mode, and it does not claim task-authority compliance.
 
+## Verify Changes
+
+v0.2.0 adds repository-level verification. Define governance in a project-owned `.ai/pakemin.yaml`:
+
+```yaml
+formatVersion: "0"
+scopes:
+  - id: repository
+    paths: ["**"]
+rules:
+  - id: repository.source-change-requires-tests
+    type: changed-path-requires-changed-path
+    scope: repository
+    when:
+      changedPaths:
+        include: ["src/**"]
+    require:
+      changedPaths:
+        include: ["test/**"]
+```
+
+Then verify a Git change set against it:
+
+```text
+pakemin check --baseline=<revision> --target=<revision>
+```
+
+`check` exits `0` for `pass`, `1` for `fail`, and `2` for `requires-review`, and prints a deterministic JSON report on stdout. Configuration and runtime failures exit `3` and `4` with a diagnostic envelope on stderr. The command requires an explicit baseline and exactly one explicit target form, never infers a comparison, and keeps `verificationMode: "repository"`. See the [CLI reference](docs/reference/cli.md) and [Governance Schema v0](docs/reference/governance-schema-v0.md).
+
 ## Goals
 
 - Keep project knowledge independent from any one AI vendor.
@@ -186,7 +215,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a local checkout and op
 
 Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
 
-The stable release includes a dependency-free CLI, project-owned `.ai` scaffolding, thin adapter support, validation, language presets, and a reference repository. Layered authority and verification are documented v0.2.0 work; the proposed verification contract is not yet implemented.
+The stable release includes a dependency-free CLI, project-owned `.ai` scaffolding, thin adapter support, validation, language presets, and a reference repository. v0.2.0 adds declarative governance and repository-level verification through `pakemin check`; task-aware verification remains deferred until a task-envelope contract exists.
 
 Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
 

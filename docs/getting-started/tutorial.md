@@ -1,6 +1,6 @@
 # First-Time User Tutorial
 
-This walkthrough takes a new project from installing Pakemin to making and validating your first real edit in `.ai`. It is the hands-on companion to the [Quick Start](../../README.md#quick-start).
+This walkthrough takes a new project from installing Pakemin to verifying a real change with governance rules. It is the hands-on companion to the [Quick Start](../../README.md#quick-start).
 
 ## 1. Install Pakemin
 
@@ -119,3 +119,44 @@ git commit -m "Add Pakemin portable core and adapters"
 ```
 
 From here, your team and your AI coding agents read the same version-controlled source of truth.
+
+## 7. Verify a Change with Governance Rules
+
+Pakemin v0.2.0 adds repository-level verification through `pakemin check`. Governance rules are declarative and live in a project-owned `.ai/pakemin.yaml`. A minimal example requires a test change whenever a source file changes:
+
+```yaml
+formatVersion: "0"
+scopes:
+  - id: repository
+    paths: ["**"]
+rules:
+  - id: repository.source-change-requires-tests
+    type: changed-path-requires-changed-path
+    scope: repository
+    when:
+      changedPaths:
+        include: ["src/**"]
+    require:
+      changedPaths:
+        include: ["test/**"]
+```
+
+Commit the governance file, then create a source change without its required test change and commit that too:
+
+```text
+git add .ai/pakemin.yaml
+git commit -m "Add repository governance"
+# change src/app.js without touching test/
+git add -A
+git commit -m "Update app without tests"
+```
+
+Verify the change against governance, comparing the governance commit with the change commit:
+
+```text
+pakemin check --baseline=<governance-revision> --target=<change-revision>
+```
+
+Any revision Git accepts works here: a branch name, a tag, or a commit ID. This change breaks the rule, so `check` prints a JSON report with `"outcome": "fail"` and exits `1`. Commit a matching `test/app.test.js` change and rerun the same command to see `"outcome": "pass"` and exit `0`. A rule that requires human review instead exits `2` with `"outcome": "requires-review"`.
+
+`check` requires an explicit `--baseline` and exactly one of `--target=<revision>` or `--working-tree`; it never infers a comparison for you. See the [CLI reference](../reference/cli.md) for the full contract.

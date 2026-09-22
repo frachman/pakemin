@@ -31,9 +31,9 @@ Rules should not encode vendor-specific behavior. Vendor-specific constraints be
 
 The evaluation states and final governance outcomes for machine-enforceable rules are defined in [ADR-0014](../adr/0014-least-change-verification.md).
 
-[Governance Schema v0](../reference/governance-schema-v0.md) is the accepted normative input contract for typed rules and exceptions; it is not implemented by the current CLI.
+[Governance Schema v0](../reference/governance-schema-v0.md) is the accepted normative input contract for typed rules and exceptions and is enforced by `pakemin check`.
 
-[Verification Contract v0](verification-contract-v0.md) is the accepted normative repository-level evaluation and report contract; it is not implemented by the current CLI.
+[Verification Contract v0](verification-contract-v0.md) is the accepted normative repository-level evaluation and report contract and is implemented by `pakemin check`; task-aware verification remains deferred until a task-envelope contract exists.
 
 ## Open Questions
 

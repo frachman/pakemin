@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Pakemin CLI provides minimal local tooling for initializing portable-core files, validating documentation, generating thin adapters, and checking the local project environment.
+The Pakemin CLI provides minimal local tooling for initializing portable-core files, validating documentation, generating thin adapters, verifying Git change sets against repository governance, and checking the local project environment.
 
 ## Installation
 
