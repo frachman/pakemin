@@ -1,5 +1,5 @@
 import { compare, diagnostic, sortDiagnostics } from "./diagnostics.js";
-import { isCanonicalGovernancePath, matchesGovernancePattern } from "./paths.js";
+import { isCanonicalGovernancePath, isExactGovernancePath, matchesGovernancePattern } from "./paths.js";
 
 const identifier = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
 const ruleTypes = new Set(["allowed-paths", "forbidden-paths", "changed-path-requires-changed-path", "changed-path-requires-review"]);
@@ -60,8 +60,10 @@ function assertInput(governance, paths) {
 
 function assertGovernance(governance) {
   if (!safeRecord(governance) || governance.formatVersion !== "0" || !isAiPath(governance.manifest) || !safeArray(governance.sources) || !safeArray(governance.scopes) || !safeArray(governance.rules) || !safeArray(governance.exceptions)) throw internalError();
+  if (governance.sources.length === 0) throw internalError();
   const sources = new Set();
   for (const source of governance.sources) { if (!isAiPath(source) || sources.has(source)) throw internalError(); sources.add(source); }
+  if (!sources.has(governance.manifest)) throw internalError();
   const scopes = new Map();
   for (const scope of governance.scopes) {
     if (!entry(scope) || !identifier.test(scope.definition.id) || !safeArray(scope.definition.paths) || scope.definition.paths.length === 0 || !scope.definition.paths.every(isValidPattern) || scopes.has(scope.definition.id)) throw internalError();
@@ -79,13 +81,13 @@ function assertGovernance(governance) {
   }
   const exceptions = new Set();
   for (const exception of governance.exceptions) {
-    if (!entry(exception) || !identifier.test(exception.definition.id) || typeof exception.definition.rule !== "string" || typeof exception.definition.scope !== "string" || typeof exception.definition.reason !== "string" || typeof exception.definition.approvedBy !== "string" || !safeArray(exception.definition.paths) || exception.definition.paths.length === 0 || !exception.definition.paths.every(isCanonicalGovernancePath) || exceptions.has(exception.definition.id) || !rules.has(exception.definition.rule) || !scopes.has(exception.definition.scope)) throw internalError();
+    if (!entry(exception) || !identifier.test(exception.definition.id) || typeof exception.definition.rule !== "string" || typeof exception.definition.scope !== "string" || typeof exception.definition.reason !== "string" || exception.definition.reason.length === 0 || typeof exception.definition.approvedBy !== "string" || exception.definition.approvedBy.length === 0 || !safeArray(exception.definition.paths) || exception.definition.paths.length === 0 || !exception.definition.paths.every(isExactGovernancePath) || exceptions.has(exception.definition.id) || !rules.has(exception.definition.rule) || !scopes.has(exception.definition.scope)) throw internalError();
     exceptions.add(exception.definition.id);
   }
 }
 
 function entry(value) { return safeRecord(value) && safeRecord(value.definition) && source(value.source); }
-function source(value) { return safeRecord(value) && value.layer === "repository" && isAiPath(value.document) && typeof value.field === "string" && value.field.startsWith(""); }
+function source(value) { return safeRecord(value) && value.layer === "repository" && isAiPath(value.document) && validPointer(value.field); }
 function normalizedRule(value) {
   if (value.description !== undefined && typeof value.description !== "string") return false;
   if (["allowed-paths", "forbidden-paths", "changed-path-requires-review"].includes(value.type)) return safeArray(value.paths) && value.paths.length > 0 && value.paths.every(isValidPattern);
@@ -95,5 +97,6 @@ function changedPart(value) { return safeRecord(value) && safeRecord(value.chang
 function isValidPattern(value) { return typeof value === "string" && isCanonicalGovernancePath(value) && !value.startsWith("!") && !/[?\[\]{}\\]/.test(value) && !/[@+*!?]\(/.test(value) && value.split("/").every((segment) => segment === "**" || !segment.includes("**")); }
 function isAiPath(value) { return isCanonicalGovernancePath(value) && value.startsWith(".ai/"); }
 function safeRecord(value) { if (value === null || typeof value !== "object" || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) return false; return Object.values(Object.getOwnPropertyDescriptors(value)).every((descriptor) => Object.hasOwn(descriptor, "value")); }
-function safeArray(value) { if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false; return Object.values(Object.getOwnPropertyDescriptors(value)).every((descriptor) => Object.hasOwn(descriptor, "value")); }
+function safeArray(value) { if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false; const descriptors = Object.getOwnPropertyDescriptors(value); for (let index = 0; index < value.length; index += 1) if (!Object.hasOwn(descriptors, String(index)) || !Object.hasOwn(descriptors[String(index)], "value")) return false; return Object.values(descriptors).every((descriptor) => Object.hasOwn(descriptor, "value")); }
+function validPointer(value) { return typeof value === "string" && value.startsWith("/") && !/(?:^|[^~])~(?:$|[^01])/.test(value) && !/~[^01]/.test(value); }
 function internalError() { const error = new Error("invalid governance resolver input"); error.code = "internal-error"; return error; }

@@ -38,6 +38,10 @@ export function isValidGovernancePattern(value) {
   return value.split("/").every((segment) => segment === "**" || !segment.includes("**"));
 }
 
+export function isExactGovernancePath(value) {
+  return isCanonicalGovernancePath(value) && !value.includes("*") && !/[?\[\]{}\\]/.test(value) && !value.startsWith("!") && !/[@+*!?]\(/.test(value);
+}
+
 // Callers validate both arguments with the Schema v0 helpers before matching.
 export function matchesGovernancePattern(pattern, file) {
   const patternParts = pattern.split("/");

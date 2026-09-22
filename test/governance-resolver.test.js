@@ -75,6 +75,28 @@ test("rejects corrupted normalized governance at the resolver boundary", () => {
   assert.equal(resolveGovernancePaths(value, ["docs/a.md"]).ok, true);
 });
 
+test("enforces pointer, exact exception, audit, dense-array, and source boundary predicates", () => {
+  const value = governance(`${base}rules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\nexceptions:\n  - id: exception.one\n    rule: repository.rule\n    scope: repository\n    paths: ["docs/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+  const corruptions = [
+    ["non-pointer provenance", (copy) => { copy.rules[0].source.field = "rules/0"; }],
+    ["invalid pointer escape", (copy) => { copy.rules[0].source.field = "/rules/~2"; }],
+    ["wildcard exception", (copy) => { copy.exceptions[0].definition.paths = ["docs/*.md"]; }],
+    ["double-star exception", (copy) => { copy.exceptions[0].definition.paths = ["docs/**"]; }],
+    ["pattern exception", (copy) => { copy.exceptions[0].definition.paths = ["docs/[a].md"]; }],
+    ["empty reason", (copy) => { copy.exceptions[0].definition.reason = ""; }],
+    ["empty approver", (copy) => { copy.exceptions[0].definition.approvedBy = ""; }],
+    ["sparse sources", (copy) => { copy.sources = new Array(1); }],
+    ["sparse scope paths", (copy) => { copy.scopes[0].definition.paths = new Array(1); }],
+    ["sparse rule paths", (copy) => { copy.rules[0].definition.paths = new Array(1); }],
+    ["sparse exception paths", (copy) => { copy.exceptions[0].definition.paths = new Array(1); }],
+    ["empty sources", (copy) => { copy.sources = []; }],
+    ["manifest absent from sources", (copy) => { copy.sources = [".ai/other.yaml"]; }]
+  ];
+  for (const [name, corrupt] of corruptions) { const copy = structuredClone(value); corrupt(copy); assert.throws(() => resolveGovernancePaths(copy, []), { code: "internal-error" }, name); }
+  const escaped = structuredClone(value); escaped.rules[0].source.field = "/rules/a~0b~1c";
+  assert.equal(resolveGovernancePaths(escaped, []).ok, true);
+});
+
 test("returns applicable exact exceptions and validates paths for empty input", () => {
   const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: repository.allowed\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\n  - id: docs.forbidden\n    type: forbidden-paths\n    scope: docs\n    paths: ["docs/private/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.forbidden\n    scope: docs\n    paths: ["docs/private/a.md", "docs/private/a.md"]\n    reason: approved\n    approvedBy: maintainer\n  - id: exception.repository\n    rule: repository.allowed\n    scope: repository\n    paths: ["docs/private/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
   const result = resolveGovernancePaths(value, ["docs/private/a.md", "docs/other.md"]);
