@@ -37,3 +37,13 @@ test("sorts scopes and rules by numeric depth", () => {
   assert.deepEqual(result.governance.scopes.map((item) => item.definition.id), ["repository", ...Array.from({ length: 11 }, (_, index) => `depth-${index + 1}`)]);
   assert.deepEqual(result.governance.rules.map((item) => item.definition.id), Array.from({ length: 11 }, (_, index) => `rule-${index + 1}`));
 });
+
+test("allows literal exclamation marks but rejects negation and extglob", () => {
+  for (const pattern of ["docs/a!b.md", "docs/hello!.md"]) {
+    assert.equal(load(`${base}rules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["${pattern}"]\n`).ok, true);
+  }
+  for (const pattern of ["!docs/**", "docs/!(a).md", "docs/@(a).md", "docs/+(a).md", "docs/*(a).md", "docs/?(a).md"]) {
+    const result = load(`${base}rules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["${pattern}"]\n`);
+    assert.deepEqual(result.errors, [{ code: "invalid-path-pattern", source: { document: ".ai/pakemin.yaml", field: "/rules/0/paths/0" } }]);
+  }
+});

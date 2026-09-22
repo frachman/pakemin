@@ -18,10 +18,12 @@ export function parseYaml(bytes, document) {
 }
 
 function mapValue(map, field, document, errors) {
+  if (unsupported(map)) errors.push(diagnostic("unsupported-yaml-feature", document, field));
   const value = Object.create(null); const seen = new Set();
   for (const pair of map.items) {
     if (!(pair.key instanceof Scalar) || typeof pair.key.value !== "string") { errors.push(diagnostic("unsupported-yaml-feature", document, field)); continue; }
     const key = pair.key.value; const child = pointer(field, key);
+    if (unsupported(pair.key)) errors.push(diagnostic("unsupported-yaml-feature", document, child));
     if (seen.has(key)) errors.push(diagnostic("duplicate-mapping-key", document, child));
     seen.add(key); value[key] = nodeValue(pair.value, child, document, errors);
   }
@@ -30,12 +32,14 @@ function mapValue(map, field, document, errors) {
 
 function nodeValue(node, field, document, errors) {
   if (node === null) return null;
-  if (node instanceof Alias || node.anchor || node.tag) { errors.push(diagnostic("unsupported-yaml-feature", document, field)); return null; }
+  if (unsupported(node)) { errors.push(diagnostic("unsupported-yaml-feature", document, field)); return null; }
   if (node instanceof Scalar) return node.value;
   if (node instanceof YAMLSeq) return node.items.map((item, index) => nodeValue(item, pointer(field, index), document, errors));
   if (node instanceof YAMLMap) return mapValue(node, field, document, errors);
   errors.push(diagnostic("unsupported-yaml-feature", document, field)); return null;
 }
+
+function unsupported(node) { return node instanceof Alias || Boolean(node?.anchor) || Boolean(node?.tag); }
 
 export function pointer(parent, token) { const escaped = String(token).replace(/~/g, "~0").replace(/\//g, "~1"); return `${parent}/${escaped}`; }
 function failure(errors) { return { errors: sortDiagnostics(errors) }; }

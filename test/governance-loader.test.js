@@ -72,3 +72,28 @@ test("classifies symlink cycles without prechecking existence", () => {
   fs.unlinkSync(path.join(root, ".ai/pakemin.yaml")); fs.writeFileSync(path.join(root, ".ai/pakemin.yaml"), 'formatVersion: "0"\nincludes: [loop.yaml]\n'); fs.symlinkSync("loop.yaml", path.join(root, ".ai/loop.yaml"));
   assert.equal(loadGovernanceSources(root).errors[0].code, "include-cycle");
 });
+
+test("rejects YAML features on roots and mapping keys with exact pointers", () => {
+  for (const [contents, field] of [
+    ['&root\nformatVersion: "0"\n', ""],
+    ['!!map\nformatVersion: "0"\n', ""],
+    ['formatVersion: "0"\nscopes:\n  - &key id: repository\n    paths: ["**"]\n', "/scopes/0/id"]
+  ]) {
+    const result = loadGovernanceSources(repository({ ".ai/pakemin.yaml": contents }));
+    assert.deepEqual(result.errors, [{ code: "unsupported-yaml-feature", source: { document: ".ai/pakemin.yaml", field } }]);
+  }
+});
+
+test("distinguishes a broken .ai link from a missing .ai entry", () => {
+  const root = repository();
+  fs.symlinkSync("missing-ai", path.join(root, ".ai"));
+  assert.deepEqual(loadGovernanceSources(root).errors, [{ code: "invalid-governance-root", source: { document: ".ai/pakemin.yaml", field: "" } }]);
+});
+
+test("retains special object keys without prototype mutation", () => {
+  const root = repository({ ".ai/pakemin.yaml": 'formatVersion: "0"\n__proto__: polluted\nconstructor: retained\nprototype: retained\n' });
+  const result = loadGovernanceSources(root);
+  assert.equal(result.ok, true);
+  assert.equal({}.polluted, undefined);
+  assert.deepEqual(Object.keys(result.sources[0].value).sort(), ["__proto__", "constructor", "formatVersion", "prototype"]);
+});
