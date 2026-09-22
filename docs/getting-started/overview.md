@@ -14,9 +14,9 @@ When each file contains full instructions, the project gradually accumulates con
 
 ## Current Status
 
-Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
+Current stable: `v0.2.0`.
 
-The stable release includes a dependency-free CLI, v1-oriented `.ai` scaffolding, thin adapter generation, validation, language presets, and a reference repository. v0.2.0 adds declarative governance and implements repository-level verification through `pakemin check`; task-aware verification remains deferred until a task-envelope contract exists.
+The stable release includes a dependency-free CLI, v1-oriented `.ai` scaffolding, thin adapter generation, validation, language presets, governance verification through `pakemin check`, and a reference repository. Task-aware verification remains deferred until a task-envelope contract exists.
 
 Pakemin does not include schemas, plugin architecture, hosted services, automated extraction, or agent orchestration.
 

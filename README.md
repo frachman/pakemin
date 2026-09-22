@@ -216,9 +216,9 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a local checkout and op
 
 ## Current Status
 
-Current stable: `v0.1.2`. Target: `v0.2.0` (unreleased).
+Current stable: `v0.2.0`.
 
-The stable release includes a dependency-free CLI, project-owned `.ai` scaffolding, thin adapter support, validation, language presets, and a reference repository. v0.2.0 adds declarative governance and repository-level verification through `pakemin check`; task-aware verification remains deferred until a task-envelope contract exists.
+The stable release includes a dependency-free CLI, project-owned `.ai` scaffolding, thin adapter support, validation, language presets, governance verification through `pakemin check`, and a reference repository. Task-aware verification remains deferred until a task-envelope contract exists.
 
 Schemas, plugin architecture, shared framework distribution, hosted services, and release automation are intentionally deferred.
 
