@@ -4,7 +4,7 @@
 - Contract version: 0
 - Governance schema version: 0
 - Target release: v0.2.0 (unreleased)
-- Implementation status: Not implemented
+- Implementation status: The pure repository-level evaluation engine is implemented as an internal module (comparison and change-set validation, resolution integration, rule evaluation, exception application, and evidence/report construction). Git collection, the CLI command, and task-envelope work remain unimplemented.
 
 This is the provider-neutral post-flight contract for Verifiable Changes. It is derived from [ADR-0014](../adr/0014-least-change-verification.md) and [Governance Schema v0](../reference/governance-schema-v0.md). It is not an agent runtime, approval system, static-analysis engine, or LLM judgment layer.
 
