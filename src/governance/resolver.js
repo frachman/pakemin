@@ -6,13 +6,25 @@ export function resolveGovernancePaths(governance, paths) {
   const model = modelFor(governance);
   const byPath = new Map();
   const errors = [];
-  for (const file of paths) {
+  const allPaths = new Set(paths);
+  for (const exception of model.exceptions) for (const file of exception.definition.paths) allPaths.add(file);
+  for (const file of allPaths) {
     const result = resolvePath(model, file);
     if (result.errors) errors.push(...result.errors);
     else byPath.set(file, result);
   }
+  for (const exception of model.exceptions) {
+    exception.definition.paths.forEach((file, index) => {
+      const resolved = byPath.get(file);
+      if (resolved && !resolved.effectiveScopeIds.includes(exception.definition.scope)) errors.push({ ...diagnostic("exception-outside-scope", exception.source.document, `${exception.source.field}/paths/${index}`), path: file });
+    });
+  }
   if (errors.length) return { ok: false, errors: sortDiagnostics(errors) };
-  return { ok: true, resolution: { paths: [...byPath.values()].sort((left, right) => compare(left.path, right.path)).map(publicResult) } };
+  for (const file of paths) {
+    const resolved = byPath.get(file);
+    resolved.exceptionIds = model.exceptions.filter((exception) => exception.definition.paths.includes(file) && resolved.effectiveScopeIds.includes(exception.definition.scope) && resolved.ruleIds.includes(exception.definition.rule)).map((exception) => exception.definition.id).sort(compare);
+  }
+  return { ok: true, resolution: { paths: paths.map((file) => byPath.get(file)).sort((left, right) => compare(left.path, right.path)).map(publicResult) } };
 }
 
 export function resolvePath(model, file) {

@@ -3,10 +3,11 @@ export function diagnostic(code, document, field = "") {
 }
 
 export function sortDiagnostics(errors) {
-  return errors.sort((left, right) =>
+  return [...errors].sort((left, right) =>
     compare(left.source.document, right.source.document) ||
     compare(left.source.field, right.source.field) ||
-    compare(left.code, right.code)
+    compare(left.code, right.code) ||
+    compare(left.path || "", right.path || "")
   );
 }
 
