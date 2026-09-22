@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Completed pre-release Governance Schema v0 loader and load-time validator conformance remediation.
+- Hardened the internal actual-path resolver boundary and completed its pre-release acceptance coverage; no public verification command is added.
 
 ## [0.1.2] - 2026-08-03
 
