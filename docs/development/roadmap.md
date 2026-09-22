@@ -301,8 +301,8 @@ Status: In Progress for v0.2.0 (unreleased)
 - [Governance Schema v0](../reference/governance-schema-v0.md) source loading, load-time validation, actual-path scope-chain resolution, relevant-rule resolution, and exact exception applicability are complete as internal modules.
 - [Verification Contract v0](../architecture/verification-contract-v0.md) is the accepted normative repository-level evaluation and report contract. Its pure evaluation engine, Git comparison and change collection, and the maintainer-authorized `pakemin check` command are complete. Reports keep `verificationMode: "repository"` and do not claim task-authority compliance.
 - Milestone 8 Slice 1 remediation, Slice 2 actual-path resolver, Slice 3 evaluation engine, and Slice 4 Git collection plus `pakemin check` are accepted internally: load-time coverage is 36/36, resolution-time coverage is 2/2 through executable keyed fixtures, and normalized resolver input enforcement plus the full resolver acceptance matrix are complete. The deferred task-envelope contract, `pakemin context`, and task-aware verification remain out of scope.
-- Make `AGENTS.md` the default adapter profile while retaining explicit optional compatibility adapters.
-- Update the reference repository and migration guidance to distinguish default and optional adapters.
+- `AGENTS.md` is the default adapter profile while optional compatibility adapters remain explicit, per [ADR-0010](../adr/0010-primary-adapter-profile.md).
+- The reference repository and the adapter migration guidance distinguish the default profile from optional compatibility adapters.
 - Keep package version `0.1.2` until explicit release-preparation approval.
 
 Do not add schemas, plugin systems, hosted services, network integrations, or a broad agent runtime in this milestone.

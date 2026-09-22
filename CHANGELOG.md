@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Default adapter generation now creates only the primary `AGENTS.md`; optional compatibility adapters are generated explicitly with `--only`. Existing adapter files are never removed and never overwritten without `--force`.
 - Documentation now describes the planned governance direction, layered authority, primary adapter profile, and separate versioning boundaries.
 
 ### Fixed

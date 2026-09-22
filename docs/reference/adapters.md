@@ -47,3 +47,11 @@ Adapters are not the canonical project specification. Durable project knowledge 
 Adapter support does not imply that every vendor has identical loading behavior or capabilities.
 
 For standard local Claude Code, an absent `CLAUDE.md` allows its `AGENTS.md` fallback. Keep or generate `CLAUDE.md` explicitly for legacy versions, explicit overrides, or hosted providers where that fallback is unavailable. Pakemin never removes user-owned adapter files automatically.
+
+## Migrating from 0.1.2
+
+Version 0.1.2 generated every adapter by default. Version 0.2.0 makes `AGENTS.md` the primary default profile and generates optional compatibility adapters only on explicit request.
+
+- Fresh projects receive `AGENTS.md` only. Generate a compatibility adapter explicitly, for example `pakemin adapters generate --only=claude`.
+- Existing adapter files are never removed and never overwritten without `--force`. A project upgrading from 0.1.2 keeps the adapter files it already has.
+- `pakemin validate --adapters` still requires the default `AGENTS.md` adapter and still validates every optional adapter that is present.

@@ -11,6 +11,7 @@ Use this checklist to review the sample SaaS reference repository without Pakemi
 
 ## Adapters
 
+- The default profile contains only `AGENTS.md`; `CLAUDE.md` and `GEMINI.md` are present as explicitly generated optional compatibility adapters.
 - Root `AGENTS.md` points to `.ai/README.md`.
 - Any optional compatibility adapter present points to `.ai/README.md`.
 - Adapter files do not duplicate substantial portable-core content.
