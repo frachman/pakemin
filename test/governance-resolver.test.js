@@ -9,11 +9,26 @@ import { loadGovernance, resolveGovernancePaths } from "../src/governance/index.
 
 const RESOLUTION_TIME_SCHEMA_CODES = ["ambiguous-scope-match", "exception-outside-scope"];
 
-function governance(yaml) {
+const ACCEPTANCE_COVERAGE = {
+  1: "cousin ambiguity emits only participating descendants and closes the result",
+  2: "chain plus unrelated scope never selects a winner",
+  3: "scope declaration order does not change equivalent resolution",
+  4: "ambiguity diagnostics retain included-fragment provenance and document ordering",
+  5: "cross-document ambiguity diagnostics sort by document, field, code, and path",
+  6: "included exception outside scope retains fragment provenance and closes output",
+  7: "unrelated resolved exception scope fails without ambiguity",
+  8: "failure results stay closed and never leak successful paths",
+  9: "successful resolver output is recursively plain documented data",
+  10: "returned arrays never alias governance or a later resolution",
+  11: "CLI help has no public check command"
+};
+
+function governanceWithRoot(yaml) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "pakemin-resolver-"));
   fs.mkdirSync(path.join(root, ".ai")); fs.writeFileSync(path.join(root, ".ai/pakemin.yaml"), yaml);
-  const loaded = loadGovernance(root); assert.equal(loaded.ok, true); return loaded.governance;
+  const loaded = loadGovernance(root); assert.equal(loaded.ok, true); return { root, governance: loaded.governance };
 }
+function governance(yaml) { return governanceWithRoot(yaml).governance; }
 function governanceFiles(files) { const root = fs.mkdtempSync(path.join(os.tmpdir(), "pakemin-resolver-files-")); for (const [name, value] of Object.entries(files)) { const file = path.join(root, name); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); } const loaded = loadGovernance(root); assert.equal(loaded.ok, true); return loaded.governance; }
 const base = 'formatVersion: "0"\nscopes:\n  - id: repository\n    paths: ["**"]\n';
 
@@ -77,7 +92,7 @@ test("rejects corrupted normalized governance at the resolver boundary", () => {
   assert.equal(resolveGovernancePaths(value, ["docs/a.md"]).ok, true);
 });
 
-test("enforces pointer, exact exception, audit, dense-array, and source boundary predicates", () => {
+test("enforces pointer, exact exception, audit, dense-array, and source boundary predicates", async (t) => {
   const value = governance(`${base}rules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\nexceptions:\n  - id: exception.one\n    rule: repository.rule\n    scope: repository\n    paths: ["docs/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
   const corruptions = [
     ["non-pointer provenance", (copy) => { copy.rules[0].source.field = "rules/0"; }],
@@ -94,9 +109,12 @@ test("enforces pointer, exact exception, audit, dense-array, and source boundary
     ["empty sources", (copy) => { copy.sources = []; }],
     ["manifest absent from sources", (copy) => { copy.sources = [".ai/other.yaml"]; }]
   ];
-  for (const [name, corrupt] of corruptions) { const copy = structuredClone(value); corrupt(copy); assert.throws(() => resolveGovernancePaths(copy, []), { code: "internal-error" }, name); }
-  const escaped = structuredClone(value); escaped.rules[0].source.field = "/rules/a~0b~1c";
-  assert.equal(resolveGovernancePaths(escaped, []).ok, true);
+  for (const [name, corrupt] of corruptions) await t.test(name, () => { const copy = structuredClone(value); corrupt(copy); assert.throws(() => resolveGovernancePaths(copy, []), { code: "internal-error" }); });
+  await t.test("valid escaped pointer tokens pass", () => { const escaped = structuredClone(value); escaped.rules[0].source.field = "/rules/a~0b~1c"; assert.equal(resolveGovernancePaths(escaped, []).ok, true); });
+  await t.test("mid-segment literal exclamation paths pass the boundary", () => {
+    const literal = governance(`${base}rules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\nexceptions:\n  - id: exception.one\n    rule: repository.rule\n    scope: repository\n    paths: ["docs/a!b.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+    assert.equal(resolveGovernancePaths(literal, ["docs/a!b.md"]).ok, true);
+  });
 });
 
 test("returns applicable exact exceptions and validates paths for empty input", () => {
@@ -189,12 +207,33 @@ test("scope declaration order does not change equivalent resolution", () => {
   const first = governance(`formatVersion: "0"\nscopes:\n  - id: repository\n    paths: ["**"]\n${suffix}`);
   const second = governance(`formatVersion: "0"\nscopes:\n  - id: api\n    parent: repository\n    paths: ["api/**"]\n  - id: repository\n    paths: ["**"]\n  - id: docs\n    parent: repository\n    paths: ["docs/**"]\n`);
   assert.deepEqual(resolveGovernancePaths(first, ["docs/a.md", "api/a.md"]), resolveGovernancePaths(second, ["api/a.md", "docs/a.md"]));
+  const fragments = { ".ai/a.yaml": 'scopes:\n  - id: docs\n    parent: repository\n    paths: ["docs/**"]\n', ".ai/z.yaml": 'scopes:\n  - id: api\n    parent: repository\n    paths: ["api/**"]\n' };
+  const includeForward = governanceFiles({ ...fragments, ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [z.yaml, a.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n' });
+  const includeReversed = governanceFiles({ ...fragments, ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [a.yaml, z.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n' });
+  assert.deepEqual(resolveGovernancePaths(includeForward, ["docs/a.md", "api/a.md"]), resolveGovernancePaths(includeReversed, ["docs/a.md", "api/a.md"]));
 });
 
 test("ambiguity diagnostics retain included-fragment provenance and document ordering", () => {
   const value = governanceFiles({ ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [z.yaml, a.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n', ".ai/a.yaml": 'scopes:\n  - id: a\n    parent: repository\n    paths: ["same/**"]\n', ".ai/z.yaml": 'scopes:\n  - id: z\n    parent: repository\n    paths: ["same/**"]\n' });
   const result = resolveGovernancePaths(value, ["same/a.md"]);
   assert.deepEqual(result.errors.map((error) => error.source.document), [".ai/a.yaml", ".ai/z.yaml"]);
+  assert.deepEqual(result.errors.map((error) => error.source.field), ["/scopes/0/paths/0", "/scopes/0/paths/0"]);
+  assert.deepEqual(result.errors.map((error) => error.path), ["same/a.md", "same/a.md"]);
+  assert.deepEqual(result.errors.map((error) => error.code), ["ambiguous-scope-match", "ambiguous-scope-match"]);
+});
+
+test("cross-document ambiguity diagnostics sort by document, field, code, and path", () => {
+  const value = governanceFiles({ ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [z.yaml, a.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n', ".ai/a.yaml": 'scopes:\n  - id: a-one\n    parent: repository\n    paths: ["same/**"]\n  - id: a-two\n    parent: repository\n    paths: ["same/**"]\n', ".ai/z.yaml": 'scopes:\n  - id: z-one\n    parent: repository\n    paths: ["same/**"]\n' });
+  const result = resolveGovernancePaths(value, ["same/a.md", "same/b.md"]);
+  const tuples = result.errors.map((error) => [error.source.document, error.source.field, error.code, error.path]);
+  assert.deepEqual(tuples, [
+    [".ai/a.yaml", "/scopes/0/paths/0", "ambiguous-scope-match", "same/a.md"],
+    [".ai/a.yaml", "/scopes/0/paths/0", "ambiguous-scope-match", "same/b.md"],
+    [".ai/a.yaml", "/scopes/1/paths/0", "ambiguous-scope-match", "same/a.md"],
+    [".ai/a.yaml", "/scopes/1/paths/0", "ambiguous-scope-match", "same/b.md"],
+    [".ai/z.yaml", "/scopes/0/paths/0", "ambiguous-scope-match", "same/a.md"],
+    [".ai/z.yaml", "/scopes/0/paths/0", "ambiguous-scope-match", "same/b.md"]
+  ]);
 });
 
 test("included exception outside scope retains fragment provenance and closes output", () => {
@@ -207,10 +246,31 @@ test("unrelated resolved exception scope fails without ambiguity", () => {
   const result = resolveGovernancePaths(value, []); assert.equal(result.errors[0].code, "exception-outside-scope"); assert.equal(result.errors.some((error) => error.code === "ambiguous-scope-match"), false);
 });
 
+test("failure results stay closed and never leak successful paths", () => {
+  const ambiguity = governance(`${base}  - id: one\n    parent: repository\n    paths: ["same/**"]\n  - id: two\n    parent: repository\n    paths: ["same/**"]\n`);
+  const ambiguityResult = resolveGovernancePaths(ambiguity, ["same/a.md", "clean/b.md"]);
+  assert.equal(ambiguityResult.ok, false);
+  assert.deepEqual(Object.keys(ambiguityResult), ["ok", "errors"]);
+  assert.equal("resolution" in ambiguityResult, false);
+  assert.equal(JSON.stringify(ambiguityResult).includes("clean/b.md"), false);
+
+  const exception = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: docs.allowed\n    type: allowed-paths\n    scope: docs\n    paths: ["docs/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.allowed\n    scope: docs\n    paths: ["other/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+  const exceptionResult = resolveGovernancePaths(exception, ["docs/ok.md"]);
+  assert.equal(exceptionResult.errors.some((error) => error.code === "exception-outside-scope"), true);
+  assert.equal(exceptionResult.ok, false);
+  assert.deepEqual(Object.keys(exceptionResult), ["ok", "errors"]);
+  assert.equal("resolution" in exceptionResult, false);
+  assert.equal(JSON.stringify(exceptionResult).includes("docs/ok.md"), false);
+});
+
 test("successful resolver output is recursively plain documented data", () => {
-  const result = resolveGovernancePaths(governance(base), ["missing/a.md"]);
-  const visit = (value) => { assert.equal(value instanceof Map || value instanceof Set || value instanceof RegExp || typeof value === "function", false); if (Array.isArray(value)) { assert.equal(Object.getPrototypeOf(value), Array.prototype); value.forEach(visit); } else if (value && typeof value === "object") { assert.equal(Object.getPrototypeOf(value), Object.prototype); Object.values(value).forEach(visit); } else if (typeof value === "string") assert.equal(value.startsWith("/var/"), false); };
-  visit(result); assert.deepEqual(Object.keys(result.resolution.paths[0]), ["path", "directScopeIds", "effectiveScopeIds", "ruleIds", "exceptionIds"]);
+  const { root, governance: value } = governanceWithRoot(base);
+  const result = resolveGovernancePaths(value, ["missing/a.md"]);
+  const visit = (item) => { assert.equal(item instanceof Map || item instanceof Set || item instanceof RegExp || typeof item === "function", false); if (Array.isArray(item)) { assert.equal(Object.getPrototypeOf(item), Array.prototype); item.forEach(visit); } else if (item && typeof item === "object") { assert.equal(Object.getPrototypeOf(item), Object.prototype); Object.values(item).forEach(visit); } else if (typeof item === "string") assert.equal(item.includes(root), false); };
+  visit(result);
+  assert.deepEqual(Object.keys(result), ["ok", "resolution"]);
+  assert.deepEqual(Object.keys(result.resolution), ["paths"]);
+  assert.deepEqual(Object.keys(result.resolution.paths[0]), ["path", "directScopeIds", "effectiveScopeIds", "ruleIds", "exceptionIds"]);
 });
 
 test("returned arrays never alias governance or a later resolution", () => {
@@ -223,4 +283,9 @@ test("CLI help has no public check command", () => {
   assert.equal(help.stdout.includes("  check"), false);
   const unsupported = spawnSync(process.execPath, ["./bin/pakemin.js", "check"], { cwd: process.cwd(), encoding: "utf8" });
   assert.notEqual(unsupported.status, 0);
+});
+
+test("acceptance coverage map names every resolver acceptance row", () => {
+  assert.deepEqual(Object.keys(ACCEPTANCE_COVERAGE), Array.from({ length: 11 }, (_, index) => String(index + 1)));
+  assert.equal(Object.values(ACCEPTANCE_COVERAGE).every((name) => typeof name === "string" && name.length > 0), true);
 });
