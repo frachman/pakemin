@@ -40,6 +40,41 @@ test("rejects malformed resolver caller input as an internal error", () => {
   assert.throws(() => resolveGovernancePaths({}, []), { code: "internal-error" });
 });
 
+test("rejects corrupted normalized governance at the resolver boundary", () => {
+  const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: repository.rule\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\nexceptions:\n  - id: exception.docs\n    rule: repository.rule\n    scope: docs\n    paths: ["docs/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+  const corruptions = [
+    ["null rule", (copy) => { copy.rules = [null]; }],
+    ["rule definition", (copy) => { delete copy.rules[0].definition; }],
+    ["rule provenance", (copy) => { delete copy.rules[0].source; }],
+    ["rule scope", (copy) => { copy.rules[0].definition.scope = "none"; }],
+    ["rule type", (copy) => { copy.rules[0].definition.type = "future"; }],
+    ["duplicate rule id", (copy) => { copy.rules.push(structuredClone(copy.rules[0])); }],
+    ["null exception", (copy) => { copy.exceptions = [null]; }],
+    ["exception definition", (copy) => { delete copy.exceptions[0].definition; }],
+    ["exception provenance", (copy) => { delete copy.exceptions[0].source; }],
+    ["exception paths", (copy) => { copy.exceptions[0].definition.paths = "docs/a.md"; }],
+    ["exception path", (copy) => { copy.exceptions[0].definition.paths = ["../a"]; }],
+    ["exception rule", (copy) => { copy.exceptions[0].definition.rule = "none"; }],
+    ["exception scope", (copy) => { copy.exceptions[0].definition.scope = "none"; }],
+    ["duplicate exception id", (copy) => { copy.exceptions.push(structuredClone(copy.exceptions[0])); }],
+    ["scope definition", (copy) => { delete copy.scopes[0].definition; }],
+    ["scope provenance", (copy) => { delete copy.scopes[0].source; }],
+    ["duplicate scope", (copy) => { copy.scopes.push(structuredClone(copy.scopes[0])); }],
+    ["missing root", (copy) => { copy.scopes = copy.scopes.slice(1); }],
+    ["unknown parent", (copy) => { copy.scopes[1].definition.parent = "none"; }],
+    ["cycle", (copy) => { copy.scopes[1].definition.parent = "docs"; }],
+    ["manifest", (copy) => { copy.manifest = "manifest.yaml"; }],
+    ["sources", (copy) => { copy.sources = [".ai/pakemin.yaml", ".ai/pakemin.yaml"]; }],
+    ["provenance", (copy) => { copy.scopes[0].source.document = "outside.yaml"; }],
+    ["accessor", (copy) => { Object.defineProperty(copy.rules[0], "definition", { get() { return {}; } }); }]
+  ];
+  for (const [name, corrupt] of corruptions) {
+    const copy = structuredClone(value); corrupt(copy);
+    assert.throws(() => resolveGovernancePaths(copy, []), { code: "internal-error" }, name);
+  }
+  assert.equal(resolveGovernancePaths(value, ["docs/a.md"]).ok, true);
+});
+
 test("returns applicable exact exceptions and validates paths for empty input", () => {
   const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: repository.allowed\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\n  - id: docs.forbidden\n    type: forbidden-paths\n    scope: docs\n    paths: ["docs/private/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.forbidden\n    scope: docs\n    paths: ["docs/private/a.md", "docs/private/a.md"]\n    reason: approved\n    approvedBy: maintainer\n  - id: exception.repository\n    rule: repository.allowed\n    scope: repository\n    paths: ["docs/private/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
   const result = resolveGovernancePaths(value, ["docs/private/a.md", "docs/other.md"]);

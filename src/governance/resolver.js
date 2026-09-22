@@ -1,6 +1,9 @@
 import { compare, diagnostic, sortDiagnostics } from "./diagnostics.js";
 import { isCanonicalGovernancePath, matchesGovernancePattern } from "./paths.js";
 
+const identifier = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
+const ruleTypes = new Set(["allowed-paths", "forbidden-paths", "changed-path-requires-changed-path", "changed-path-requires-review"]);
+
 export function resolveGovernancePaths(governance, paths) {
   assertInput(governance, paths);
   const model = modelFor(governance);
@@ -49,9 +52,48 @@ function chainFor(scope, scopes) { const result = []; let current = scope; while
 function ancestor(ancestorId, childId, scopes) { let current = scopes.get(childId); while (current && current.definition.id !== "repository") { if (current.definition.parent === ancestorId) return true; current = scopes.get(current.definition.parent); } return false; }
 function depth(scope, scopes) { let result = 0; let current = scope; while (current && current.definition.id !== "repository") { result += 1; current = scopes.get(current.definition.parent); } return result; }
 function assertInput(governance, paths) {
-  if (!Array.isArray(paths) || !governance || governance.formatVersion !== "0" || !Array.isArray(governance.scopes) || !Array.isArray(governance.rules) || !Array.isArray(governance.exceptions)) throw internalError();
+  assertGovernance(governance);
+  if (!safeArray(paths)) throw internalError();
   const seen = new Set();
   for (const file of paths) { if (!isCanonicalGovernancePath(file) || seen.has(file)) throw internalError(); seen.add(file); }
-  for (const scope of governance.scopes) if (!scope?.definition || !scope?.source || typeof scope.definition.id !== "string" || !Array.isArray(scope.definition.paths)) throw internalError();
 }
+
+function assertGovernance(governance) {
+  if (!safeRecord(governance) || governance.formatVersion !== "0" || !isAiPath(governance.manifest) || !safeArray(governance.sources) || !safeArray(governance.scopes) || !safeArray(governance.rules) || !safeArray(governance.exceptions)) throw internalError();
+  const sources = new Set();
+  for (const source of governance.sources) { if (!isAiPath(source) || sources.has(source)) throw internalError(); sources.add(source); }
+  const scopes = new Map();
+  for (const scope of governance.scopes) {
+    if (!entry(scope) || !identifier.test(scope.definition.id) || !safeArray(scope.definition.paths) || scope.definition.paths.length === 0 || !scope.definition.paths.every(isValidPattern) || scopes.has(scope.definition.id)) throw internalError();
+    if (scope.definition.id === "repository") { if (Object.hasOwn(scope.definition, "parent") || scope.definition.paths.length !== 1 || scope.definition.paths[0] !== "**") throw internalError(); }
+    else if (typeof scope.definition.parent !== "string") throw internalError();
+    scopes.set(scope.definition.id, scope);
+  }
+  const root = scopes.get("repository"); if (!root || governance.scopes.filter((scope) => scope.definition.id === "repository").length !== 1) throw internalError();
+  for (const scope of scopes.values()) if (scope.definition.id !== "repository" && !scopes.has(scope.definition.parent)) throw internalError();
+  for (const scope of scopes.values()) { const seen = new Set(); let current = scope; while (current.definition.id !== "repository") { if (seen.has(current.definition.id)) throw internalError(); seen.add(current.definition.id); current = scopes.get(current.definition.parent); if (!current) throw internalError(); } }
+  const rules = new Map();
+  for (const rule of governance.rules) {
+    if (!entry(rule) || !identifier.test(rule.definition.id) || typeof rule.definition.type !== "string" || typeof rule.definition.scope !== "string" || !ruleTypes.has(rule.definition.type) || !scopes.has(rule.definition.scope) || rules.has(rule.definition.id) || !normalizedRule(rule.definition)) throw internalError();
+    rules.set(rule.definition.id, rule);
+  }
+  const exceptions = new Set();
+  for (const exception of governance.exceptions) {
+    if (!entry(exception) || !identifier.test(exception.definition.id) || typeof exception.definition.rule !== "string" || typeof exception.definition.scope !== "string" || typeof exception.definition.reason !== "string" || typeof exception.definition.approvedBy !== "string" || !safeArray(exception.definition.paths) || exception.definition.paths.length === 0 || !exception.definition.paths.every(isCanonicalGovernancePath) || exceptions.has(exception.definition.id) || !rules.has(exception.definition.rule) || !scopes.has(exception.definition.scope)) throw internalError();
+    exceptions.add(exception.definition.id);
+  }
+}
+
+function entry(value) { return safeRecord(value) && safeRecord(value.definition) && source(value.source); }
+function source(value) { return safeRecord(value) && value.layer === "repository" && isAiPath(value.document) && typeof value.field === "string" && value.field.startsWith(""); }
+function normalizedRule(value) {
+  if (value.description !== undefined && typeof value.description !== "string") return false;
+  if (["allowed-paths", "forbidden-paths", "changed-path-requires-review"].includes(value.type)) return safeArray(value.paths) && value.paths.length > 0 && value.paths.every(isValidPattern);
+  return changedPart(value.when) && changedPart(value.require);
+}
+function changedPart(value) { return safeRecord(value) && safeRecord(value.changedPaths) && safeArray(value.changedPaths.include) && value.changedPaths.include.length > 0 && value.changedPaths.include.every(isValidPattern); }
+function isValidPattern(value) { return typeof value === "string" && isCanonicalGovernancePath(value) && !value.startsWith("!") && !/[?\[\]{}\\]/.test(value) && !/[@+*!?]\(/.test(value) && value.split("/").every((segment) => segment === "**" || !segment.includes("**")); }
+function isAiPath(value) { return isCanonicalGovernancePath(value) && value.startsWith(".ai/"); }
+function safeRecord(value) { if (value === null || typeof value !== "object" || Array.isArray(value) || Object.getPrototypeOf(value) !== Object.prototype) return false; return Object.values(Object.getOwnPropertyDescriptors(value)).every((descriptor) => Object.hasOwn(descriptor, "value")); }
+function safeArray(value) { if (!Array.isArray(value) || Object.getPrototypeOf(value) !== Array.prototype) return false; return Object.values(Object.getOwnPropertyDescriptors(value)).every((descriptor) => Object.hasOwn(descriptor, "value")); }
 function internalError() { const error = new Error("invalid governance resolver input"); error.code = "internal-error"; return error; }
