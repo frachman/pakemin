@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
 
 import { loadGovernance, resolveGovernancePaths } from "../src/governance/index.js";
@@ -13,6 +14,7 @@ function governance(yaml) {
   fs.mkdirSync(path.join(root, ".ai")); fs.writeFileSync(path.join(root, ".ai/pakemin.yaml"), yaml);
   const loaded = loadGovernance(root); assert.equal(loaded.ok, true); return loaded.governance;
 }
+function governanceFiles(files) { const root = fs.mkdtempSync(path.join(os.tmpdir(), "pakemin-resolver-files-")); for (const [name, value] of Object.entries(files)) { const file = path.join(root, name); fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); } const loaded = loadGovernance(root); assert.equal(loaded.ok, true); return loaded.governance; }
 const base = 'formatVersion: "0"\nscopes:\n  - id: repository\n    paths: ["**"]\n';
 
 test("the resolution-time inventory remains exactly two deferred Slice 2 codes", () => {
@@ -166,4 +168,59 @@ test("resolution-time conformance fixtures are keyed to the exact inventory", ()
   assert.deepEqual(fixtures["exception-outside-scope"](), { ok: false, errors: [
     { code: "exception-outside-scope", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/0" }, path: "other/a.md" }
   ] });
+});
+
+test("cousin ambiguity emits only participating descendants and closes the result", () => {
+  const value = governance(`${base}  - id: left\n    parent: repository\n    paths: ["left/**"]\n  - id: left-child\n    parent: left\n    paths: ["shared/**"]\n  - id: right\n    parent: repository\n    paths: ["right/**"]\n  - id: right-child\n    parent: right\n    paths: ["shared/**"]\n`);
+  const result = resolveGovernancePaths(value, ["shared/a.md"]);
+  assert.deepEqual(result.errors.map((error) => error.source.field), ["/scopes/2/paths/0", "/scopes/4/paths/0"]);
+  assert.deepEqual(Object.keys(result), ["ok", "errors"]);
+});
+
+test("chain plus unrelated scope never selects a winner", () => {
+  const value = governance(`${base}  - id: parent\n    parent: repository\n    paths: ["shared/**"]\n  - id: child\n    parent: parent\n    paths: ["shared/**"]\n  - id: unrelated\n    parent: repository\n    paths: ["shared/**"]\n`);
+  const result = resolveGovernancePaths(value, ["shared/a.md"]);
+  assert.deepEqual(result.errors.map((error) => error.source.field), ["/scopes/1/paths/0", "/scopes/2/paths/0", "/scopes/3/paths/0"]);
+  assert.equal("resolution" in result, false);
+});
+
+test("scope declaration order does not change equivalent resolution", () => {
+  const suffix = '  - id: docs\n    parent: repository\n    paths: ["docs/**"]\n  - id: api\n    parent: repository\n    paths: ["api/**"]\n';
+  const first = governance(`formatVersion: "0"\nscopes:\n  - id: repository\n    paths: ["**"]\n${suffix}`);
+  const second = governance(`formatVersion: "0"\nscopes:\n  - id: api\n    parent: repository\n    paths: ["api/**"]\n  - id: repository\n    paths: ["**"]\n  - id: docs\n    parent: repository\n    paths: ["docs/**"]\n`);
+  assert.deepEqual(resolveGovernancePaths(first, ["docs/a.md", "api/a.md"]), resolveGovernancePaths(second, ["api/a.md", "docs/a.md"]));
+});
+
+test("ambiguity diagnostics retain included-fragment provenance and document ordering", () => {
+  const value = governanceFiles({ ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [z.yaml, a.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n', ".ai/a.yaml": 'scopes:\n  - id: a\n    parent: repository\n    paths: ["same/**"]\n', ".ai/z.yaml": 'scopes:\n  - id: z\n    parent: repository\n    paths: ["same/**"]\n' });
+  const result = resolveGovernancePaths(value, ["same/a.md"]);
+  assert.deepEqual(result.errors.map((error) => error.source.document), [".ai/a.yaml", ".ai/z.yaml"]);
+});
+
+test("included exception outside scope retains fragment provenance and closes output", () => {
+  const value = governanceFiles({ ".ai/pakemin.yaml": 'formatVersion: "0"\nincludes: [exceptions.yaml]\nscopes:\n  - id: repository\n    paths: ["**"]\n  - id: docs\n    parent: repository\n    paths: ["docs/**"]\nrules:\n  - id: docs.allowed\n    type: allowed-paths\n    scope: docs\n    paths: ["docs/**"]\n', ".ai/exceptions.yaml": 'exceptions:\n  - id: exception.docs\n    rule: docs.allowed\n    scope: docs\n    paths: ["other/a.md"]\n    reason: approved\n    approvedBy: maintainer\n' });
+  assert.deepEqual(resolveGovernancePaths(value, []), { ok: false, errors: [{ code: "exception-outside-scope", source: { document: ".ai/exceptions.yaml", field: "/exceptions/0/paths/0" }, path: "other/a.md" }] });
+});
+
+test("unrelated resolved exception scope fails without ambiguity", () => {
+  const value = governance(`${base}  - id: docs\n    parent: repository\n    paths: ["docs/**"]\n  - id: api\n    parent: repository\n    paths: ["api/**"]\nrules:\n  - id: docs.allowed\n    type: allowed-paths\n    scope: docs\n    paths: ["docs/**"]\nexceptions:\n  - id: exception.docs\n    rule: docs.allowed\n    scope: docs\n    paths: ["api/a.md"]\n    reason: approved\n    approvedBy: maintainer\n`);
+  const result = resolveGovernancePaths(value, []); assert.equal(result.errors[0].code, "exception-outside-scope"); assert.equal(result.errors.some((error) => error.code === "ambiguous-scope-match"), false);
+});
+
+test("successful resolver output is recursively plain documented data", () => {
+  const result = resolveGovernancePaths(governance(base), ["missing/a.md"]);
+  const visit = (value) => { assert.equal(value instanceof Map || value instanceof Set || value instanceof RegExp || typeof value === "function", false); if (Array.isArray(value)) { assert.equal(Object.getPrototypeOf(value), Array.prototype); value.forEach(visit); } else if (value && typeof value === "object") { assert.equal(Object.getPrototypeOf(value), Object.prototype); Object.values(value).forEach(visit); } else if (typeof value === "string") assert.equal(value.startsWith("/var/"), false); };
+  visit(result); assert.deepEqual(Object.keys(result.resolution.paths[0]), ["path", "directScopeIds", "effectiveScopeIds", "ruleIds", "exceptionIds"]);
+});
+
+test("returned arrays never alias governance or a later resolution", () => {
+  const value = governance(base); const snapshot = structuredClone(value); const first = resolveGovernancePaths(value, ["a.md"]); first.resolution.paths.push({}); first.resolution.paths[0].directScopeIds.push("x"); first.resolution.paths[0].effectiveScopeIds.push("x"); first.resolution.paths[0].ruleIds.push("x"); first.resolution.paths[0].exceptionIds.push("x");
+  assert.deepEqual(value, snapshot); assert.deepEqual(resolveGovernancePaths(value, ["a.md"]).resolution.paths[0], { path: "a.md", directScopeIds: ["repository"], effectiveScopeIds: ["repository"], ruleIds: [], exceptionIds: [] });
+});
+
+test("CLI help has no public check command", () => {
+  const help = spawnSync(process.execPath, ["./bin/pakemin.js", "--help"], { cwd: process.cwd(), encoding: "utf8" });
+  assert.equal(help.stdout.includes("  check"), false);
+  const unsupported = spawnSync(process.execPath, ["./bin/pakemin.js", "check"], { cwd: process.cwd(), encoding: "utf8" });
+  assert.notEqual(unsupported.status, 0);
 });
