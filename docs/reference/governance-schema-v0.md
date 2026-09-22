@@ -181,7 +181,7 @@ exceptions:
     approvedBy: maintainer
 ```
 
-Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be the target rule scope or a descendant. A known but unrelated scope is `invalid-exception-scope`; an absent scope is `unknown-exception-scope`. A resolver validates every exception path, including when its requested path set is empty. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
+Each exception requires `id`, `rule`, `scope`, `paths`, `reason`, and `approvedBy`. `paths` is a nonempty list of exact canonical file paths; wildcards and other pattern-only syntax such as `?`, character classes, braces, extglobs, and a leading `!` are invalid. `reason` and `approvedBy` are nonempty strings. Its rule and scope MUST exist, and its scope MUST be the target rule scope or a descendant. A known but unrelated scope is `invalid-exception-scope`; an absent scope is `unknown-exception-scope`. A resolver validates every exception path, including when its requested path set is empty. An exception path MUST match its declared scope when it is resolved; a path outside that scope is `exception-outside-scope` and never grants permission. An exception applies only to its target rule and listed exact path, and cannot create unrelated permission. Exceptions apply only to `allowed-paths` and `forbidden-paths`; targeting another type is `unsupported-exception-target`.
 
 For `allowed-paths`, an exception waives only its target rule for the exact path; every other applicable allowed rule still applies. For `forbidden-paths`, it waives only its target forbidden rule for the exact path; every other applicable forbidden rule remains active. Rename source and destination paths are evaluated independently. Unknown fields, duplicate IDs, unknown targets, unrelated scopes, wildcard paths, or invalid shapes are configuration errors.
 
@@ -247,7 +247,7 @@ Every configuration error reports the stable code below, its source document, an
 | `unknown-exception-scope` | An exception names an absent scope. | load |
 | `invalid-exception-scope` | An exception scope is known but unrelated to its target rule scope. | load |
 | `unsupported-exception-target` | An exception targets a rule type other than allowed or forbidden paths. | load |
-| `invalid-exception-path` | An exception path is wildcarded or not canonical. | load |
+| `invalid-exception-path` | An exception path is wildcarded, pattern-only, or not canonical. | load |
 | `exception-outside-scope` | A resolved exception path does not match its scope. | resolution |
 | `invalid-exception-shape` | An exception lacks required fields or has forbidden fields/types. | load |
 

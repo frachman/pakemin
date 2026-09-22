@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Completed pre-release Governance Schema v0 loader and load-time validator conformance remediation.
 - Hardened the internal actual-path resolver boundary and completed its pre-release acceptance coverage; no public verification command is added.
 - Finalized pre-release resolver provenance, exact-exception, array-integrity, and acceptance-coverage hardening; no public verification command is added.
+- Load-time and resolver exception-path validation now share one exact-path predicate, so pattern-only exception paths are rejected consistently; no public verification command is added.
 
 ## [0.1.2] - 2026-08-03
 
