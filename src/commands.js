@@ -118,9 +118,25 @@ export function adaptersListCommand(args, io) {
 export function checkCommand(args, io) {
   const options = parseOptions(args);
   const root = resolveTarget(io.cwd, options.positionals[0] || ".");
-  const hasBaseline = Object.hasOwn(options.values, "baseline");
-  const hasTarget = Object.hasOwn(options.values, "target");
+  const hasBaseline = isFlagSet(options, "baseline");
+  const hasTarget = isFlagSet(options, "target");
   const workingTree = isFlagSet(options, "working-tree");
+
+  const knownOptions = new Set(["baseline", "target", "working-tree"]);
+  const unknownOptions = [...new Set([...options.flags, ...Object.keys(options.values)])].filter((key) => !knownOptions.has(key));
+  if (unknownOptions.length > 0) return emitEnvelope(io, runtimeEnvelope(unknownOptions.map((key) => runtimeError("invalid-comparison", `unknown option: --${key}`))));
+
+  if (options.positionals.length > 1) {
+    return emitEnvelope(io, runtimeEnvelope(options.positionals.slice(1).map((argument) => runtimeError("invalid-comparison", `unexpected argument: ${argument}`))));
+  }
+
+  const errors = [];
+  if (!hasBaseline) errors.push(runtimeError("invalid-comparison", "invalid comparison: --baseline is required"));
+  else if (!options.values.baseline?.trim()) errors.push(runtimeError("invalid-comparison", "invalid comparison: --baseline requires a value"));
+  if (workingTree && hasTarget) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target and --working-tree are mutually exclusive"));
+  else if (!workingTree && !hasTarget) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target or --working-tree is required"));
+  else if (!workingTree && !options.values.target?.trim()) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target requires a value"));
+  if (errors.length) return emitEnvelope(io, runtimeEnvelope(errors));
 
   if (!exists(root)) {
     write(io.stderr, `Error: target path does not exist: ${root}\n`);
@@ -131,12 +147,6 @@ export function checkCommand(args, io) {
     write(io.stderr, `Error: target path exists but is not a directory: ${root}\n`);
     return 1;
   }
-
-  const errors = [];
-  if (!hasBaseline || !options.values.baseline?.trim()) errors.push(runtimeError("invalid-comparison", "invalid comparison: --baseline is required"));
-  if (workingTree && hasTarget) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target and --working-tree are mutually exclusive"));
-  else if (!workingTree && (!hasTarget || !options.values.target?.trim())) errors.push(runtimeError("invalid-comparison", "invalid comparison: --target or --working-tree is required"));
-  if (errors.length) return emitEnvelope(io, runtimeEnvelope(errors));
 
   const loaded = loadGovernance(root);
   if (!loaded.ok) return emitEnvelope(io, configurationEnvelope(loaded.errors));

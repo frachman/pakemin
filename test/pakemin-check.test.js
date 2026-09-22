@@ -223,6 +223,18 @@ test("check separates streams and never emits a partial report", () => {
   assert.equal("outcome" in JSON.parse(missingFlags.stderr), false);
 });
 
+test("check rejects unknown options and extra arguments", () => {
+  const { root, base } = initRepo(BASE);
+  const target = emptyCommit(root, "empty");
+  const typo = envelopeOf(runCheck(root, ["--basline=x", `--target=${target}`]), 4);
+  assert.equal(typo.errors[0].message, "unknown option: --basline");
+  const extra = envelopeOf(runCheck(root, ["extra", `--baseline=${base}`, `--target=${target}`]), 4);
+  assert.equal(extra.errors[0].message, "unexpected argument: extra");
+  const bareValue = spawnSync(process.execPath, [BIN, "check", "--baseline", "main", "--working-tree"], { cwd: root, encoding: "utf8" });
+  assert.equal(bareValue.status, 4);
+  assert.equal(JSON.parse(bareValue.stderr).errors[0].message, "invalid comparison: --baseline requires a value");
+});
+
 test("check reports clear target-path errors like the other commands", () => {
   const parent = temporary("pakemin-check-target-");
   const missing = path.join(parent, "nope");

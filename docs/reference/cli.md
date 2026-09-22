@@ -74,7 +74,7 @@ Verifies a Git change set against repository governance and prints a determinist
 - `--target=<revision>` compares two resolved commit object IDs and sets `reproducible: true`.
 - `--working-tree` compares the baseline commit to the current working tree and sets `reproducible: false`.
 
-Supplying both target forms, or neither, is a runtime `invalid-comparison` error. There are no silent defaults: Pakemin never infers a baseline or an unverifiable target. Untracked files are not collected because v0 change sets are Git diff results.
+Supplying both target forms, or neither, is a runtime `invalid-comparison` error. Unknown options and extra arguments are rejected with the same `invalid-comparison` error instead of being silently ignored; use the `=` form for option values, for example `--baseline=main`. There are no silent defaults: Pakemin never infers a baseline or an unverifiable target. Untracked files are not collected because v0 change sets are Git diff results.
 
 On a governance outcome, `check` prints the report as JSON on stdout and exits `0` for `pass`, `1` for `fail`, or `2` for `requires-review`. On a configuration or runtime failure it prints a diagnostic envelope as JSON on stderr and exits `3` or `4`; no report is printed. Reports keep `verificationMode: "repository"` and never claim task-authority compliance.
 
