@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Internal repository-local governance source loading and Schema v0 load-time validation. This does not add a user-facing command or verification behavior.
 - Internal actual-path governance resolver for scope chains, relevant rules, and exact exception applicability. This does not add a user-facing command or verification behavior.
 - Internal pure verification evaluation engine implementing the accepted Verification Contract v0 repository-level comparison and change-set validation, rule evaluation, exception application, and evidence/report construction. This does not add a user-facing command, Git collection, or task-envelope behavior.
+- `pakemin check` command for repository-level verification of a Git change set, together with the internal Git comparison and change collector. It prints a deterministic report or diagnostic envelope, requires explicit comparison flags, and does not claim task-authority compliance.
 
 ### Changed
 

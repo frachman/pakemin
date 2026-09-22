@@ -140,10 +140,13 @@ Presets write small starter documents into `.ai/context` and `.ai/rules`. They d
 ```text
 pakemin init [path] [--force] [--dry-run] [--preset=go]
 pakemin validate [path] [--links-only] [--adapters]
+pakemin check [path] [--baseline=<rev>] [--target=<rev>] [--working-tree]
 pakemin adapters list [path]
 pakemin adapters generate [path] [--force] [--dry-run] [--only=agents,claude]
 pakemin doctor [path]
 ```
+
+`pakemin check` verifies a Git change set against repository governance and prints a deterministic report. It requires an explicit baseline and an explicit target or working-tree mode, and it does not claim task-authority compliance.
 
 ## Goals
 

@@ -4,7 +4,7 @@
 - Contract version: 0
 - Governance schema version: 0
 - Target release: v0.2.0 (unreleased)
-- Implementation status: The pure repository-level evaluation engine is implemented as an internal module (comparison and change-set validation, resolution integration, rule evaluation, exception application, and evidence/report construction). Git collection, the CLI command, and task-envelope work remain unimplemented.
+- Implementation status: Git collection and the maintainer-authorized `pakemin check` command are implemented, alongside the pure repository-level evaluation engine (comparison and change-set validation, resolution integration, rule evaluation, exception application, and evidence/report construction). Task-envelope work remains unimplemented.
 
 This is the provider-neutral post-flight contract for Verifiable Changes. It is derived from [ADR-0014](../adr/0014-least-change-verification.md) and [Governance Schema v0](../reference/governance-schema-v0.md). It is not an agent runtime, approval system, static-analysis engine, or LLM judgment layer.
 
@@ -233,4 +233,4 @@ Expected exit: `0`.
 
 A conforming implementation MUST accept Governance Schema v0 inputs and no undocumented rule types; preserve its scope, rule, exception, and path semantics; emit identical normalized evaluations for identical inputs; never call an LLM or infer approval; never treat process errors as governance failures; never claim task-authority compliance in repository mode; preserve rule-scoped evidence and source provenance; retain violations and review requirements when fail dominates; produce specified stable array ordering; pass all normative fixtures; and remain usable without private organization governance.
 
-Byte-for-byte JSON serialization, whitespace, and object-key order are not required; determinism applies to semantic content and specified arrays. Task-aware verification remains architecturally accepted but deferred until a task-envelope contract exists. `pakemin check` is not implemented and is not authorized by this document.
+Byte-for-byte JSON serialization, whitespace, and object-key order are not required; determinism applies to semantic content and specified arrays. Task-aware verification remains architecturally accepted but deferred until a task-envelope contract exists. `pakemin check` is implemented under explicit maintainer authorization for v0.2.0; this contract continues to define the report and evaluation semantics, not the command surface.

@@ -64,6 +64,19 @@ Use `--links-only` when validating documentation that is not itself a Pakemin-co
 Use `--adapters` to require the primary default adapter and verify that it points to `.ai/README.md`. Existing optional compatibility adapters are also checked when present.
 
 ```text
+pakemin check [path] [--baseline=<revision>] [--target=<revision>] [--working-tree]
+```
+
+Verifies a Git change set against repository governance and prints a deterministic Verification Contract v0 report. `--baseline` is required. Choose exactly one target form:
+
+- `--target=<revision>` compares two resolved commit object IDs and sets `reproducible: true`.
+- `--working-tree` compares the baseline commit to the current working tree and sets `reproducible: false`.
+
+Supplying both target forms, or neither, is a runtime `invalid-comparison` error. There are no silent defaults: Pakemin never infers a baseline or an unverifiable target. Untracked files are not collected because v0 change sets are Git diff results.
+
+On a governance outcome, `check` prints the report as JSON on stdout and exits `0` for `pass`, `1` for `fail`, or `2` for `requires-review`. On a configuration or runtime failure it prints a diagnostic envelope as JSON on stderr and exits `3` or `4`; no report is printed. Reports keep `verificationMode: "repository"` and never claim task-authority compliance.
+
+```text
 pakemin adapters list [path]
 ```
 
