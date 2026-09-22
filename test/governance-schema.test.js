@@ -23,6 +23,14 @@ test("rejects wildcard exception paths and extglob rule patterns", () => {
   ]);
 });
 
+test("rejects pattern-only exception paths while allowing literal exclamation marks", () => {
+  const exception = (entry) => `${base}rules:\n  - id: repository.allowed\n    type: allowed-paths\n    scope: repository\n    paths: ["**"]\nexceptions:\n  - id: exception.one\n    rule: repository.allowed\n    scope: repository\n    paths: ["${entry}"]\n    reason: approved\n    approvedBy: maintainer\n`;
+  for (const entry of ["docs/?.md", "docs/[ab].md", "docs/{a,b}.md", "!docs/a.md", "docs/!(a).md"]) {
+    assert.deepEqual(load(exception(entry)).errors, [{ code: "invalid-exception-path", source: { document: ".ai/pakemin.yaml", field: "/exceptions/0/paths/0" } }]);
+  }
+  assert.equal(load(exception("docs/a!b.md")).ok, true);
+});
+
 test("recognizes repository parent as a repository-specific error", () => {
   const result = load('formatVersion: "0"\nscopes:\n  - id: repository\n    parent: other\n    paths: ["**"]\n');
   assert.deepEqual(result.errors, [{ code: "invalid-repository-scope", source: { document: ".ai/pakemin.yaml", field: "/scopes/0" } }]);

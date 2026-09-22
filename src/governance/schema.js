@@ -1,5 +1,5 @@
 import { compare, diagnostic, sortDiagnostics } from "./diagnostics.js";
-import { isCanonicalGovernancePath, isValidGovernancePattern, matchesGovernancePattern } from "./paths.js";
+import { isExactGovernancePath, isValidGovernancePattern, matchesGovernancePattern } from "./paths.js";
 import { pointer } from "./yaml.js";
 
 const identifier = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
@@ -110,7 +110,7 @@ function validateExceptions(items, scopes, rules, errors) {
     else if (!["allowed-paths", "forbidden-paths"].includes(target.definition.type)) errors.push(diag("unsupported-exception-target", item.source, `${item.source.field}/rule`));
     if (!scopes.has(value.scope)) errors.push(diag("unknown-exception-scope", item.source, `${item.source.field}/scope`));
     else if (target && !descends(value.scope, target.definition.scope, scopes)) errors.push(diag("invalid-exception-scope", item.source, `${item.source.field}/scope`));
-    value.paths.forEach((entry, index) => { if (!canonicalPath(entry) || entry.includes("*")) errors.push(diag("invalid-exception-path", item.source, `${item.source.field}/paths/${index}`)); });
+    value.paths.forEach((entry, index) => { if (!isExactGovernancePath(entry)) errors.push(diag("invalid-exception-path", item.source, `${item.source.field}/paths/${index}`)); });
   }
   duplicates(valid, "duplicate-exception-id", errors);
   items.splice(0, items.length, ...withoutDuplicates(valid));
@@ -136,7 +136,6 @@ function exactKeys(value, keys) { return Object.keys(value).every((key) => keys.
 function mapping(value) { return value !== null && typeof value === "object" && !Array.isArray(value); }
 function patterns(values, item, code, errors, base = `${item.source.field}/paths`) { if (Array.isArray(values)) values.forEach((value, index) => { if (!validPattern(value)) errors.push(diag(code, item.source, `${base}/${index}`)); }); }
 function validPattern(value) { return isValidGovernancePattern(value); }
-function canonicalPath(value) { return isCanonicalGovernancePath(value); }
 function duplicates(items, code, errors) { const seen = new Map(); for (const item of stable(items, (x) => `${x.source.document}\0${x.source.field}`)) { const id = item.definition.id; if (seen.has(id)) errors.push(diag(code, item.source, `${item.source.field}/id`)); else seen.set(id, item); } }
 function withoutDuplicates(items) { const seen = new Set(); return stable(items, (x) => `${x.source.document}\0${x.source.field}`).filter((item) => !seen.has(item.definition.id) && seen.add(item.definition.id)); }
 function provenance(source, field) { return { layer: "repository", document: source.document, field }; }
