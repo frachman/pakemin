@@ -1,4 +1,5 @@
 import { compare, diagnostic, sortDiagnostics } from "./diagnostics.js";
+import { isCanonicalGovernancePath, isValidGovernancePattern, matchesGovernancePattern } from "./paths.js";
 import { pointer } from "./yaml.js";
 
 const identifier = /^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$/;
@@ -134,8 +135,8 @@ function patternList(value) { return Array.isArray(value) && value.length > 0 &&
 function exactKeys(value, keys) { return Object.keys(value).every((key) => keys.includes(key)) && keys.every((key) => Object.hasOwn(value, key) || key === "description"); }
 function mapping(value) { return value !== null && typeof value === "object" && !Array.isArray(value); }
 function patterns(values, item, code, errors, base = `${item.source.field}/paths`) { if (Array.isArray(values)) values.forEach((value, index) => { if (!validPattern(value)) errors.push(diag(code, item.source, `${base}/${index}`)); }); }
-function validPattern(value) { if (!canonicalPath(value) || value.startsWith("!") || /[?\[\]{}\\]/.test(value) || /[@+*!?]\(/.test(value)) return false; return value.split("/").every((segment) => segment === "**" || !segment.includes("**")); }
-function canonicalPath(value) { return typeof value === "string" && value.length > 0 && !value.includes("\0") && !value.includes("\\") && !value.startsWith("/") && !value.endsWith("/") && !value.split("/").some((segment) => !segment || segment === "." || segment === ".."); }
+function validPattern(value) { return isValidGovernancePattern(value); }
+function canonicalPath(value) { return isCanonicalGovernancePath(value); }
 function duplicates(items, code, errors) { const seen = new Map(); for (const item of stable(items, (x) => `${x.source.document}\0${x.source.field}`)) { const id = item.definition.id; if (seen.has(id)) errors.push(diag(code, item.source, `${item.source.field}/id`)); else seen.set(id, item); } }
 function withoutDuplicates(items) { const seen = new Set(); return stable(items, (x) => `${x.source.document}\0${x.source.field}`).filter((item) => !seen.has(item.definition.id) && seen.add(item.definition.id)); }
 function provenance(source, field) { return { layer: "repository", document: source.document, field }; }
@@ -150,21 +151,4 @@ function descends(id, ancestor, scopes) { let current = scopes.get(id); while (c
 function depth(item, scopes) { let result = 0; let current = item; while (current && current.definition.id !== "repository") { result += 1; current = scopes.get(current.definition.parent); } return result; }
 function failure(errors) { return { ok: false, errors: sortDiagnostics(errors) }; }
 
-export function matchesPattern(pattern, file) {
-  const patternParts = pattern.split("/");
-  const fileParts = file.split("/");
-  const visit = (patternIndex, fileIndex) => {
-    if (patternIndex === patternParts.length) return fileIndex === fileParts.length;
-    const part = patternParts[patternIndex];
-    if (part === "**") {
-      for (let next = fileIndex; next <= fileParts.length; next += 1) if (visit(patternIndex + 1, next)) return true;
-      return false;
-    }
-    if (fileIndex === fileParts.length) return false;
-    const expression = new RegExp(`^${part.split("*").map(escapeRegex).join("[^/]*")}$`);
-    return expression.test(fileParts[fileIndex]) && visit(patternIndex + 1, fileIndex + 1);
-  };
-  return visit(0, 0);
-}
-
-function escapeRegex(value) { return value.replace(/[|\\{}()[\]^$+?.]/g, "\\$&"); }
+export { matchesGovernancePattern as matchesPattern } from "./paths.js";

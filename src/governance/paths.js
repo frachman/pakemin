@@ -28,3 +28,32 @@ export function validateIncludePath(value) {
 
   return value.split("/").every((segment) => segment && segment !== "." && segment !== "..");
 }
+
+export function isCanonicalGovernancePath(value) {
+  return typeof value === "string" && value.length > 0 && !value.includes("\0") && !value.includes("\\") && !value.startsWith("/") && !value.endsWith("/") && !value.split("/").some((segment) => !segment || segment === "." || segment === "..");
+}
+
+export function isValidGovernancePattern(value) {
+  if (!isCanonicalGovernancePath(value) || value.startsWith("!") || /[?\[\]{}\\]/.test(value) || /[@+*!?]\(/.test(value)) return false;
+  return value.split("/").every((segment) => segment === "**" || !segment.includes("**"));
+}
+
+// Callers validate both arguments with the Schema v0 helpers before matching.
+export function matchesGovernancePattern(pattern, file) {
+  const patternParts = pattern.split("/");
+  const fileParts = file.split("/");
+  const visit = (patternIndex, fileIndex) => {
+    if (patternIndex === patternParts.length) return fileIndex === fileParts.length;
+    const part = patternParts[patternIndex];
+    if (part === "**") {
+      for (let next = fileIndex; next <= fileParts.length; next += 1) if (visit(patternIndex + 1, next)) return true;
+      return false;
+    }
+    if (fileIndex === fileParts.length) return false;
+    const expression = new RegExp(`^${part.split("*").map(escapeRegex).join("[^/]*")}$`);
+    return expression.test(fileParts[fileIndex]) && visit(patternIndex + 1, fileIndex + 1);
+  };
+  return visit(0, 0);
+}
+
+function escapeRegex(value) { return value.replace(/[|\\{}()[\]^$+?.]/g, "\\$&"); }
