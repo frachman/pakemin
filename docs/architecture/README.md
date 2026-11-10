@@ -15,3 +15,4 @@ Parent: [Documentation](../README.md)
 - [Workflow model](workflow-model.md): defines reusable engineering processes.
 - [Adapter contract](adapter-contract.md): defines responsibilities and boundaries for vendor adapters.
 - [Verification Contract v0](verification-contract-v0.md): accepted normative repository-level evaluation and report contract.
+- [Task Authority Boundary Note v0](../../.orca/drops/02-task-authority-boundary-note-v0.md): non-normative Indonesian proposal for owner review; not an accepted ADR or contract.
